@@ -1,0 +1,149 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --eco-primary: #22c55e;
+    --eco-secondary: #10b981;
+    --eco-accent: #34d399;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .dark body {
+    background-color: #0a0f1e;
+    color: #f1f5f9;
+  }
+
+  body {
+    background-color: #f8fafc;
+    color: #0f172a;
+  }
+}
+
+@layer components {
+  /* Glassmorphism */
+  .glass {
+    @apply backdrop-blur-xl bg-white/5 border border-white/10 shadow-glass;
+  }
+
+  .glass-dark {
+    @apply backdrop-blur-xl bg-black/20 border border-white/8 shadow-glass;
+  }
+
+  .glass-light {
+    @apply backdrop-blur-xl bg-white/70 border border-white/50 shadow-glass;
+  }
+
+  /* Eco score color coding */
+  .eco-score-excellent { @apply text-emerald-400; }
+  .eco-score-good { @apply text-green-400; }
+  .eco-score-fair { @apply text-yellow-400; }
+  .eco-score-poor { @apply text-red-400; }
+
+  /* Card styles */
+  .card-dark {
+    @apply bg-slate-800/50 border border-slate-700/50 rounded-2xl backdrop-blur-sm;
+  }
+
+  .card-light {
+    @apply bg-white border border-slate-200 rounded-2xl shadow-sm;
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent;
+  }
+
+  .gradient-text-hero {
+    @apply bg-gradient-to-r from-white via-emerald-200 to-teal-300 bg-clip-text text-transparent;
+  }
+
+  /* Scrollbar */
+  .scrollbar-thin::-webkit-scrollbar { width: 4px; }
+  .scrollbar-thin::-webkit-scrollbar-track { @apply bg-transparent; }
+  .scrollbar-thin::-webkit-scrollbar-thumb { @apply bg-slate-600 rounded-full; }
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover { @apply bg-slate-500; }
+
+  /* Nav link */
+  .nav-link {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200;
+  }
+
+  .nav-link-active {
+    @apply bg-eco-500/15 text-eco-400 shadow-eco;
+  }
+
+  .nav-link-inactive {
+    @apply text-slate-400 hover:text-slate-200 hover:bg-slate-700/50;
+  }
+
+  /* Button base */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-medium text-sm transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-primary {
+    @apply btn bg-eco-500 text-white hover:bg-eco-600 shadow-eco hover:shadow-eco-lg active:scale-95;
+  }
+
+  .btn-secondary {
+    @apply btn bg-slate-700 text-slate-200 hover:bg-slate-600 border border-slate-600 active:scale-95;
+  }
+
+  .btn-ghost {
+    @apply btn text-slate-400 hover:text-slate-200 hover:bg-slate-700/50 active:scale-95;
+  }
+
+  .btn-danger {
+    @apply btn bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/20 active:scale-95;
+  }
+
+  /* Input */
+  .input-field {
+    @apply w-full px-4 py-3 rounded-xl border text-sm transition-all duration-200 outline-none;
+  }
+
+  .input-dark {
+    @apply input-field bg-slate-800/50 border-slate-700 text-slate-200 placeholder:text-slate-500 focus:border-eco-500/60 focus:ring-2 focus:ring-eco-500/20;
+  }
+
+  .input-light {
+    @apply input-field bg-white border-slate-300 text-slate-900 placeholder:text-slate-400 focus:border-eco-500 focus:ring-2 focus:ring-eco-500/20;
+  }
+
+  /* Badge */
+  .badge {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold;
+  }
+
+  .badge-eco { @apply badge bg-eco-500/15 text-eco-400 border border-eco-500/20; }
+  .badge-blue { @apply badge bg-blue-500/15 text-blue-400 border border-blue-500/20; }
+  .badge-orange { @apply badge bg-orange-500/15 text-orange-400 border border-orange-500/20; }
+  .badge-red { @apply badge bg-red-500/15 text-red-400 border border-red-500/20; }
+  .badge-purple { @apply badge bg-purple-500/15 text-purple-400 border border-purple-500/20; }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .animation-delay-200 { animation-delay: 200ms; }
+  .animation-delay-400 { animation-delay: 400ms; }
+  .animation-delay-600 { animation-delay: 600ms; }
+}
