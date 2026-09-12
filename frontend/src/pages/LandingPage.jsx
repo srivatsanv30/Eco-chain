@@ -105,7 +105,7 @@ const LandingPage = () => {
           <motion.h1 variants={itemVariants} className="text-5xl sm:text-6xl md:text-7xl font-black mb-6 leading-[1.08] tracking-tight">
             <span className={isDark ? 'text-white' : 'text-slate-900'}>Buy Smarter.</span>
             <br />
-            <span className="gradient-text-hero">Waste Less.</span>
+            <span className={isDark ? "gradient-text-hero" : "bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent"}>Waste Less.</span>
           </motion.h1>
 
           <motion.p variants={itemVariants} className={`text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>

@@ -864,7 +864,14 @@ const seedData = async () => {
     await Product.deleteMany({});
     await CarbonReport.deleteMany({});
 
-    await Product.insertMany(products);
+    const productsWithLinks = products.map(p => ({
+      ...p,
+      affiliateLinks: [
+        { store: 'Amazon', url: `https://amazon.in/s?k=${encodeURIComponent(p.name)}`, price: p.price },
+        { store: 'Flipkart', url: `https://flipkart.com/search?q=${encodeURIComponent(p.name)}`, price: Math.round(p.price * 0.98) }
+      ]
+    }));
+    await Product.insertMany(productsWithLinks);
     console.log(`✅ ${products.length} Indian products seeded successfully!`);
 
     // Create demo admin user
