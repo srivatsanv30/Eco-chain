@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { GitCompare, X, Trash2, Award, Leaf, Clock, DollarSign, Zap, Shield } from 'lucide-react';
 import { toggleCompareProduct, clearCompare } from '../redux/slices/productSlice';
 import { EcoScoreBadge, EnergyRatingBadge, EmptyState } from '../components/ui/EcoComponents';
+import ProductImage from '../components/ui/ProductImage';
 import { Radar } from 'react-chartjs-2';
 import { Chart as ChartJS, RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend } from 'chart.js';
 
@@ -113,6 +114,7 @@ const ComparePage = () => {
                   <X className="w-3.5 h-3.5" />
                 </button>
                 <p className={`text-xs mb-1 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{p.brand}</p>
+                <ProductImage product={p} className="w-full h-24 object-contain mx-auto my-3 rounded-lg" />
                 <h3 className={`font-bold text-sm mb-2 ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>{p.name}</h3>
                 <EcoScoreBadge score={p.ecoScore} />
                 <p className="text-lg font-black text-eco-400 mt-2">₹{Number(p.price).toLocaleString('en-IN')}</p>

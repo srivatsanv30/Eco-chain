@@ -5,23 +5,7 @@ import { Heart, GitCompare, Star, Leaf, Zap, Clock } from 'lucide-react';
 import { toggleSaveProduct, toggleCompareProduct } from '../../redux/slices/productSlice';
 import { EcoScoreBadge, EnergyRatingBadge } from './EcoComponents';
 import toast from 'react-hot-toast';
-
-const CATEGORY_IMAGES = {
-  Smartphones: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&h=450&fit=crop',
-  Laptops: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&h=450&fit=crop',
-  Tablets: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600&h=450&fit=crop',
-  TVs: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=600&h=450&fit=crop',
-  'Washing Machines': 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=450&fit=crop',
-  Refrigerators: 'https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=600&h=450&fit=crop',
-  'Air Conditioners': 'https://images.unsplash.com/photo-1631545806609-3c9b4ff50e5e?w=600&h=450&fit=crop',
-  Audio: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=450&fit=crop',
-  Smartwatches: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&h=450&fit=crop',
-  Cameras: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=600&h=450&fit=crop',
-  Monitors: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=600&h=450&fit=crop',
-  Accessories: 'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=600&h=450&fit=crop',
-  Appliances: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=450&fit=crop',
-  Clothing: 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=600&h=450&fit=crop',
-};
+import ProductImage from './ProductImage';
 
 const ProductCard = ({ product, view = 'grid' }) => {
   const dispatch = useDispatch();
@@ -48,14 +32,12 @@ const ProductCard = ({ product, view = 'grid' }) => {
     toast(isInCompare ? 'Removed from compare' : '⚖️ Added to compare', { duration: 2000 });
   };
 
-  const imageUrl = product.image || CATEGORY_IMAGES[product.category] || CATEGORY_IMAGES.Smartphones;
-
   if (view === 'list') {
     return (
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
         <Link to={`/dashboard/product/${product._id}`}
           className={`flex items-center gap-4 p-4 rounded-2xl border transition-all duration-200 ${isDark ? 'bg-slate-800/50 border-slate-700/50 hover:border-eco-500/30' : 'bg-white border-slate-200 hover:border-eco-400'}`}>
-          <img src={imageUrl} alt={product.name} className="w-20 h-20 object-cover rounded-xl flex-shrink-0" />
+          <ProductImage product={product} className="w-20 h-20 object-cover rounded-xl flex-shrink-0" />
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between">
               <div>
@@ -92,7 +74,7 @@ const ProductCard = ({ product, view = 'grid' }) => {
       <Link to={`/dashboard/product/${product._id}`}
         className={`block rounded-2xl border overflow-hidden transition-all duration-200 ${isDark ? 'bg-slate-800/50 border-slate-700/50 hover:border-eco-500/30' : 'bg-white border-slate-200 hover:border-eco-400'}`}>
         <div className="relative">
-          <img src={imageUrl} alt={product.name} className="w-full h-48 object-cover" />
+          <ProductImage product={product} className="w-full h-48 object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent" />
           <div className="absolute top-3 right-3 flex gap-2">
             <button onClick={handleSave}

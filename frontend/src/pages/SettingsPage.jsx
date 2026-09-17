@@ -9,6 +9,7 @@ const SettingsPage = () => {
   const dispatch = useDispatch();
   const { mode } = useSelector(state => state.theme);
   const isDark = mode === 'dark';
+  const [activeTab, setActiveTab] = useState(0);
 
   const [preferences, setPreferences] = useState({
     emailAlerts: true,
@@ -62,8 +63,8 @@ const SettingsPage = () => {
             Configuration Menu
           </div>
           {['Appearance', 'Notifications', 'Calculation Units', 'Security & Access'].map((menu, i) => (
-            <button key={menu} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-semibold transition-all ${
-              i === 0 
+            <button key={menu} onClick={() => setActiveTab(i)} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-semibold transition-all ${
+              activeTab === i 
                 ? (isDark ? 'bg-eco-500/10 text-eco-400' : 'bg-eco-50 text-eco-500') 
                 : (isDark ? 'text-slate-400 hover:bg-slate-800/40 hover:text-slate-200' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-800')
             }`}>
@@ -75,6 +76,7 @@ const SettingsPage = () => {
         {/* Right pane: Core fields */}
         <motion.div variants={itemVariants} className="md:col-span-2 space-y-6">
           {/* Appearance card */}
+          {activeTab === 0 && (
           <div className={`p-5 rounded-2xl border ${isDark ? 'bg-slate-800/40 border-slate-700/50' : 'bg-white border-slate-200 shadow-sm'}`}>
             <h3 className={`font-bold mb-4 flex items-center gap-2 text-sm ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>
               <Sun className="w-4 h-4 text-amber-400" /> Theme Configuration
@@ -103,8 +105,10 @@ const SettingsPage = () => {
               </button>
             </div>
           </div>
+          )}
 
           {/* Notifications Card */}
+          {activeTab === 1 && (
           <div className={`p-5 rounded-2xl border ${isDark ? 'bg-slate-800/40 border-slate-700/50' : 'bg-white border-slate-200'}`}>
             <h3 className={`font-bold mb-4 flex items-center gap-2 text-sm ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>
               <Bell className="w-4 h-4 text-blue-400" /> Notifications & Alerts
@@ -132,8 +136,10 @@ const SettingsPage = () => {
               ))}
             </div>
           </div>
+          )}
 
           {/* Units Card */}
+          {activeTab === 2 && (
           <div className={`p-5 rounded-2xl border ${isDark ? 'bg-slate-800/40 border-slate-700/50' : 'bg-white border-slate-200 shadow-sm'}`}>
             <h3 className={`font-bold mb-4 flex items-center gap-2 text-sm ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>
               <Globe className="w-4 h-4 text-purple-400" /> Local Preferences
@@ -165,6 +171,19 @@ const SettingsPage = () => {
               </div>
             </div>
           </div>
+          )}
+
+          {activeTab === 3 && (
+            <div className={`p-5 rounded-2xl border ${isDark ? 'bg-slate-800/40 border-slate-700/50' : 'bg-white border-slate-200 shadow-sm'}`}>
+              <h3 className={`font-bold mb-4 flex items-center gap-2 text-sm ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>
+                <Shield className="w-4 h-4 text-red-400" /> Security & Access
+              </h3>
+              <p className={`text-xs mb-4 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Manage your account security and authentication methods.</p>
+              <button className="btn-primary bg-slate-200 hover:bg-slate-300 text-slate-800 dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-slate-200">
+                Change Password
+              </button>
+            </div>
+          )}
 
           {/* Save Button */}
           <div className="flex justify-end">

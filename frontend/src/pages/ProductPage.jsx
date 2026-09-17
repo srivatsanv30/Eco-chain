@@ -8,14 +8,7 @@ import { toggleSaveProduct, toggleCompareProduct } from '../redux/slices/product
 import { EcoScoreBadge, RepairabilityBar, EnergyRatingBadge, Skeleton } from '../components/ui/EcoComponents';
 import toast from 'react-hot-toast';
 
-const CATEGORY_IMAGES = {
-  Smartphones: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&h=500&fit=crop',
-  Laptops: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&h=500&fit=crop',
-  Appliances: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=500&fit=crop',
-  Audio: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=500&fit=crop',
-  TVs: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=600&h=500&fit=crop',
-  Clothing: 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=600&h=500&fit=crop',
-};
+import ProductImage from '../components/ui/ProductImage';
 
 const MetricRow = ({ icon: Icon, label, value, iconColor, isDark }) => (
   <div className={`flex items-center justify-between py-3 border-b ${isDark ? 'border-slate-700/50' : 'border-slate-100'}`}>
@@ -81,8 +74,6 @@ const ProductPage = () => {
   );
   if (!product) return null;
 
-  const imageUrl = product.image || CATEGORY_IMAGES[product.category] || CATEGORY_IMAGES.Smartphones;
-
   return (
     <div className="space-y-6 max-w-5xl mx-auto">
       {/* Back */}
@@ -93,7 +84,7 @@ const ProductPage = () => {
       {/* Product Hero */}
       <div className="grid lg:grid-cols-2 gap-6">
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className={`rounded-2xl overflow-hidden border ${isDark ? 'border-slate-700/50' : 'border-slate-200'}`}>
-          <img src={imageUrl} alt={product.name} className="w-full h-80 lg:h-96 object-cover" />
+          <ProductImage product={product} className="w-full h-80 lg:h-96 object-cover" />
         </motion.div>
 
         <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="space-y-4">

@@ -52,8 +52,10 @@ const Topbar = ({ onMenuClick }) => {
 
       <div className="ml-auto flex items-center gap-2">
         {/* Notifications */}
-        <button className={`relative p-2 rounded-xl transition-colors ${isDark ? 'hover:bg-slate-800 text-slate-400' : 'hover:bg-slate-100 text-slate-600'}`}>
-          <Bell className="w-4.5 h-4.5 w-5 h-5" />
+        <button 
+          onClick={() => navigate('/dashboard/notifications')}
+          className={`relative p-2 rounded-xl transition-colors ${isDark ? 'hover:bg-slate-800 text-slate-400' : 'hover:bg-slate-100 text-slate-600'}`}>
+          <Bell className="w-5 h-5" />
           <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-eco-400 rounded-full" />
         </button>
 

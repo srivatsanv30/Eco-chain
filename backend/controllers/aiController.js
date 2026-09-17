@@ -1,6 +1,9 @@
 import User from '../models/User.js';
 import Product from '../models/Product.js';
 import CarbonReport from '../models/CarbonReport.js';
+import { GoogleGenAI } from '@google/genai';
+
+const ai = process.env.GEMINI_API_KEY ? new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY }) : null;
 
 // AI Engine — deterministic mock, can be swapped with real ML endpoint
 const predictLifespan = (product) => {
@@ -30,24 +33,74 @@ export const getAIInsights = async (req, res) => {
     const product = await Product.findById(req.params.id);
     if (!product) return res.status(404).json({ success: false, message: 'Product not found' });
 
-    const lifespan = predictLifespan(product);
-    const rvr = repairVsReplace(product);
-    const ownership = predictOwnershipCost(product);
-
     const alternatives = await Product.find({
       category: product.category,
       ecoScore: { $gt: product.ecoScore },
       _id: { $ne: product._id }
     }).limit(3).sort({ ecoScore: -1 });
 
+    let aiData = null;
+
+    if (ai) {
+      const prompt = `Analyze this product and provide lifecycle insights in JSON format.
+Product: ${product.name} (Brand: ${product.brand}, Category: ${product.category})
+Price: $${product.price}
+Eco Score: ${product.ecoScore}/100
+Repairability Score: ${product.repairabilityScore}/100
+Carbon Footprint: ${product.carbonFootprint} kg
+Lifespan (Base): ${product.lifespanYears} years
+Maintenance Cost/Year: $${product.maintenanceCostYear}
+
+Return exactly this JSON structure, nothing else:
+{
+  "predictedLifespan": <number calculated based on base lifespan, repairability, and eco score>,
+  "repairVsReplace": {
+    "repairCost": <estimated total repair cost over lifetime>,
+    "replaceCost": <estimated replacement cost>,
+    "carbonSaved": <estimated carbon saved if repaired>,
+    "decision": "Repair" or "Replace"
+  },
+  "ownershipCost": {
+    "years": <predicted lifespan>,
+    "totalMaintenance": <total maintenance cost over lifespan>,
+    "total": <price + total maintenance>
+  },
+  "sustainabilityScore": <0-100 score based on eco score and repairability>,
+  "aiSummary": "<A 2-sentence summary of the product's environmental impact and longevity>"
+}`;
+      
+      try {
+        const response = await ai.models.generateContent({
+          model: 'gemini-2.5-flash',
+          contents: prompt,
+          config: {
+            responseMimeType: 'application/json',
+          }
+        });
+        
+        aiData = JSON.parse(response.text);
+      } catch (aiError) {
+        console.error('Gemini API Error:', aiError);
+        // Fallback to mock logic if AI fails
+      }
+    }
+
+    // Fallback logic if AI is not configured or fails
+    if (!aiData) {
+      const lifespan = predictLifespan(product);
+      aiData = {
+        predictedLifespan: lifespan,
+        repairVsReplace: repairVsReplace(product),
+        ownershipCost: predictOwnershipCost(product),
+        sustainabilityScore: product.aiSustainabilityScore || Math.round(product.ecoScore * 0.9 + product.repairabilityScore * 2),
+        aiSummary: product.aiSummary || `This ${product.name} by ${product.brand} has an eco score of ${product.ecoScore}/100 with a predicted lifespan of ${lifespan} years under normal usage.`
+      };
+    }
+
     res.json({
       success: true,
       data: {
-        predictedLifespan: lifespan,
-        repairVsReplace: rvr,
-        ownershipCost: ownership,
-        sustainabilityScore: product.aiSustainabilityScore || Math.round(product.ecoScore * 0.9 + product.repairabilityScore * 2),
-        aiSummary: product.aiSummary || `This ${product.name} by ${product.brand} has an eco score of ${product.ecoScore}/100 with a predicted lifespan of ${lifespan} years under normal usage.`,
+        ...aiData,
         greenAlternatives: alternatives
       }
     });
