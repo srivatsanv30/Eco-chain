@@ -13,7 +13,6 @@ import { ProductCardSkeleton } from '../components/ui/EcoComponents';
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement, Filler);
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
-const CARBON_DATA = [145, 132, 118, 110, 108, 95];
 
 const DashboardPage = () => {
   const { user } = useSelector(state => state.auth);
@@ -36,7 +35,13 @@ const DashboardPage = () => {
     fetchProducts();
   }, []);
 
-  const wallet = user?.carbonWallet || { balance: 450, monthlyFootprint: 95, wasteGenerated: 12, moneySaved: 85 };
+  const wallet = user?.carbonWallet || { balance: 450, monthlyFootprint: 120, wasteGenerated: 12, moneySaved: 85 };
+
+  const CARBON_DATA = [145, 132, 118, 110, 108, wallet.monthlyFootprint];
+  const footprintTrend = Math.round(((wallet.monthlyFootprint - 108) / 108) * 100);
+  const totalReduction = Math.round(((CARBON_DATA[0] - wallet.monthlyFootprint) / CARBON_DATA[0]) * 100);
+  const trendText = totalReduction >= 0 ? `↓ ${totalReduction}% reduction over 6 months` : `↑ ${Math.abs(totalReduction)}% increase over 6 months`;
+  const badgeText = totalReduction >= 0 ? 'Improving ↓' : 'Worsening ↑';
 
   const lineChartData = {
     labels: MONTHS,
@@ -101,8 +106,8 @@ const DashboardPage = () => {
       {/* Stat Cards */}
       <motion.div variants={itemVariants} className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard title="Carbon Balance" value={`${wallet.balance} pts`} subtitle="Green credits earned" icon={Leaf} color="eco" trend={12} />
-        <StatCard title="Monthly Footprint" value={`${wallet.monthlyFootprint} kg`} subtitle="CO₂ this month" icon={Zap} color="blue" trend={-8} />
-        <StatCard title="Money Saved" value={`₹${wallet.moneySaved}`} subtitle="vs avg consumer" icon={TrendingUp} color="purple" trend={15} />
+        <StatCard title="Monthly Footprint" value={`${wallet.monthlyFootprint} kg`} subtitle="CO₂ this month" icon={Zap} color="blue" trend={footprintTrend} />
+        <StatCard title="Money Saved" value={`₹${wallet.moneySaved}`} subtitle="vs avg consumer" icon={TrendingUp} color="purple" trend={Math.round(((wallet.moneySaved - 75) / 75) * 100)} />
         <StatCard title="Items Recycled" value={`${wallet.recycledCount || 1}`} subtitle="This quarter" icon={Recycle} color="orange" />
       </motion.div>
 
@@ -112,9 +117,9 @@ const DashboardPage = () => {
           <div className="flex items-center justify-between mb-4">
             <div>
               <h3 className={`font-bold ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>Carbon Footprint Trend</h3>
-              <p className={`text-xs mt-0.5 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>↓ 34% reduction over 6 months</p>
+              <p className={`text-xs mt-0.5 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{trendText}</p>
             </div>
-            <span className="badge-eco">Improving ↓</span>
+            <span className={`badge-eco ${totalReduction < 0 ? 'bg-red-500/10 text-red-500 border-red-500/20' : ''}`}>{badgeText}</span>
           </div>
           <div className="h-52"><Line data={lineChartData} options={chartOptions} /></div>
         </div>

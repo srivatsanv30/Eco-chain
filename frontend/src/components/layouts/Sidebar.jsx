@@ -45,12 +45,9 @@ const Sidebar = ({ isOpen, onClose }) => {
       {/* Logo */}
       <div className="flex items-center justify-between p-5 pb-4">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-eco-400 to-teal-500 flex items-center justify-center shadow-eco">
-            <Leaf className="w-4 h-4 text-white" />
-          </div>
           <div>
-            <span className="text-lg font-bold gradient-text">EcoChain</span>
-            <div className={`text-xs ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>AI Lifecycle Platform</div>
+            <span className="text-2xl font-black gradient-text tracking-tight">EcoChain</span>
+            <div className={`text-sm mt-0.5 font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>AI Lifecycle Platform</div>
           </div>
         </div>
         <button onClick={onClose} className={`lg:hidden p-1.5 rounded-lg ${isDark ? 'hover:bg-slate-800 text-slate-400' : 'hover:bg-slate-100 text-slate-500'}`}>

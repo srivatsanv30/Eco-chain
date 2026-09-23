@@ -65,9 +65,6 @@ const AiInsightsPage = () => {
       {/* Header */}
       <motion.div variants={itemVariants}>
         <h1 className={`text-2xl md:text-3xl font-black ${isDark ? 'text-white' : 'text-slate-900'} flex items-center gap-2.5`}>
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-eco-500 to-teal-500 flex items-center justify-center text-white shadow-eco">
-            <Brain className="w-5 h-5" />
-          </div>
           AI Insights & Analytics
         </h1>
         <p className={`mt-2 text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>

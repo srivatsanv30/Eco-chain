@@ -13,8 +13,8 @@ ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, 
 const COLORS = ['#22c55e', '#3b82f6', '#f59e0b', '#a855f7'];
 
 const MetricRow = ({ label, values, isDark, winner }) => (
-  <div className={`grid gap-2 py-3 border-b ${isDark ? 'border-slate-700/50' : 'border-slate-100'}`}
-    style={{ gridTemplateColumns: `180px repeat(${values.length}, minmax(0, 1fr))` }}>
+  <div className={`grid gap-4 py-3 border-b justify-center ${isDark ? 'border-slate-700/50' : 'border-slate-100'}`}
+    style={{ gridTemplateColumns: `180px repeat(${values.length}, minmax(250px, 400px))` }}>
     <span className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{label}</span>
     {values.map((val, i) => (
       <div key={i} className="text-center px-2">
@@ -98,23 +98,23 @@ const ComparePage = () => {
 
       {/* Product Headers */}
       <div className="overflow-x-auto">
-        <div className="min-w-[700px]">
-          <div className={`grid gap-4 mb-4`} style={{ gridTemplateColumns: `180px repeat(${compareList.length}, minmax(0, 1fr))` }}>
+        <div className="min-w-[700px] pt-4">
+          <div className={`grid gap-4 mb-4 justify-center`} style={{ gridTemplateColumns: `180px repeat(${compareList.length}, minmax(250px, 400px))` }}>
             <div />
             {compareList.map((p, i) => (
               <motion.div key={p._id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}
                 className={`relative p-4 rounded-2xl border text-center ${isDark ? 'bg-slate-800/50 border-slate-700/50' : 'bg-white border-slate-200'}`}
                 style={{ borderTop: `3px solid ${COLORS[i]}` }}>
                 {i === bestEco && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <span className="badge-eco text-xs flex items-center gap-1"><Award className="w-3 h-3" />Best Eco</span>
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10">
+                    <span className={`badge-eco text-xs flex items-center gap-1 px-2 py-1 rounded-full ${isDark ? 'bg-slate-800' : 'bg-white'}`}><Award className="w-3 h-3" />Best Eco</span>
                   </div>
                 )}
                 <button onClick={() => dispatch(toggleCompareProduct(p))} className="absolute top-2 right-2 p-1 rounded-lg text-slate-500 hover:text-slate-300 hover:bg-slate-700">
                   <X className="w-3.5 h-3.5" />
                 </button>
-                <p className={`text-xs mb-1 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{p.brand}</p>
-                <ProductImage product={p} className="w-full h-24 object-contain mx-auto my-3 rounded-lg" />
+                <p className={`text-xs mb-1 mt-3 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{p.brand}</p>
+                <ProductImage product={p} className="w-full max-w-[160px] h-32 object-contain mx-auto my-3 rounded-lg" />
                 <h3 className={`font-bold text-sm mb-2 ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>{p.name}</h3>
                 <EcoScoreBadge score={p.ecoScore} />
                 <p className="text-lg font-black text-eco-400 mt-2">₹{Number(p.price).toLocaleString('en-IN')}</p>
@@ -123,13 +123,6 @@ const ComparePage = () => {
             ))}
           </div>
 
-          {/* Radar Chart */}
-          <div className={`p-5 rounded-2xl border mb-4 ${isDark ? 'bg-slate-800/50 border-slate-700/50' : 'bg-white border-slate-200'}`}>
-            <h3 className={`font-bold mb-4 ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>Sustainability Radar</h3>
-            <div className="h-72"><Radar data={radarData} options={radarOptions} /></div>
-          </div>
-
-          {/* Comparison Table */}
           <div className={`p-5 rounded-2xl border ${isDark ? 'bg-slate-800/50 border-slate-700/50' : 'bg-white border-slate-200'}`}>
             <h3 className={`font-bold mb-3 ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>Detailed Comparison</h3>
             <MetricRow label="Eco Score" values={compareList.map(p => `${p.ecoScore}/100`)} isDark={isDark} winner={getWinner(compareList.map(p => p.ecoScore))} />
@@ -155,6 +148,12 @@ const ComparePage = () => {
               <MetricRow label="Recycling Info" values={compareList.map(p => p.recyclingInstructions || 'N/A')} isDark={isDark} winner={null} />
               <MetricRow label="AI Summary" values={compareList.map(p => p.aiSummary || 'N/A')} isDark={isDark} winner={null} />
             </div>
+          </div>
+
+          {/* Radar Chart */}
+          <div className={`mt-4 p-5 rounded-2xl border ${isDark ? 'bg-slate-800/50 border-slate-700/50' : 'bg-white border-slate-200'}`}>
+            <h3 className={`font-bold mb-4 ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>Sustainability Radar</h3>
+            <div className="h-72"><Radar data={radarData} options={radarOptions} /></div>
           </div>
         </div>
       </div>

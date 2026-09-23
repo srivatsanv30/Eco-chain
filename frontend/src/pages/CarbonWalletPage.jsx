@@ -26,11 +26,14 @@ const CarbonWalletPage = () => {
   const [walletData, setWalletData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const wallet = user?.carbonWallet || { balance: 450, monthlyFootprint: 95, wasteGenerated: 12, moneySaved: 85, purchasedCount: 4, recycledCount: 1 };
+  const wallet = user?.carbonWallet || { balance: 450, monthlyFootprint: 120, wasteGenerated: 12, moneySaved: 85, purchasedCount: 4, recycledCount: 1 };
 
   const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
-  const footprints = [145, 132, 118, 110, 108, 95];
-  const savings = [30, 45, 55, 65, 75, 85];
+  const footprints = [145, 132, 118, 110, 108, wallet.monthlyFootprint];
+  const savings = [30, 45, 55, 65, 75, wallet.moneySaved];
+
+  const footprintTrend = Math.round(((wallet.monthlyFootprint - 108) / 108) * 100);
+  const moneySavedTrend = Math.round(((wallet.moneySaved - 75) / 75) * 100);
 
   const lineData = {
     labels: MONTHS,
@@ -83,9 +86,9 @@ const CarbonWalletPage = () => {
 
       {/* Stat Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard title="Monthly Footprint" value={`${wallet.monthlyFootprint} kg`} subtitle="CO₂ this month" icon={Leaf} color="eco" trend={-8} />
+        <StatCard title="Monthly Footprint" value={`${wallet.monthlyFootprint} kg`} subtitle="CO₂ this month" icon={Leaf} color="eco" trend={footprintTrend} />
         <StatCard title="Waste Generated" value={`${wallet.wasteGenerated} kg`} subtitle="This quarter" icon={TrendingDown} color="orange" />
-        <StatCard title="Money Saved" value={`₹${wallet.moneySaved}`} subtitle="vs avg consumer" icon={IndianRupee} color="purple" trend={22} />
+        <StatCard title="Money Saved" value={`₹${wallet.moneySaved}`} subtitle="vs avg consumer" icon={IndianRupee} color="purple" trend={moneySavedTrend} />
         <StatCard title="Products Recycled" value={`${wallet.recycledCount || 1}`} subtitle="Total recycled" icon={Recycle} color="blue" />
       </div>
 
