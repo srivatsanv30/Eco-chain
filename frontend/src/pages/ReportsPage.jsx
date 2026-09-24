@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
-import { FileBarChart, Download, FileText, Share2, Calendar, Award } from 'lucide-react';
+import { FileBarChart, Download, FileText, Share2, Calendar, Award, Loader2, TrendingDown, TrendingUp, DollarSign } from 'lucide-react';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import axios from 'axios';
@@ -15,15 +15,20 @@ const ReportsPage = () => {
   const isDark = mode === 'dark';
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isOffline, setIsOffline] = useState(false);
 
   useEffect(() => {
     const fetchReports = async () => {
       try {
         const token = user?.token;
         const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
-        const { data } = await axios.get('http://localhost:5000/api/ai/carbon-wallet', config);
+        const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        const { data } = await axios.get(`${baseUrl}/api/ai/carbon-wallet`, config);
         setReports(data.data?.reports || []);
+        setIsOffline(false);
       } catch (error) {
+        setIsOffline(true);
+        toast.error("Failed to fetch live data. Showing offline mock data.");
         // Fallback to mock data if API is unavailable
         setReports([
           { month: 'Jan', carbonFootprint: 145, wasteGeneratedKg: 15, moneySaved: 50 },
@@ -92,11 +97,18 @@ const ReportsPage = () => {
   const handleExport = (format) => {
     toast.success(`Exporting report as ${format.toUpperCase()}...`);
     
+    if (format === 'pdf') {
+      setTimeout(() => window.print(), 1000);
+      return;
+    }
+
     // Simulate generation of download link
     setTimeout(() => {
+      if (reports.length === 0) return;
+      const headers = Object.keys(reports[0]).join(",");
       const csvContent = "data:text/csv;charset=utf-8," 
-        + ["Month,Carbon Footprint (kg CO2),Waste Generated (kg),Money Saved ($)"].concat(
-          reports.map(r => `${r.month},${r.carbonFootprint},${r.wasteGeneratedKg},${r.moneySaved}`)
+        + [headers].concat(
+          reports.map(r => Object.values(r).join(","))
         ).join("\n");
       
       const encodedUri = encodeURI(csvContent);
@@ -109,6 +121,33 @@ const ReportsPage = () => {
     }, 1000);
   };
 
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'EcoChain Impact',
+          text: 'I am in the top 8% of eco-conscious users this month on EcoChain!',
+          url: window.location.href,
+        });
+        toast.success("Shared successfully!");
+      } catch (error) {
+        console.log('Error sharing', error);
+      }
+    } else {
+      navigator.clipboard.writeText('I am in the top 8% of eco-conscious users this month on EcoChain!');
+      toast.success("Badge text copied to clipboard!");
+    }
+  };
+
+  const getPerformance = (carbon) => {
+    if (carbon < 100) return { text: 'Excellent', color: 'text-green-500' };
+    if (carbon < 125) return { text: 'Good', color: 'text-blue-500' };
+    return { text: 'Fair', color: 'text-yellow-500' };
+  };
+
+  const currentYear = new Date().getFullYear();
+  const currentHalf = new Date().getMonth() < 6 ? 'H1' : 'H2';
+
   const containerVariants = {
     hidden: {},
     visible: { transition: { staggerChildren: 0.05 } }
@@ -117,6 +156,19 @@ const ReportsPage = () => {
     hidden: { opacity: 0, y: 15 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.3 } }
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-full min-h-[400px]">
+        <Loader2 className={`w-10 h-10 animate-spin ${isDark ? 'text-green-400' : 'text-green-600'}`} />
+      </div>
+    );
+  }
+
+  // Calculate Summaries
+  const totalCarbon = reports.reduce((acc, curr) => acc + (curr.carbonFootprint || 0), 0);
+  const totalWaste = reports.reduce((acc, curr) => acc + (curr.wasteGeneratedKg || 0), 0);
+  const totalSaved = reports.reduce((acc, curr) => acc + (curr.moneySaved || 0), 0);
 
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-6">
@@ -128,6 +180,7 @@ const ReportsPage = () => {
           </h1>
           <p className={`mt-2 text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
             Track, export, and share detailed environmental footprint histories and audit reports.
+            {isOffline && <span className="ml-2 text-red-500 font-semibold">(Offline Mode)</span>}
           </p>
         </div>
         <div className="flex gap-2">
@@ -140,6 +193,31 @@ const ReportsPage = () => {
         </div>
       </motion.div>
 
+      {/* Summary Cards */}
+      <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className={`p-4 rounded-xl border ${isDark ? 'bg-slate-800/40 border-slate-700/50' : 'bg-white border-slate-200'} flex items-center gap-4`}>
+          <div className="p-3 bg-red-500/10 text-red-500 rounded-lg"><TrendingDown className="w-6 h-6" /></div>
+          <div>
+            <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Total Carbon Footprint</p>
+            <p className={`text-xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>{totalCarbon} kg CO₂</p>
+          </div>
+        </div>
+        <div className={`p-4 rounded-xl border ${isDark ? 'bg-slate-800/40 border-slate-700/50' : 'bg-white border-slate-200'} flex items-center gap-4`}>
+          <div className="p-3 bg-green-500/10 text-green-500 rounded-lg"><TrendingUp className="w-6 h-6" /></div>
+          <div>
+            <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Total Waste Diverted</p>
+            <p className={`text-xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>{totalWaste} kg</p>
+          </div>
+        </div>
+        <div className={`p-4 rounded-xl border ${isDark ? 'bg-slate-800/40 border-slate-700/50' : 'bg-white border-slate-200'} flex items-center gap-4`}>
+          <div className="p-3 bg-blue-500/10 text-blue-500 rounded-lg"><DollarSign className="w-6 h-6" /></div>
+          <div>
+            <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Total Savings</p>
+            <p className={`text-xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>₹{totalSaved}</p>
+          </div>
+        </div>
+      </motion.div>
+
       {/* Main Charts card */}
       <motion.div variants={itemVariants} className={`p-5 rounded-2xl border ${isDark ? 'bg-slate-800/40 border-slate-700/50' : 'bg-white border-slate-200 shadow-sm'}`}>
         <div className="flex justify-between items-center mb-6">
@@ -147,7 +225,7 @@ const ReportsPage = () => {
             <h3 className={`font-bold ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>Carbon vs. Waste Metrics</h3>
             <p className={`text-xs mt-0.5 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>Monthly comparisons of emissions and physical waste reductions</p>
           </div>
-          <span className="badge-eco flex items-center gap-1"><Calendar className="w-3 h-3" /> H1 2026</span>
+          <span className="badge-eco flex items-center gap-1"><Calendar className="w-3 h-3" /> {currentHalf} {currentYear}</span>
         </div>
         <div className="h-72">
           <Bar data={barChartData} options={chartOptions} />
@@ -178,7 +256,9 @@ const ReportsPage = () => {
                     <td className="py-3">{row.wasteGeneratedKg} kg</td>
                     <td className="py-3 text-eco-400 font-bold">₹{row.moneySaved}</td>
                     <td className="py-3">
-                      <span className="badge-eco">Excellent</span>
+                      <span className={`badge-eco ${getPerformance(row.carbonFootprint).color}`}>
+                        {getPerformance(row.carbonFootprint).text}
+                      </span>
                     </td>
                   </tr>
                 ))}
@@ -198,7 +278,7 @@ const ReportsPage = () => {
               You are in the <strong>top 8%</strong> of eco-conscious users this month. Share your success badge to social media or embed it in your profile!
             </p>
           </div>
-          <button className="btn-secondary w-full mt-6 flex items-center justify-center gap-1.5">
+          <button onClick={handleShare} className="btn-secondary w-full mt-6 flex items-center justify-center gap-1.5">
             <Share2 className="w-4 h-4" />
             <span>Share My Eco Badge</span>
           </button>
