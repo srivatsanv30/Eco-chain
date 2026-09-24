@@ -8,7 +8,7 @@ import { toggleSaveProduct, toggleCompareProduct } from '../redux/slices/product
 import { EcoScoreBadge, RepairabilityBar, EnergyRatingBadge, Skeleton } from '../components/ui/EcoComponents';
 import toast from 'react-hot-toast';
 
-import ProductImage from '../components/ui/ProductImage';
+import ProductGallery from '../components/ui/ProductGallery';
 
 const MetricRow = ({ icon: Icon, label, value, iconColor, isDark }) => (
   <div className={`flex items-center justify-between py-3 border-b ${isDark ? 'border-slate-700/50' : 'border-slate-100'}`}>
@@ -84,13 +84,13 @@ const ProductPage = () => {
       {/* Product Hero */}
       <div className="grid lg:grid-cols-2 gap-6">
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className={`rounded-2xl overflow-hidden border ${isDark ? 'border-slate-700/50' : 'border-slate-200'}`}>
-          <ProductImage product={product} className="w-full h-80 lg:h-96 object-cover" />
+          <ProductGallery product={product} />
         </motion.div>
 
         <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="space-y-4">
           <div>
             <span className={`text-xs font-semibold uppercase tracking-wider ${isDark ? 'text-eco-400' : 'text-eco-600'}`}>{product.brand} · {product.category}</span>
-            <h1 className={`text-2xl md:text-3xl font-black mt-1 ${isDark ? 'text-white' : 'text-slate-900'}`}>{product.name}</h1>
+            <h1 className={`text-2xl md:text-3xl font-black mt-1 ${isDark ? 'text-white' : 'text-slate-900'}`}>{product.productName || product.name}</h1>
             <p className={`text-sm mt-2 leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>{product.description}</p>
           </div>
 

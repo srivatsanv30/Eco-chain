@@ -42,7 +42,7 @@ const ProductCard = ({ product, view = 'grid' }) => {
             <div className="flex items-start justify-between">
               <div>
                 <p className={`text-xs mb-0.5 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{product.brand}</p>
-                <h3 className={`font-semibold truncate ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>{product.name}</h3>
+                <h3 className={`font-semibold truncate ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>{product.productName || product.name}</h3>
               </div>
               <p className="text-lg font-bold text-eco-400 ml-2">₹{Number(product.price).toLocaleString('en-IN')}</p>
             </div>
@@ -93,7 +93,7 @@ const ProductCard = ({ product, view = 'grid' }) => {
 
         <div className="p-4">
           <p className={`text-xs mb-0.5 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{product.brand}</p>
-          <h3 className={`font-semibold mb-3 line-clamp-1 ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>{product.name}</h3>
+          <h3 className={`font-semibold mb-3 line-clamp-1 ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>{product.productName || product.name}</h3>
 
           <div className="flex items-center justify-between mb-3">
             <EcoScoreBadge score={product.ecoScore} />

@@ -268,9 +268,9 @@ const AdminPage = () => {
               {products.map(p => (
                 <tr key={p._id} className={`hover:${isDark ? 'bg-slate-850/20' : 'bg-slate-50'}`}>
                   <td className="py-3 font-semibold flex items-center gap-2">
-                    <img src={p.image || 'https://via.placeholder.com/40'} alt={p.name} className="w-8 h-8 rounded object-cover" />
+                    <img src={p.primaryImage || p.image || 'https://via.placeholder.com/40'} alt={p.productName || p.name} className="w-8 h-8 rounded object-cover" />
                     <div>
-                      <p className="line-clamp-1">{p.name}</p>
+                      <p className="line-clamp-1">{p.productName || p.name}</p>
                       <p className={`text-[10px] ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{p.brand}</p>
                     </div>
                   </td>

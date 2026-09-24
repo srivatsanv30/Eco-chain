@@ -2,10 +2,20 @@ import mongoose from 'mongoose';
 
 const productSchema = new mongoose.Schema({
   name: { type: String, required: true },
+  productName: { type: String, default: '' },
   brand: { type: String, required: true },
+  modelNumber: { type: String, default: '' },
+  productVariant: { type: String, default: '' },
   category: { type: String, required: true },
   price: { type: Number, required: true },
-  image: { type: String, default: '' },
+  images: [{
+    url: { type: String, required: true },
+    type: { type: String, enum: ['Front', 'Back', 'Side', 'Packaging', 'Detail', 'Other'], default: 'Other' },
+    altText: { type: String }
+  }],
+  primaryImage: { type: String, default: '' },
+  imageSource: { type: String, default: '' },
+  imageSourceUrl: { type: String, default: '' },
   description: { type: String, default: '' },
   
   // External Integration

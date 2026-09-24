@@ -46,7 +46,7 @@ const ComparePage = () => {
   const radarData = {
     labels: ['Eco Score', 'Repairability', 'Lifespan', 'Energy', 'Value'],
     datasets: compareList.map((p, i) => ({
-      label: p.name,
+      label: p.productName || p.name,
       data: [
         p.ecoScore,
         p.repairabilityScore * 10,
@@ -115,7 +115,7 @@ const ComparePage = () => {
                 </button>
                 <p className={`text-xs mb-1 mt-3 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{p.brand}</p>
                 <ProductImage product={p} className="w-full max-w-[160px] h-32 object-contain mx-auto my-3 rounded-lg" />
-                <h3 className={`font-bold text-sm mb-2 ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>{p.name}</h3>
+                <h3 className={`font-bold text-sm mb-2 ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>{p.productName || p.name}</h3>
                 <EcoScoreBadge score={p.ecoScore} />
                 <p className="text-lg font-black text-eco-400 mt-2">₹{Number(p.price).toLocaleString('en-IN')}</p>
                 <EnergyRatingBadge rating={p.energyRating} />

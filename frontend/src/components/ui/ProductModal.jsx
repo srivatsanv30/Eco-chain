@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Save } from 'lucide-react';
 import { useSelector } from 'react-redux';
+import ProductImageSelector from './ProductImageSelector';
 
 const INITIAL_STATE = {
-  name: '', brand: '', category: 'Smartphones', price: '', image: '', description: '',
+  productName: '', brand: '', modelNumber: '', productVariant: '', category: 'Smartphones', price: '', primaryImage: '', description: '',
   ecoScore: 50, carbonFootprint: 0, repairabilityScore: 5, lifespanYears: 3,
   maintenanceCostYear: 0, energyRating: 'A',
 };
@@ -24,11 +25,13 @@ const ProductModal = ({ isOpen, onClose, product, onSave }) => {
   useEffect(() => {
     if (product) {
       setFormData({
-        name: product.name || '',
+        productName: product.productName || product.name || '',
         brand: product.brand || '',
+        modelNumber: product.modelNumber || '',
+        productVariant: product.productVariant || '',
         category: product.category || 'Smartphones',
         price: product.price || '',
-        image: product.image || '',
+        primaryImage: product.primaryImage || product.image || '',
         description: product.description || '',
         ecoScore: product.ecoScore || 50,
         carbonFootprint: product.carbonFootprint || 0,
@@ -52,10 +55,15 @@ const ProductModal = ({ isOpen, onClose, product, onSave }) => {
     }));
   };
 
+  const handleImageSelect = (url) => {
+    setFormData(prev => ({ ...prev, primaryImage: url }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    await onSave(formData);
+    // ensure name exists for legacy backend compat temporarily if needed, though we updated backend schema
+    await onSave({ ...formData, name: formData.productName, image: formData.primaryImage });
     setLoading(false);
   };
 
@@ -80,7 +88,7 @@ const ProductModal = ({ isOpen, onClose, product, onSave }) => {
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className={`relative w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col rounded-3xl shadow-2xl border ${
+          className={`relative w-full max-w-3xl max-h-[90vh] overflow-hidden flex flex-col rounded-3xl shadow-2xl border ${
             isDark ? 'bg-slate-900 border-slate-700' : 'bg-white border-slate-200'
           }`}
         >
@@ -100,11 +108,19 @@ const ProductModal = ({ isOpen, onClose, product, onSave }) => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className={labelClass}>Product Name</label>
-                  <input required name="name" value={formData.name} onChange={handleChange} className={inputClass} placeholder="e.g. Galaxy S24" />
+                  <input required name="productName" value={formData.productName} onChange={handleChange} className={inputClass} placeholder="e.g. Galaxy S24" />
                 </div>
                 <div>
                   <label className={labelClass}>Brand</label>
                   <input required name="brand" value={formData.brand} onChange={handleChange} className={inputClass} placeholder="e.g. Samsung" />
+                </div>
+                <div>
+                  <label className={labelClass}>Model Number</label>
+                  <input required name="modelNumber" value={formData.modelNumber} onChange={handleChange} className={inputClass} placeholder="e.g. SM-S921B" />
+                </div>
+                <div>
+                  <label className={labelClass}>Product Variant</label>
+                  <input name="productVariant" value={formData.productVariant} onChange={handleChange} className={inputClass} placeholder="e.g. 256GB Titanium Black" />
                 </div>
                 <div>
                   <label className={labelClass}>Category</label>
@@ -116,10 +132,22 @@ const ProductModal = ({ isOpen, onClose, product, onSave }) => {
                   <label className={labelClass}>Price (₹)</label>
                   <input required type="number" min="0" name="price" value={formData.price} onChange={handleChange} className={inputClass} />
                 </div>
+                
                 <div className="md:col-span-2">
-                  <label className={labelClass}>Image URL</label>
-                  <input name="image" value={formData.image} onChange={handleChange} className={inputClass} placeholder="https://..." />
+                  <ProductImageSelector 
+                    brand={formData.brand} 
+                    modelNumber={formData.modelNumber} 
+                    onImageSelect={handleImageSelect}
+                  />
+                  {formData.primaryImage && (
+                    <div className="mt-2 text-sm text-emerald-600 dark:text-emerald-400 flex items-center gap-1 font-medium">
+                      ✓ Image selected
+                    </div>
+                  )}
+                  {/* Hidden input to ensure primaryImage is required if we want it to be, or just keep it optional */}
+                  <input type="hidden" name="primaryImage" value={formData.primaryImage} />
                 </div>
+
                 <div className="md:col-span-2">
                   <label className={labelClass}>Description</label>
                   <textarea name="description" value={formData.description} onChange={handleChange} className={`${inputClass} resize-none h-20`} />
