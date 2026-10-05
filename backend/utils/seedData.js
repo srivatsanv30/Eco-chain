@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import Product from '../models/Product.js';
 import User from '../models/User.js';
 import CarbonReport from '../models/CarbonReport.js';
+import { moreProducts } from './moreProducts.js';
 
 dotenv.config();
 
@@ -864,7 +865,9 @@ const seedData = async () => {
     await Product.deleteMany({});
     await CarbonReport.deleteMany({});
 
-    const productsWithLinks = products.map(p => ({
+    const allProducts = [...products, ...moreProducts];
+
+    const productsWithLinks = allProducts.map(p => ({
       ...p,
       affiliateLinks: [
         { store: 'Amazon', url: `https://amazon.in/s?k=${encodeURIComponent(p.name)}`, price: p.price },
@@ -872,7 +875,7 @@ const seedData = async () => {
       ]
     }));
     await Product.insertMany(productsWithLinks);
-    console.log(`✅ ${products.length} Indian products seeded successfully!`);
+    console.log(`✅ ${allProducts.length} Indian products seeded successfully!`);
 
     // Create demo admin user
     const adminExists = await User.findOne({ email: 'admin@ecochain.io' });
@@ -918,9 +921,9 @@ const seedData = async () => {
 
     console.log('\n🌿 EcoChain India database seeding complete!\n');
     console.log('Categories added:');
-    const cats = [...new Set(products.map(p => p.category))];
+    const cats = [...new Set(allProducts.map(p => p.category))];
     cats.forEach(c => {
-      const count = products.filter(p => p.category === c).length;
+      const count = allProducts.filter(p => p.category === c).length;
       console.log(`  📦 ${c}: ${count} products`);
     });
 
