@@ -2,7 +2,7 @@ export const moreProducts = [
   // ─── SMARTPHONES ───────────────────────────────────────────────
   {
     name: 'Google Pixel 8 Pro', brand: 'Google', category: 'Smartphones', price: 106999,
-    image: 'https://fdn2.gsmarena.com/vv/bigpic/google-pixel-8-pro.jpg',
+    image: 'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?w=400&h=400&fit=crop',
     description: 'Tensor G3 chip, advanced AI cameras, 7 years of OS updates.',
     ecoScore: 76, carbonFootprint: 68, repairabilityScore: 6.8, lifespanYears: 7, maintenanceCostYear: 4000,
     energyRating: 'A+', warrantyMonths: 12, materials: ['Recycled Aluminum', 'Gorilla Glass Victus 2'],
@@ -12,7 +12,7 @@ export const moreProducts = [
   },
   {
     name: 'Google Pixel 7a', brand: 'Google', category: 'Smartphones', price: 43999,
-    image: 'https://fdn2.gsmarena.com/vv/bigpic/google-pixel-7a.jpg',
+    image: 'https://images.unsplash.com/photo-1565849904461-04a58ad377e0?w=400&h=400&fit=crop',
     description: 'Tensor G2, 90Hz display, stellar camera in a mid-range package.',
     ecoScore: 72, carbonFootprint: 61, repairabilityScore: 6.5, lifespanYears: 5, maintenanceCostYear: 3500,
     energyRating: 'A', warrantyMonths: 12, materials: ['Recycled Aluminum', 'Plastic Back'],
@@ -22,7 +22,7 @@ export const moreProducts = [
   },
   {
     name: 'Samsung Galaxy S23 Ultra', brand: 'Samsung', category: 'Smartphones', price: 124999,
-    image: 'https://fdn2.gsmarena.com/vv/bigpic/samsung-galaxy-s23-ultra-5g.jpg',
+    image: 'https://images.unsplash.com/photo-1678685888221-cda773a3dcdb?w=400&h=400&fit=crop',
     description: 'Snapdragon 8 Gen 2, 200MP camera, built-in S Pen.',
     ecoScore: 67, carbonFootprint: 76, repairabilityScore: 4.8, lifespanYears: 4, maintenanceCostYear: 4500,
     energyRating: 'A', warrantyMonths: 12, materials: ['Armor Aluminum', 'Gorilla Glass Victus 2'],
@@ -32,7 +32,7 @@ export const moreProducts = [
   },
   {
     name: 'Samsung Galaxy A54 5G', brand: 'Samsung', category: 'Smartphones', price: 38999,
-    image: 'https://fdn2.gsmarena.com/vv/bigpic/samsung-galaxy-a54.jpg',
+    image: 'https://images.unsplash.com/photo-1585060544812-6b45742d762f?w=400&h=400&fit=crop',
     description: 'Exynos 1380, 120Hz Super AMOLED display, 50MP OIS camera.',
     ecoScore: 69, carbonFootprint: 55, repairabilityScore: 5.5, lifespanYears: 4, maintenanceCostYear: 2500,
     energyRating: 'A+', warrantyMonths: 12, materials: ['Glass Front', 'Plastic Back', 'Plastic Frame'],
@@ -42,7 +42,7 @@ export const moreProducts = [
   },
   {
     name: 'Apple iPhone 14 Pro', brand: 'Apple', category: 'Smartphones', price: 129900,
-    image: 'https://fdn2.gsmarena.com/vv/bigpic/apple-iphone-14-pro.jpg',
+    image: 'https://images.unsplash.com/photo-1664478546384-d57ffe74a78c?w=400&h=400&fit=crop',
     description: 'A16 Bionic, Dynamic Island, 48MP main camera.',
     ecoScore: 71, carbonFootprint: 65, repairabilityScore: 5.0, lifespanYears: 5, maintenanceCostYear: 5000,
     energyRating: 'A+', warrantyMonths: 12, materials: ['Stainless Steel', 'Ceramic Shield'],
@@ -52,7 +52,7 @@ export const moreProducts = [
   },
   {
     name: 'Apple iPhone 13', brand: 'Apple', category: 'Smartphones', price: 59900,
-    image: 'https://fdn2.gsmarena.com/vv/bigpic/apple-iphone-13.jpg',
+    image: 'https://images.unsplash.com/photo-1632633173522-47456de71b68?w=400&h=400&fit=crop',
     description: 'A15 Bionic, advanced dual-camera system, 6.1-inch OLED.',
     ecoScore: 68, carbonFootprint: 64, repairabilityScore: 5.5, lifespanYears: 5, maintenanceCostYear: 4500,
     energyRating: 'A+', warrantyMonths: 12, materials: ['Aluminum', 'Ceramic Shield'],
@@ -62,7 +62,7 @@ export const moreProducts = [
   },
   {
     name: 'OnePlus 11', brand: 'OnePlus', category: 'Smartphones', price: 56999,
-    image: 'https://fdn2.gsmarena.com/vv/bigpic/oneplus-11.jpg',
+    image: 'https://images.unsplash.com/photo-1546054454-aa26e2b734c7?w=400&h=400&fit=crop',
     description: 'Snapdragon 8 Gen 2, Hasselblad Camera, 100W Fast Charging.',
     ecoScore: 71, carbonFootprint: 60, repairabilityScore: 5.8, lifespanYears: 4, maintenanceCostYear: 3000,
     energyRating: 'A', warrantyMonths: 12, materials: ['Aluminum Frame', 'Gorilla Glass Victus'],
@@ -72,7 +72,7 @@ export const moreProducts = [
   },
   {
     name: 'Motorola Edge 40', brand: 'Motorola', category: 'Smartphones', price: 29999,
-    image: 'https://fdn2.gsmarena.com/vv/bigpic/motorola-edge40.jpg',
+    image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=400&fit=crop',
     description: 'Dimensity 8020, 144Hz pOLED display, Vegan Leather back.',
     ecoScore: 75, carbonFootprint: 52, repairabilityScore: 6.2, lifespanYears: 3, maintenanceCostYear: 2000,
     energyRating: 'A+', warrantyMonths: 12, materials: ['Vegan Leather', 'Aluminum Frame'],
@@ -82,7 +82,7 @@ export const moreProducts = [
   },
   {
     name: 'Xiaomi Redmi Note 13 Pro', brand: 'Xiaomi', category: 'Smartphones', price: 25999,
-    image: 'https://fdn2.gsmarena.com/vv/bigpic/xiaomi-redmi-note-13-pro-5g.jpg',
+    image: 'https://images.unsplash.com/photo-1580910051074-3eb694886571?w=400&h=400&fit=crop',
     description: 'Snapdragon 7s Gen 2, 200MP camera, 120Hz AMOLED.',
     ecoScore: 65, carbonFootprint: 58, repairabilityScore: 5.0, lifespanYears: 3, maintenanceCostYear: 1800,
     energyRating: 'A', warrantyMonths: 12, materials: ['Glass Front', 'Plastic Frame'],
@@ -92,7 +92,7 @@ export const moreProducts = [
   },
   {
     name: 'Vivo V29', brand: 'Vivo', category: 'Smartphones', price: 32999,
-    image: 'https://fdn2.gsmarena.com/vv/bigpic/vivo-v29.jpg',
+    image: 'https://images.unsplash.com/photo-1609252925148-b5f1a98e4264?w=400&h=400&fit=crop',
     description: 'Snapdragon 778G, 120Hz AMOLED, Aura Light portrait camera.',
     ecoScore: 63, carbonFootprint: 57, repairabilityScore: 5.2, lifespanYears: 3, maintenanceCostYear: 2100,
     energyRating: 'A', warrantyMonths: 12, materials: ['Glass Front', 'Glass Back'],
@@ -104,7 +104,7 @@ export const moreProducts = [
   // ─── LAPTOPS ───────────────────────────────────────────────────
   {
     name: 'Apple MacBook Pro 14 M3', brand: 'Apple', category: 'Laptops', price: 169900,
-    image: 'https://fdn2.gsmarena.com/vv/bigpic/apple-macbook-pro-14-2023.jpg',
+    image: 'https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=400&h=400&fit=crop',
     description: 'M3 Pro chip, Liquid Retina XDR display, up to 18 hours battery life.',
     ecoScore: 78, carbonFootprint: 165, repairabilityScore: 4.8, lifespanYears: 6, maintenanceCostYear: 5000,
     energyRating: 'A++', warrantyMonths: 12, materials: ['100% Recycled Aluminum', 'Glass'],
@@ -114,7 +114,7 @@ export const moreProducts = [
   },
   {
     name: 'Apple MacBook Air M1', brand: 'Apple', category: 'Laptops', price: 84900,
-    image: 'https://fdn2.gsmarena.com/vv/bigpic/apple-macbook-air-m1.jpg',
+    image: 'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=400&h=400&fit=crop',
     description: 'M1 chip, 13.3" Retina display, silently efficient fanless design.',
     ecoScore: 82, carbonFootprint: 120, repairabilityScore: 4.5, lifespanYears: 7, maintenanceCostYear: 3500,
     energyRating: 'A++', warrantyMonths: 12, materials: ['100% Recycled Aluminum', 'Glass'],
@@ -124,7 +124,7 @@ export const moreProducts = [
   },
   {
     name: 'Dell XPS 13 Plus', brand: 'Dell', category: 'Laptops', price: 149999,
-    image: 'https://m.media-amazon.com/images/I/718Lq3U7TML._SL1500_.jpg',
+    image: 'https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=400&h=400&fit=crop',
     description: 'Intel Core i7 13th Gen, Seamless glass touchpad, 13.4" OLED.',
     ecoScore: 65, carbonFootprint: 190, repairabilityScore: 5.5, lifespanYears: 5, maintenanceCostYear: 4000,
     energyRating: 'A+', warrantyMonths: 12, materials: ['CNC Aluminum', 'Glass'],
@@ -134,7 +134,7 @@ export const moreProducts = [
   },
   {
     name: 'Lenovo ThinkPad X1 Carbon Gen 11', brand: 'Lenovo', category: 'Laptops', price: 185000,
-    image: 'https://p1-ofp.static.pub/fes/cms/2023/02/10/l18c4jhyf7q1f7jxg7u0xgxgxgxgxgxg.png',
+    image: 'https://images.unsplash.com/photo-1629131726692-1accd0c53ce0?w=400&h=400&fit=crop',
     description: 'Intel Core i7, 14" WUXGA display, Carbon fiber chassis, ultra-light.',
     ecoScore: 79, carbonFootprint: 145, repairabilityScore: 8.0, lifespanYears: 7, maintenanceCostYear: 3000,
     energyRating: 'A+', warrantyMonths: 36, materials: ['Carbon Fiber', 'Magnesium Alloy'],
@@ -144,7 +144,7 @@ export const moreProducts = [
   },
   {
     name: 'ASUS ROG Zephyrus G14', brand: 'ASUS', category: 'Laptops', price: 154990,
-    image: 'https://m.media-amazon.com/images/I/71Qh2Tq+iOL._SL1500_.jpg',
+    image: 'https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=400&h=400&fit=crop',
     description: 'AMD Ryzen 9, RTX 4060, 14" QHD+ 165Hz Nebula Display.',
     ecoScore: 61, carbonFootprint: 250, repairabilityScore: 6.5, lifespanYears: 5, maintenanceCostYear: 4500,
     energyRating: 'B', warrantyMonths: 12, materials: ['Magnesium Alloy', 'Plastic'],
@@ -154,7 +154,7 @@ export const moreProducts = [
   },
   {
     name: 'HP Envy x360 15', brand: 'HP', category: 'Laptops', price: 84999,
-    image: 'https://m.media-amazon.com/images/I/71a6e5V5KPL._SL1500_.jpg',
+    image: 'https://images.unsplash.com/photo-1587614382346-4ec70e388b28?w=400&h=400&fit=crop',
     description: 'AMD Ryzen 5, 15.6" FHD OLED touch display, 2-in-1 convertible.',
     ecoScore: 72, carbonFootprint: 175, repairabilityScore: 6.0, lifespanYears: 5, maintenanceCostYear: 3000,
     energyRating: 'A', warrantyMonths: 12, materials: ['Recycled Aluminum', 'Ocean-bound plastics'],
@@ -164,7 +164,7 @@ export const moreProducts = [
   },
   {
     name: 'Acer Swift 3', brand: 'Acer', category: 'Laptops', price: 59990,
-    image: 'https://m.media-amazon.com/images/I/71Z1-71+o2L._SL1500_.jpg',
+    image: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=400&h=400&fit=crop',
     description: 'Intel Core i5 12th Gen, 14" FHD IPS display, lightweight aluminum.',
     ecoScore: 69, carbonFootprint: 160, repairabilityScore: 6.5, lifespanYears: 4, maintenanceCostYear: 2500,
     energyRating: 'A+', warrantyMonths: 12, materials: ['Aluminum', 'Plastic'],
@@ -174,7 +174,7 @@ export const moreProducts = [
   },
   {
     name: 'Lenovo IdeaPad Gaming 3', brand: 'Lenovo', category: 'Laptops', price: 68990,
-    image: 'https://m.media-amazon.com/images/I/71kr3cbj-xL._SL1500_.jpg',
+    image: 'https://images.unsplash.com/photo-1593642634443-44adaa06623a?w=400&h=400&fit=crop',
     description: 'AMD Ryzen 7, RTX 3050, 15.6" 120Hz display.',
     ecoScore: 58, carbonFootprint: 220, repairabilityScore: 7.0, lifespanYears: 4, maintenanceCostYear: 3500,
     energyRating: 'B', warrantyMonths: 12, materials: ['Polycarbonate', 'Plastic'],
@@ -184,7 +184,7 @@ export const moreProducts = [
   },
   {
     name: 'Microsoft Surface Laptop 5', brand: 'Microsoft', category: 'Laptops', price: 105999,
-    image: 'https://m.media-amazon.com/images/I/51wXhWwZ9xL._SL1500_.jpg',
+    image: 'https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=400&h=400&fit=crop',
     description: 'Intel Core i5, 13.5" PixelSense touchscreen, Alcantara keyboard.',
     ecoScore: 70, carbonFootprint: 165, repairabilityScore: 4.5, lifespanYears: 5, maintenanceCostYear: 4000,
     energyRating: 'A', warrantyMonths: 12, materials: ['Aluminum', 'Alcantara'],
@@ -194,7 +194,7 @@ export const moreProducts = [
   },
   {
     name: 'Samsung Galaxy Book3 Pro', brand: 'Samsung', category: 'Laptops', price: 114990,
-    image: 'https://m.media-amazon.com/images/I/71u9s8XF8fL._SL1500_.jpg',
+    image: 'https://images.unsplash.com/photo-1618424181497-157f25b6ddd5?w=400&h=400&fit=crop',
     description: 'Intel Core i7 13th Gen, 14" AMOLED display, ultra-thin.',
     ecoScore: 73, carbonFootprint: 155, repairabilityScore: 5.5, lifespanYears: 5, maintenanceCostYear: 3500,
     energyRating: 'A+', warrantyMonths: 12, materials: ['Aluminum', 'Glass'],
@@ -206,7 +206,7 @@ export const moreProducts = [
   // ─── AUDIO ─────────────────────────────────────────────────────
   {
     name: 'Apple AirPods Pro 2nd Gen', brand: 'Apple', category: 'Audio', price: 24900,
-    image: 'https://m.media-amazon.com/images/I/61f1IQIfRxL._SL1500_.jpg',
+    image: 'https://images.unsplash.com/photo-1606741965326-cb990ae01bb2?w=400&h=400&fit=crop',
     description: 'H2 chip, excellent active noise cancellation, MagSafe charging case.',
     ecoScore: 60, carbonFootprint: 15, repairabilityScore: 2.0, lifespanYears: 3, maintenanceCostYear: 800,
     energyRating: 'A', warrantyMonths: 12, materials: ['Recycled Plastic', 'Rare Earth elements'],
@@ -216,7 +216,7 @@ export const moreProducts = [
   },
   {
     name: 'Sony WF-1000XM5', brand: 'Sony', category: 'Audio', price: 24990,
-    image: 'https://m.media-amazon.com/images/I/515P0rQ3VzL._SL1500_.jpg',
+    image: 'https://images.unsplash.com/photo-1590658268037-6bf12f032f55?w=400&h=400&fit=crop',
     description: 'Premium noise cancelling earbuds, Hi-Res Audio, 24-hour battery life.',
     ecoScore: 62, carbonFootprint: 14, repairabilityScore: 3.5, lifespanYears: 3, maintenanceCostYear: 1000,
     energyRating: 'A', warrantyMonths: 12, materials: ['Recycled Plastic', 'Polyurethane'],
@@ -226,7 +226,7 @@ export const moreProducts = [
   },
   {
     name: 'Samsung Galaxy Buds2 Pro', brand: 'Samsung', category: 'Audio', price: 16999,
-    image: 'https://m.media-amazon.com/images/I/61Qqg+T8nsL._SL1500_.jpg',
+    image: 'https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=400&h=400&fit=crop',
     description: '24-bit Hi-Fi audio, intelligent ANC, comfortable ergonomic design.',
     ecoScore: 64, carbonFootprint: 12, repairabilityScore: 4.5, lifespanYears: 3, maintenanceCostYear: 700,
     energyRating: 'A', warrantyMonths: 12, materials: ['Recycled Ocean-Bound Plastic', 'Polycarbonate'],
@@ -236,7 +236,7 @@ export const moreProducts = [
   },
   {
     name: 'Jabra Elite 8 Active', brand: 'Jabra', category: 'Audio', price: 17999,
-    image: 'https://m.media-amazon.com/images/I/51wBf5a+ySL._SL1500_.jpg',
+    image: 'https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?w=400&h=400&fit=crop',
     description: 'Extremely durable, IP68 rated earbuds with spatial sound.',
     ecoScore: 68, carbonFootprint: 13, repairabilityScore: 4.0, lifespanYears: 4, maintenanceCostYear: 600,
     energyRating: 'A', warrantyMonths: 24, materials: ['Silicone', 'Hard Plastic'],
@@ -246,7 +246,7 @@ export const moreProducts = [
   },
   {
     name: 'Sennheiser Momentum 4', brand: 'Sennheiser', category: 'Audio', price: 29990,
-    image: 'https://m.media-amazon.com/images/I/71R22Xg6E9L._SL1500_.jpg',
+    image: 'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=400&h=400&fit=crop',
     description: 'Audiophile-inspired sound, 60-hour battery life, adaptive ANC.',
     ecoScore: 72, carbonFootprint: 20, repairabilityScore: 5.5, lifespanYears: 5, maintenanceCostYear: 1200,
     energyRating: 'A+', warrantyMonths: 24, materials: ['Fabric', 'Plastic', 'Steel'],
@@ -256,7 +256,7 @@ export const moreProducts = [
   },
   {
     name: 'boAt Airdopes 141', brand: 'boAt', category: 'Audio', price: 1299,
-    image: 'https://m.media-amazon.com/images/I/51tMBx18bKL._SL1500_.jpg',
+    image: 'https://images.unsplash.com/photo-1631867675167-90a456a90863?w=400&h=400&fit=crop',
     description: 'Budget TWS, 42-hour playtime, Beast mode for gaming.',
     ecoScore: 55, carbonFootprint: 10, repairabilityScore: 2.0, lifespanYears: 2, maintenanceCostYear: 300,
     energyRating: 'B', warrantyMonths: 12, materials: ['Plastic'],
@@ -266,7 +266,7 @@ export const moreProducts = [
   },
   {
     name: 'OnePlus Buds Pro 2', brand: 'OnePlus', category: 'Audio', price: 11999,
-    image: 'https://m.media-amazon.com/images/I/61vYn4t5h5L._SL1500_.jpg',
+    image: 'https://images.unsplash.com/photo-1649885756472-5c6e7e8d6a3e?w=400&h=400&fit=crop',
     description: 'MelodyBoost Dual Drivers co-created with Dynaudio, up to 48dB ANC.',
     ecoScore: 62, carbonFootprint: 13, repairabilityScore: 3.5, lifespanYears: 3, maintenanceCostYear: 750,
     energyRating: 'A', warrantyMonths: 12, materials: ['Plastic', 'Silicone'],
@@ -276,7 +276,7 @@ export const moreProducts = [
   },
   {
     name: 'JBL Charge 5', brand: 'JBL', category: 'Audio', price: 12999,
-    image: 'https://m.media-amazon.com/images/I/71q3N+Z-DPL._SL1500_.jpg',
+    image: 'https://images.unsplash.com/photo-1589003077984-894e133dabab?w=400&h=400&fit=crop',
     description: 'Portable Bluetooth speaker, IP67 waterproof, 20 hours battery, built-in powerbank.',
     ecoScore: 66, carbonFootprint: 25, repairabilityScore: 5.0, lifespanYears: 5, maintenanceCostYear: 800,
     energyRating: 'A', warrantyMonths: 12, materials: ['Fabric', 'Rugged Rubber'],
@@ -286,7 +286,7 @@ export const moreProducts = [
   },
   {
     name: 'Sony HT-S20R 5.1 Soundbar', brand: 'Sony', category: 'Audio', price: 17990,
-    image: 'https://m.media-amazon.com/images/I/71lq14vUu8L._SL1500_.jpg',
+    image: 'https://images.unsplash.com/photo-1545454675-3531b543be5d?w=400&h=400&fit=crop',
     description: '5.1ch Dolby Digital Soundbar for TV with wired subwoofer and rear speakers.',
     ecoScore: 61, carbonFootprint: 45, repairabilityScore: 6.5, lifespanYears: 7, maintenanceCostYear: 1500,
     energyRating: 'B', warrantyMonths: 12, materials: ['Plastic', 'Wood (Subwoofer)', 'Metal Grille'],
@@ -296,7 +296,7 @@ export const moreProducts = [
   },
   {
     name: 'Marshall Emberton II', brand: 'Marshall', category: 'Audio', price: 14999,
-    image: 'https://m.media-amazon.com/images/I/81I-uF0-I2L._SL1500_.jpg',
+    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop',
     description: 'Portable speaker with 30+ hours of playtime, iconic Marshall design, IP67.',
     ecoScore: 69, carbonFootprint: 18, repairabilityScore: 5.5, lifespanYears: 5, maintenanceCostYear: 900,
     energyRating: 'A+', warrantyMonths: 12, materials: ['Post-Consumer Recycled Plastic (50%)', 'Vegan Leather'],
@@ -308,7 +308,7 @@ export const moreProducts = [
   // ─── TVs & MONITORS ────────────────────────────────────────────
   {
     name: 'Samsung 55" The Frame QLED TV', brand: 'Samsung', category: 'TVs', price: 89990,
-    image: 'https://m.media-amazon.com/images/I/8118JjL+nWL._SL1500_.jpg',
+    image: 'https://images.unsplash.com/photo-1558888401-3cc1de77652d?w=400&h=400&fit=crop',
     description: 'Matte Display, Art Mode, 4K QLED, Customizable Bezels.',
     ecoScore: 63, carbonFootprint: 250, repairabilityScore: 5.0, lifespanYears: 8, maintenanceCostYear: 4000,
     energyRating: 'B', warrantyMonths: 12, materials: ['Metal', 'Plastic', 'Glass'],
@@ -318,7 +318,7 @@ export const moreProducts = [
   },
   {
     name: 'Sony Bravia 65" X90L', brand: 'Sony', category: 'TVs', price: 139990,
-    image: 'https://m.media-amazon.com/images/I/81VdFj3oK9L._SL1500_.jpg',
+    image: 'https://images.unsplash.com/photo-1509281373149-e957c6296406?w=400&h=400&fit=crop',
     description: 'Full Array LED, Cognitive Processor XR, 4K HDR, Google TV.',
     ecoScore: 65, carbonFootprint: 280, repairabilityScore: 6.0, lifespanYears: 9, maintenanceCostYear: 4500,
     energyRating: 'A', warrantyMonths: 12, materials: ['Aluminum', 'Recycled Plastics (SORPLAS)'],
@@ -328,7 +328,7 @@ export const moreProducts = [
   },
   {
     name: 'LG 27" UltraGear Gaming Monitor', brand: 'LG', category: 'Monitors', price: 23999,
-    image: 'https://m.media-amazon.com/images/I/71u9s8XF8fL._SL1500_.jpg',
+    image: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=400&h=400&fit=crop',
     description: '27GL850, 144Hz, 1ms, Nano IPS, QHD (2560x1440), G-Sync Compatible.',
     ecoScore: 68, carbonFootprint: 180, repairabilityScore: 5.5, lifespanYears: 7, maintenanceCostYear: 1500,
     energyRating: 'A', warrantyMonths: 36, materials: ['Plastic', 'Glass', 'Metal Base'],
@@ -338,7 +338,7 @@ export const moreProducts = [
   },
   {
     name: 'BenQ GW2780 27" IPS Monitor', brand: 'BenQ', category: 'Monitors', price: 11990,
-    image: 'https://m.media-amazon.com/images/I/71T8Jv5Z5PL._SL1500_.jpg',
+    image: 'https://images.unsplash.com/photo-1586210579191-33b45e38fa2c?w=400&h=400&fit=crop',
     description: '1080p, Eye-Care Technology, Built-in Speakers, Edge to Edge Slim Bezel.',
     ecoScore: 72, carbonFootprint: 120, repairabilityScore: 6.0, lifespanYears: 8, maintenanceCostYear: 1000,
     energyRating: 'A+', warrantyMonths: 36, materials: ['Plastic', 'Glass'],
@@ -350,7 +350,7 @@ export const moreProducts = [
   // ─── SMARTWATCHES & ACCESSORIES ─────────────────────────────────
   {
     name: 'Apple Watch Ultra 2', brand: 'Apple', category: 'Smartwatches', price: 89900,
-    image: 'https://fdn2.gsmarena.com/vv/bigpic/apple-watch-ultra-2.jpg',
+    image: 'https://images.unsplash.com/photo-1434493789847-2f02dc6ca35d?w=400&h=400&fit=crop',
     description: 'Rugged titanium case, precision dual-frequency GPS, up to 36 hours of battery.',
     ecoScore: 74, carbonFootprint: 35, repairabilityScore: 3.5, lifespanYears: 6, maintenanceCostYear: 4000,
     energyRating: 'A', warrantyMonths: 12, materials: ['Titanium', 'Sapphire Crystal'],
@@ -360,7 +360,7 @@ export const moreProducts = [
   },
   {
     name: 'Garmin Fenix 7 Pro', brand: 'Garmin', category: 'Smartwatches', price: 84990,
-    image: 'https://m.media-amazon.com/images/I/71R1o8mBbeL._SL1500_.jpg',
+    image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop',
     description: 'Multisport GPS watch, built-in flashlight, solar charging capabilities.',
     ecoScore: 82, carbonFootprint: 25, repairabilityScore: 4.5, lifespanYears: 7, maintenanceCostYear: 2500,
     energyRating: 'A++', warrantyMonths: 12, materials: ['Stainless Steel', 'Power Glass'],
@@ -370,7 +370,7 @@ export const moreProducts = [
   },
   {
     name: 'Fitbit Charge 6', brand: 'Fitbit', category: 'Smartwatches', price: 14999,
-    image: 'https://m.media-amazon.com/images/I/61N+Vw4Fv3L._SL1500_.jpg',
+    image: 'https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?w=400&h=400&fit=crop',
     description: 'Advanced fitness and health tracker, built-in GPS, up to 7 days battery.',
     ecoScore: 68, carbonFootprint: 10, repairabilityScore: 2.5, lifespanYears: 3, maintenanceCostYear: 500,
     energyRating: 'A+', warrantyMonths: 12, materials: ['Aluminum', 'Silicone', 'Resin'],
@@ -380,7 +380,7 @@ export const moreProducts = [
   },
   {
     name: 'Samsung Galaxy Watch 6', brand: 'Samsung', category: 'Smartwatches', price: 29999,
-    image: 'https://fdn2.gsmarena.com/vv/bigpic/samsung-galaxy-watch6.jpg',
+    image: 'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=400&h=400&fit=crop',
     description: 'Super AMOLED display, advanced sleep coaching, BioActive sensor.',
     ecoScore: 69, carbonFootprint: 18, repairabilityScore: 4.0, lifespanYears: 4, maintenanceCostYear: 1500,
     energyRating: 'A', warrantyMonths: 12, materials: ['Armor Aluminum', 'Sapphire Crystal'],
@@ -390,7 +390,7 @@ export const moreProducts = [
   },
   {
     name: 'Logitech MX Master 3S', brand: 'Logitech', category: 'Accessories', price: 10995,
-    image: 'https://m.media-amazon.com/images/I/61ni3t1ryQL._SL1500_.jpg',
+    image: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=400&h=400&fit=crop',
     description: 'Wireless Performance Mouse, 8K DPI any-surface tracking, quiet clicks.',
     ecoScore: 75, carbonFootprint: 8, repairabilityScore: 6.5, lifespanYears: 7, maintenanceCostYear: 300,
     energyRating: 'A+', warrantyMonths: 12, materials: ['Post-Consumer Recycled Plastic (27%)', 'Metal'],
@@ -400,7 +400,7 @@ export const moreProducts = [
   },
   {
     name: 'Spigen Ultra Hybrid Case for iPhone 15', brand: 'Spigen', category: 'Accessories', price: 1499,
-    image: 'https://m.media-amazon.com/images/I/71S+1FZYyIL._SL1500_.jpg',
+    image: 'https://images.unsplash.com/photo-1601593346740-925612772716?w=400&h=400&fit=crop',
     description: 'Clear TPU bumper with durable PC back, drop protection.',
     ecoScore: 50, carbonFootprint: 2, repairabilityScore: 1.0, lifespanYears: 2, maintenanceCostYear: 0,
     energyRating: 'B', warrantyMonths: 6, materials: ['TPU', 'Polycarbonate'],
