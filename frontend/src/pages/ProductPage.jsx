@@ -9,6 +9,7 @@ import { EcoScoreBadge, RepairabilityBar, EnergyRatingBadge, Skeleton } from '..
 import toast from 'react-hot-toast';
 
 import ProductGallery from '../components/ui/ProductGallery';
+import ReviewSection from '../components/ui/ReviewSection';
 
 const MetricRow = ({ icon: Icon, label, value, iconColor, isDark }) => (
   <div className={`flex items-center justify-between py-3 border-b ${isDark ? 'border-slate-700/50' : 'border-slate-100'}`}>
@@ -269,6 +270,9 @@ const ProductPage = () => {
           </p>
         )}
       </div>
+
+      {/* Reviews & Ratings */}
+      <ReviewSection productId={id} />
     </div>
   );
 };

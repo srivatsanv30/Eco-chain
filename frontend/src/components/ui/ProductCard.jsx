@@ -93,7 +93,21 @@ const ProductCard = ({ product, view = 'grid' }) => {
 
         <div className="p-4">
           <p className={`text-xs mb-0.5 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{product.brand}</p>
-          <h3 className={`font-semibold mb-3 line-clamp-1 ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>{product.productName || product.name}</h3>
+          <h3 className={`font-semibold mb-1.5 line-clamp-1 ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>{product.productName || product.name}</h3>
+
+          {/* Rating Display */}
+          {product.reviewCount > 0 && (
+            <div className="flex items-center gap-1.5 mb-3">
+              <div className="flex items-center">
+                {[1, 2, 3, 4, 5].map(star => (
+                  <Star key={star} className={`w-3 h-3 ${star <= Math.round(product.rating) ? 'text-amber-400 fill-amber-400' : 'text-slate-600'}`} />
+                ))}
+              </div>
+              <span className={`text-xs font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                {product.rating} ({product.reviewCount})
+              </span>
+            </div>
+          )}
 
           <div className="flex items-center justify-between mb-3">
             <EcoScoreBadge score={product.ecoScore} />

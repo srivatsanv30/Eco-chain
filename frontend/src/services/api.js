@@ -43,6 +43,13 @@ export const getCarbonWallet = () => api.get('/ai/carbon-wallet');
 export const getRepairCenters = () => api.get('/ai/repair-centers');
 export const getRecycleCenters = () => api.get('/ai/recycle-centers');
 
+// Reviews
+export const getProductReviews = (productId, params) => api.get(`/reviews/product/${productId}`, { params });
+export const createReview = (productId, data) => api.post(`/reviews/product/${productId}`, data);
+export const updateReview = (id, data) => api.put(`/reviews/${id}`, data);
+export const deleteReview = (id) => api.delete(`/reviews/${id}`);
+export const toggleHelpfulVote = (id) => api.put(`/reviews/${id}/helpful`);
+
 // Admin
 export const getAdminStats = () => api.get('/admin/stats');
 export const getAllUsers = () => api.get('/admin/users');
