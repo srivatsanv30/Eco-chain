@@ -1,6 +1,8 @@
 import User from '../models/User.js';
 import Product from '../models/Product.js';
 import CarbonReport from '../models/CarbonReport.js';
+import RepairCenter from '../models/RepairCenter.js';
+import RecycleCenter from '../models/RecycleCenter.js';
 import { GoogleGenAI } from '@google/genai';
 
 const ai = process.env.GEMINI_API_KEY ? new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY }) : null;
@@ -128,13 +130,7 @@ export const getCarbonWallet = async (req, res) => {
 
 export const getRepairCenters = async (req, res) => {
   try {
-    // Return mock list of repair centers (in production, filter by user's geolocation)
-    const centers = [
-      { _id: '1', name: 'Chennai Tech Repair', address: 'Mount Road, Chennai, Tamil Nadu', rating: 4.8, services: ['Electronics', 'Phones', 'Laptops'], phone: '+91 44-555-0101' },
-      { _id: '2', name: 'Kovai Appliance Care', address: 'RS Puram, Coimbatore, Tamil Nadu', rating: 4.5, services: ['Appliances', 'HVAC', 'Refrigerators'], phone: '+91 422-555-0202' },
-      { _id: '3', name: 'Madurai FixIt Station', address: 'Anna Nagar, Madurai, Tamil Nadu', rating: 4.6, services: ['Electronics', 'Gaming', 'Tablets'], phone: '+91 452-555-0303' },
-      { _id: '4', name: 'Trichy QuickFix Lab', address: 'Thillai Nagar, Trichy, Tamil Nadu', rating: 4.3, services: ['Phones', 'Cameras', 'Audio'], phone: '+91 431-555-0404' },
-    ];
+    const centers = await RepairCenter.find({});
     res.json({ success: true, data: centers });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -143,11 +139,7 @@ export const getRepairCenters = async (req, res) => {
 
 export const getRecycleCenters = async (req, res) => {
   try {
-    const centers = [
-      { _id: '1', name: 'Guindy EcoPoint Recyclers', address: 'Guindy Industrial Estate, Chennai, Tamil Nadu', acceptedMaterials: ['Electronics', 'Batteries', 'Plastics', 'Glass'], phone: '+91 44-555-0505' },
-      { _id: '2', name: 'Peelamedu TerraLoop Center', address: 'Peelamedu, Coimbatore, Tamil Nadu', acceptedMaterials: ['Metals', 'Paper', 'Cardboard', 'E-Waste'], phone: '+91 422-555-0606' },
-      { _id: '3', name: 'Salem GreenCycle Hub', address: 'Omalur Main Road, Salem, Tamil Nadu', acceptedMaterials: ['Appliances', 'Tires', 'Furniture', 'Electronics'], phone: '+91 427-555-0707' },
-    ];
+    const centers = await RecycleCenter.find({});
     res.json({ success: true, data: centers });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
