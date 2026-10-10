@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard, Search, GitCompare, Heart, Wallet, Wrench, Recycle,
-  Brain, FileBarChart, Settings, Bell, User, LogOut, Leaf, X, ChevronRight, Shield
+  Brain, FileBarChart, Settings, Bell, User, LogOut, Leaf, X, ChevronRight, Shield, MessageSquare
 } from 'lucide-react';
 import { logout } from '../../redux/slices/authSlice';
 import toast from 'react-hot-toast';
@@ -17,6 +17,7 @@ const NAV_ITEMS = [
   { icon: Wrench, label: 'Repair Center', path: '/dashboard/repair' },
   { icon: Recycle, label: 'Recycle Center', path: '/dashboard/recycle' },
   { icon: Brain, label: 'AI Insights', path: '/dashboard/ai' },
+  { icon: MessageSquare, label: 'Community Forum', path: '/dashboard/forum' },
   { icon: FileBarChart, label: 'Reports', path: '/dashboard/reports' },
 ];
 

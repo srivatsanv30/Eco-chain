@@ -24,6 +24,7 @@ import RecycleCenterPage from './pages/RecycleCenterPage';
 import AiInsightsPage from './pages/AiInsightsPage';
 import ReportsPage from './pages/ReportsPage';
 import NotificationsPage from './pages/NotificationsPage';
+import CommunityForumPage from './pages/CommunityForumPage';
 import SettingsPage from './pages/SettingsPage';
 import ProfilePage from './pages/ProfilePage';
 import AdminPage from './pages/AdminPage';
@@ -88,6 +89,7 @@ function AppContent() {
             <Route path="repair" element={<RepairCenterPage />} />
             <Route path="recycle" element={<RecycleCenterPage />} />
             <Route path="ai" element={<AiInsightsPage />} />
+            <Route path="forum" element={<CommunityForumPage />} />
             <Route path="reports" element={<ReportsPage />} />
             <Route path="notifications" element={<NotificationsPage />} />
             <Route path="settings" element={<SettingsPage />} />
