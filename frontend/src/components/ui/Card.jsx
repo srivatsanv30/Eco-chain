@@ -33,11 +33,11 @@ export const StatCard = ({ title, value, subtitle, icon: Icon, trend, color = 'e
   const isDark = mode === 'dark';
 
   const colors = {
-    eco: { bg: 'bg-eco-500/10', text: 'text-eco-400', icon: 'text-eco-400' },
-    blue: { bg: 'bg-blue-500/10', text: 'text-blue-400', icon: 'text-blue-400' },
-    orange: { bg: 'bg-orange-500/10', text: 'text-orange-400', icon: 'text-orange-400' },
-    purple: { bg: 'bg-purple-500/10', text: 'text-purple-400', icon: 'text-purple-400' },
-    red: { bg: 'bg-red-500/10', text: 'text-red-400', icon: 'text-red-400' },
+    eco: { bg: 'bg-eco-500/10', text: 'text-emerald-600 dark:text-eco-400', icon: 'text-emerald-600 dark:text-eco-400' },
+    blue: { bg: 'bg-blue-500/10', text: 'text-blue-600 dark:text-blue-400', icon: 'text-blue-600 dark:text-blue-400' },
+    orange: { bg: 'bg-orange-500/10', text: 'text-orange-600 dark:text-orange-400', icon: 'text-orange-600 dark:text-orange-400' },
+    purple: { bg: 'bg-purple-500/10', text: 'text-purple-600 dark:text-purple-400', icon: 'text-purple-600 dark:text-purple-400' },
+    red: { bg: 'bg-red-500/10', text: 'text-red-600 dark:text-red-400', icon: 'text-red-600 dark:text-red-400' },
   };
 
   const c = colors[color] || colors.eco;
@@ -49,7 +49,7 @@ export const StatCard = ({ title, value, subtitle, icon: Icon, trend, color = 'e
           {Icon && <Icon className={`w-5 h-5 ${c.icon}`} />}
         </div>
         {trend !== undefined && (
-          <span className={`text-xs font-semibold px-2 py-1 rounded-lg ${trend >= 0 ? 'bg-eco-500/10 text-eco-400' : 'bg-red-500/10 text-red-400'}`}>
+          <span className={`text-xs font-semibold px-2 py-1 rounded-lg ${trend >= 0 ? 'bg-emerald-500/10 text-emerald-600 dark:text-eco-400' : 'bg-red-500/10 text-red-600 dark:text-red-400'}`}>
             {trend >= 0 ? '↑' : '↓'} {Math.abs(trend)}%
           </span>
         )}

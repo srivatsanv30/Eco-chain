@@ -18,12 +18,14 @@ const ProductCard = ({ product, view = 'grid' }) => {
 
   const handleSave = (e) => {
     e.preventDefault();
+    e.stopPropagation();
     dispatch(toggleSaveProduct(product));
     toast(isSaved ? 'Removed from saved' : '💚 Saved to your list', { duration: 2000 });
   };
 
   const handleCompare = (e) => {
     e.preventDefault();
+    e.stopPropagation();
     if (!isInCompare && compareList.length >= 4) {
       toast.error('Compare list is full (max 4 products)');
       return;
@@ -44,23 +46,23 @@ const ProductCard = ({ product, view = 'grid' }) => {
                 <p className={`text-xs mb-0.5 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{product.brand}</p>
                 <h3 className={`font-semibold truncate ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>{product.productName || product.name}</h3>
               </div>
-              <p className="text-lg font-bold text-eco-400 ml-2">₹{Number(product.price).toLocaleString('en-IN')}</p>
+              <p className="text-lg font-bold text-emerald-600 dark:text-eco-400 ml-2">₹{Number(product.price).toLocaleString('en-IN')}</p>
             </div>
             <div className="flex items-center gap-3 mt-2">
               <span className={`flex items-center gap-1 text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                <Leaf className="w-3 h-3 text-eco-400" /> Eco {product.ecoScore}/100
+                <Leaf className="w-3 h-3 text-emerald-600 dark:text-eco-400" /> Eco {product.ecoScore}/100
               </span>
               <span className={`flex items-center gap-1 text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                <Clock className="w-3 h-3 text-blue-400" /> {product.lifespanYears}yr
+                <Clock className="w-3 h-3 text-blue-500 dark:text-blue-400" /> {product.lifespanYears}yr
               </span>
               <EnergyRatingBadge rating={product.energyRating} />
             </div>
           </div>
           <div className="flex gap-2">
-            <button onClick={handleSave} className={`p-2 rounded-xl transition-all ${isSaved ? 'bg-eco-500/20 text-eco-400' : isDark ? 'bg-slate-700 text-slate-400 hover:text-eco-400' : 'bg-slate-100 text-slate-500 hover:text-eco-500'}`}>
+            <button onClick={handleSave} className={`p-2 rounded-xl transition-all ${isSaved ? 'bg-eco-500/20 text-emerald-600 dark:text-eco-400' : isDark ? 'bg-slate-700 text-slate-400 hover:text-eco-400' : 'bg-slate-100 text-slate-500 hover:text-emerald-600'}`}>
               <Heart className="w-4 h-4" fill={isSaved ? 'currentColor' : 'none'} />
             </button>
-            <button onClick={handleCompare} className={`p-2 rounded-xl transition-all ${isInCompare ? 'bg-blue-500/20 text-blue-400' : isDark ? 'bg-slate-700 text-slate-400 hover:text-blue-400' : 'bg-slate-100 text-slate-500 hover:text-blue-500'}`}>
+            <button onClick={handleCompare} className={`p-2 rounded-xl transition-all ${isInCompare ? 'bg-blue-500/20 text-blue-600 dark:text-blue-400' : isDark ? 'bg-slate-700 text-slate-400 hover:text-blue-400' : 'bg-slate-100 text-slate-500 hover:text-blue-600'}`}>
               <GitCompare className="w-4 h-4" />
             </button>
           </div>
@@ -100,7 +102,7 @@ const ProductCard = ({ product, view = 'grid' }) => {
             <div className="flex items-center gap-1.5 mb-3">
               <div className="flex items-center">
                 {[1, 2, 3, 4, 5].map(star => (
-                  <Star key={star} className={`w-3 h-3 ${star <= Math.round(product.rating) ? 'text-amber-400 fill-amber-400' : 'text-slate-600'}`} />
+                  <Star key={star} className={`w-3 h-3 ${star <= Math.round(product.rating) ? 'text-amber-400 fill-amber-400' : 'text-slate-300 dark:text-slate-600'}`} />
                 ))}
               </div>
               <span className={`text-xs font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
@@ -112,14 +114,14 @@ const ProductCard = ({ product, view = 'grid' }) => {
           <div className="flex items-center justify-between mb-3">
             <EcoScoreBadge score={product.ecoScore} />
             <div className="text-right">
-              <p className="text-xl font-bold text-eco-400">₹{Number(product.price).toLocaleString('en-IN')}</p>
+              <p className="text-xl font-bold text-emerald-600 dark:text-eco-400">₹{Number(product.price).toLocaleString('en-IN')}</p>
               <EnergyRatingBadge rating={product.energyRating} />
             </div>
           </div>
 
           {/* New Store Indicator */}
           {product.affiliateLinks && product.affiliateLinks.length > 0 && (
-            <div className={`text-xs mb-3 px-2 py-1 rounded border inline-block ${isDark ? 'bg-slate-700/50 border-slate-600 text-slate-300' : 'bg-slate-50 border-slate-200 text-slate-600'}`}>
+            <div className={`text-xs mb-3 px-2 py-1 rounded border inline-block ${isDark ? 'bg-slate-700/50 border-slate-600 text-slate-300' : 'bg-slate-100 border-slate-200 text-slate-700'}`}>
               Available at {product.affiliateLinks.length} store{product.affiliateLinks.length > 1 ? 's' : ''}
             </div>
           )}

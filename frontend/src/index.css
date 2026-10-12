@@ -25,16 +25,14 @@
     font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-  }
-
-  .dark body {
-    background-color: #0a0f1e;
-    color: #f1f5f9;
-  }
-
-  body {
     background-color: #f8fafc;
     color: #0f172a;
+  }
+
+  .dark body,
+  html.dark body {
+    background-color: #0a0f1e;
+    color: #f1f5f9;
   }
 }
 
@@ -84,15 +82,15 @@
 
   /* Nav link */
   .nav-link {
-    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-base font-medium transition-all duration-200;
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200;
   }
 
   .nav-link-active {
-    @apply bg-eco-500/15 text-eco-400 shadow-eco;
+    @apply bg-eco-500/15 text-eco-600 dark:text-eco-400 font-semibold shadow-eco;
   }
 
   .nav-link-inactive {
-    @apply text-slate-400 hover:text-slate-200 hover:bg-slate-700/50;
+    @apply text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-800/60;
   }
 
   /* Button base */
@@ -105,15 +103,15 @@
   }
 
   .btn-secondary {
-    @apply btn bg-slate-700 text-slate-200 hover:bg-slate-600 border border-slate-600 active:scale-95;
+    @apply btn bg-slate-100 text-slate-800 hover:bg-slate-200 border border-slate-200 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 dark:border-slate-700 active:scale-95;
   }
 
   .btn-ghost {
-    @apply btn text-slate-400 hover:text-slate-200 hover:bg-slate-700/50 active:scale-95;
+    @apply btn text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-800/50 active:scale-95;
   }
 
   .btn-danger {
-    @apply btn bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/20 active:scale-95;
+    @apply btn bg-red-500/10 text-red-600 dark:text-red-400 hover:bg-red-500/20 border border-red-500/20 active:scale-95;
   }
 
   /* Input */
@@ -134,11 +132,11 @@
     @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold;
   }
 
-  .badge-eco { @apply badge bg-eco-500/15 text-eco-400 border border-eco-500/20; }
-  .badge-blue { @apply badge bg-blue-500/15 text-blue-400 border border-blue-500/20; }
-  .badge-orange { @apply badge bg-orange-500/15 text-orange-400 border border-orange-500/20; }
-  .badge-red { @apply badge bg-red-500/15 text-red-400 border border-red-500/20; }
-  .badge-purple { @apply badge bg-purple-500/15 text-purple-400 border border-purple-500/20; }
+  .badge-eco { @apply badge bg-eco-500/15 text-emerald-700 dark:text-eco-400 border border-eco-500/20; }
+  .badge-blue { @apply badge bg-blue-500/15 text-blue-700 dark:text-blue-400 border border-blue-500/20; }
+  .badge-orange { @apply badge bg-orange-500/15 text-orange-700 dark:text-orange-400 border border-orange-500/20; }
+  .badge-red { @apply badge bg-red-500/15 text-red-700 dark:text-red-400 border border-red-500/20; }
+  .badge-purple { @apply badge bg-purple-500/15 text-purple-700 dark:text-purple-400 border border-purple-500/20; }
 }
 
 @layer utilities {

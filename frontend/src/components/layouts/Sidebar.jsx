@@ -45,12 +45,15 @@ const Sidebar = ({ isOpen, onClose }) => {
     <div className={`flex flex-col h-full ${isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'} border-r`}>
       {/* Logo */}
       <div className="flex items-center justify-between p-5 pb-4">
-        <div className="flex items-center gap-2.5">
+        <NavLink to="/dashboard" className="flex items-center gap-3 group">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-eco-400 to-teal-500 flex items-center justify-center shadow-eco group-hover:scale-105 transition-transform shrink-0">
+            <Leaf className="w-5 h-5 text-white" />
+          </div>
           <div>
             <span className="text-2xl font-black gradient-text tracking-tight">EcoChain</span>
-            <div className={`text-sm mt-0.5 font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>AI Lifecycle Platform</div>
+            <div className={`text-xs mt-0.5 font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>AI Lifecycle Platform</div>
           </div>
-        </div>
+        </NavLink>
         <button onClick={onClose} className={`lg:hidden p-1.5 rounded-lg ${isDark ? 'hover:bg-slate-800 text-slate-400' : 'hover:bg-slate-100 text-slate-500'}`}>
           <X className="w-4 h-4" />
         </button>
@@ -110,7 +113,7 @@ const Sidebar = ({ isOpen, onClose }) => {
           </NavLink>
         ))}
         <button onClick={handleLogout}
-          className="nav-link nav-link-inactive text-red-400 hover:text-red-300 hover:bg-red-500/10 w-full">
+          className="nav-link nav-link-inactive text-red-500 hover:text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-500/10 w-full">
           <LogOut className="w-4 h-4 shrink-0" />
           <span>Sign Out</span>
         </button>

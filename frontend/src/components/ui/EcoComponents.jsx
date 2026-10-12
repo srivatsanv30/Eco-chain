@@ -3,10 +3,10 @@ import { useSelector } from 'react-redux';
 // EcoScore badge with color-coded ring
 export const EcoScoreBadge = ({ score, size = 'md' }) => {
   const getColor = (s) => {
-    if (s >= 80) return { text: 'text-emerald-400', bg: 'bg-emerald-400/10', ring: 'stroke-emerald-400', label: 'Excellent' };
-    if (s >= 60) return { text: 'text-green-400', bg: 'bg-green-400/10', ring: 'stroke-green-400', label: 'Good' };
-    if (s >= 40) return { text: 'text-yellow-400', bg: 'bg-yellow-400/10', ring: 'stroke-yellow-400', label: 'Fair' };
-    return { text: 'text-red-400', bg: 'bg-red-400/10', ring: 'stroke-red-400', label: 'Poor' };
+    if (s >= 80) return { text: 'text-emerald-600 dark:text-emerald-400', bg: 'bg-emerald-400/10', ring: 'stroke-emerald-500 dark:stroke-emerald-400', label: 'Excellent' };
+    if (s >= 60) return { text: 'text-green-600 dark:text-green-400', bg: 'bg-green-400/10', ring: 'stroke-green-500 dark:stroke-green-400', label: 'Good' };
+    if (s >= 40) return { text: 'text-amber-600 dark:text-yellow-400', bg: 'bg-yellow-400/10', ring: 'stroke-amber-500 dark:stroke-yellow-400', label: 'Fair' };
+    return { text: 'text-red-600 dark:text-red-400', bg: 'bg-red-400/10', ring: 'stroke-red-500 dark:stroke-red-400', label: 'Poor' };
   };
 
   const c = getColor(score);
@@ -19,7 +19,7 @@ export const EcoScoreBadge = ({ score, size = 'md' }) => {
     <div className={`flex flex-col items-center gap-1`}>
       <div className="relative inline-flex">
         <svg width={cx * 2} height={cx * 2} className="-rotate-90">
-          <circle cx={cx} cy={cx} r={r} fill="none" strokeWidth="4" className="stroke-slate-700" />
+          <circle cx={cx} cy={cx} r={r} fill="none" strokeWidth="4" className="stroke-slate-200 dark:stroke-slate-700" />
           <circle cx={cx} cy={cx} r={r} fill="none" strokeWidth="4" strokeDasharray={circumference} strokeDashoffset={offset} strokeLinecap="round" className={c.ring} style={{ transition: 'stroke-dashoffset 1s ease' }} />
         </svg>
         <div className="absolute inset-0 flex items-center justify-center">
@@ -34,7 +34,7 @@ export const EcoScoreBadge = ({ score, size = 'md' }) => {
 // Repairability score bar
 export const RepairabilityBar = ({ score }) => {
   const pct = (score / 10) * 100;
-  const color = score >= 8 ? 'bg-emerald-400' : score >= 6 ? 'bg-green-400' : score >= 4 ? 'bg-yellow-400' : 'bg-red-400';
+  const color = score >= 8 ? 'bg-emerald-500' : score >= 6 ? 'bg-green-500' : score >= 4 ? 'bg-amber-500' : 'bg-red-500';
   const { mode } = useSelector(state => state.theme);
 
   return (
@@ -53,12 +53,12 @@ export const RepairabilityBar = ({ score }) => {
 // Energy rating badge
 export const EnergyRatingBadge = ({ rating }) => {
   const colors = {
-    'A++': 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
-    'A+': 'bg-green-500/20 text-green-400 border-green-500/30',
-    'A': 'bg-lime-500/20 text-lime-400 border-lime-500/30',
-    'B': 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
-    'C': 'bg-orange-500/20 text-orange-400 border-orange-500/30',
-    'D': 'bg-red-500/20 text-red-400 border-red-500/30',
+    'A++': 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border-emerald-500/30',
+    'A+': 'bg-green-500/15 text-green-700 dark:text-green-400 border-green-500/30',
+    'A': 'bg-lime-500/15 text-lime-800 dark:text-lime-400 border-lime-500/30',
+    'B': 'bg-amber-500/15 text-amber-700 dark:text-yellow-400 border-amber-500/30',
+    'C': 'bg-orange-500/15 text-orange-700 dark:text-orange-400 border-orange-500/30',
+    'D': 'bg-red-500/15 text-red-700 dark:text-red-400 border-red-500/30',
   };
   return (
     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-lg text-xs font-bold border ${colors[rating] || colors['A']}`}>
@@ -69,11 +69,11 @@ export const EnergyRatingBadge = ({ rating }) => {
 
 // Skeleton loader
 export const Skeleton = ({ className = '' }) => (
-  <div className={`animate-pulse rounded-xl bg-slate-700/50 ${className}`} />
+  <div className={`animate-pulse rounded-xl bg-slate-200 dark:bg-slate-700/50 ${className}`} />
 );
 
 export const ProductCardSkeleton = () => (
-  <div className="rounded-2xl overflow-hidden bg-slate-800/50 border border-slate-700/50 p-4">
+  <div className="rounded-2xl overflow-hidden bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 p-4">
     <Skeleton className="h-48 w-full mb-4" />
     <Skeleton className="h-4 w-3/4 mb-2" />
     <Skeleton className="h-4 w-1/2 mb-4" />
