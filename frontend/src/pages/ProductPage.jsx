@@ -98,7 +98,7 @@ const ProductPage = () => {
           <div className="flex items-center gap-4">
             <EcoScoreBadge score={product.ecoScore} size="lg" />
             <div>
-              <p className="text-3xl font-black text-eco-400">₹{Number(product.price).toLocaleString('en-IN')}</p>
+              <p className="text-3xl font-black text-emerald-600 dark:text-eco-400">₹{Number(product.price).toLocaleString('en-IN')}</p>
               <EnergyRatingBadge rating={product.energyRating} />
             </div>
           </div>
@@ -109,13 +109,13 @@ const ProductPage = () => {
           <div className="flex gap-3">
             <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
               onClick={() => { dispatch(toggleSaveProduct(product)); toast(isSaved ? 'Removed from saved' : '💚 Saved!', { duration: 2000 }); }}
-              className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold border transition-all ${isSaved ? 'bg-eco-500/15 border-eco-500/30 text-eco-400' : isDark ? 'bg-slate-800 border-slate-700 text-slate-300 hover:border-eco-500/40' : 'bg-slate-50 border-slate-200 text-slate-700 hover:border-eco-400'}`}>
+              className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold border transition-all ${isSaved ? 'bg-eco-500/15 border-eco-500/30 text-emerald-600 dark:text-eco-400' : isDark ? 'bg-slate-800 border-slate-700 text-slate-300 hover:border-eco-500/40' : 'bg-slate-50 border-slate-200 text-slate-700 hover:border-emerald-500'}`}>
               <Heart className="w-4 h-4" fill={isSaved ? 'currentColor' : 'none'} />
               {isSaved ? 'Saved' : 'Save'}
             </motion.button>
             <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
               onClick={() => { if (!isInCompare && compareList.length >= 4) { toast.error('Compare list full'); return; } dispatch(toggleCompareProduct(product)); toast(isInCompare ? 'Removed from compare' : '⚖️ Added to compare'); }}
-              className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold border transition-all ${isInCompare ? 'bg-blue-500/15 border-blue-500/30 text-blue-400' : isDark ? 'bg-slate-800 border-slate-700 text-slate-300 hover:border-blue-500/40' : 'bg-slate-50 border-slate-200 text-slate-700 hover:border-blue-400'}`}>
+              className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold border transition-all ${isInCompare ? 'bg-blue-500/15 border-blue-500/30 text-blue-600 dark:text-blue-400' : isDark ? 'bg-slate-800 border-slate-700 text-slate-300 hover:border-blue-500/40' : 'bg-slate-50 border-slate-200 text-slate-700 hover:border-blue-400'}`}>
               <GitCompare className="w-4 h-4" />
               {isInCompare ? 'In Compare' : 'Compare'}
             </motion.button>
@@ -132,11 +132,11 @@ const ProductPage = () => {
                 {product.affiliateLinks.map((link, i) => (
                   <a key={i} href={link.url} target="_blank" rel="noopener noreferrer"
                     className={`flex items-center justify-between p-3 rounded-xl transition-all border hover:-translate-y-0.5 ${
-                      isDark ? 'bg-slate-700/50 border-slate-600 hover:border-eco-500/50' : 'bg-white border-slate-200 hover:border-eco-400'
+                      isDark ? 'bg-slate-700/50 border-slate-600 hover:border-eco-500/50' : 'bg-white border-slate-200 hover:border-emerald-500'
                     }`}>
                     <span className={`font-medium ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>{link.store}</span>
                     <div className="flex items-center gap-3">
-                      <span className="font-bold text-eco-500">₹{Number(link.price).toLocaleString('en-IN')}</span>
+                      <span className="font-bold text-emerald-600 dark:text-eco-400">₹{Number(link.price).toLocaleString('en-IN')}</span>
                       <ArrowLeft className="w-4 h-4 rotate-135 text-slate-400" />
                     </div>
                   </a>
@@ -147,16 +147,16 @@ const ProductPage = () => {
 
           {/* Quick Specs */}
           <div className={`p-4 rounded-2xl border ${isDark ? 'bg-slate-800/50 border-slate-700/50' : 'bg-slate-50 border-slate-200'}`}>
-            <MetricRow icon={Leaf} label="Carbon Footprint" value={`${product.carbonFootprint} kg CO₂`} iconColor="text-eco-400" isDark={isDark} />
-            <MetricRow icon={Clock} label="Expected Lifespan" value={`${product.lifespanYears} years`} iconColor="text-blue-400" isDark={isDark} />
-            <MetricRow icon={IndianRupee} label="Maintenance/Year" value={`₹${Number(product.maintenanceCostYear).toLocaleString('en-IN')}`} iconColor="text-purple-400" isDark={isDark} />
-            <MetricRow icon={Shield} label="Warranty" value={`${product.warrantyMonths} months`} iconColor="text-amber-400" isDark={isDark} />
+            <MetricRow icon={Leaf} label="Carbon Footprint" value={`${product.carbonFootprint} kg CO₂`} iconColor="text-emerald-500 dark:text-eco-400" isDark={isDark} />
+            <MetricRow icon={Clock} label="Expected Lifespan" value={`${product.lifespanYears} years`} iconColor="text-blue-500 dark:text-blue-400" isDark={isDark} />
+            <MetricRow icon={IndianRupee} label="Maintenance/Year" value={`₹${Number(product.maintenanceCostYear).toLocaleString('en-IN')}`} iconColor="text-purple-500 dark:text-purple-400" isDark={isDark} />
+            <MetricRow icon={Shield} label="Warranty" value={`${product.warrantyMonths} months`} iconColor="text-amber-500 dark:text-amber-400" isDark={isDark} />
             <div className={`flex items-center justify-between pt-3`}>
               <div className="flex items-center gap-2.5">
-                <Wrench className="w-4 h-4 text-teal-400" />
+                <Wrench className="w-4 h-4 text-teal-500 dark:text-teal-400" />
                 <span className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Spare Parts</span>
               </div>
-              <span className={`text-sm font-semibold ${product.sparePartsAvailable ? 'text-eco-400' : 'text-red-400'}`}>
+              <span className={`text-sm font-semibold ${product.sparePartsAvailable ? 'text-emerald-600 dark:text-eco-400' : 'text-red-500 dark:text-red-400'}`}>
                 {product.sparePartsAvailable ? '✓ Available' : '✗ Limited'}
               </span>
             </div>
@@ -246,19 +246,19 @@ const ProductPage = () => {
 
         {insights ? (
           <div className="grid sm:grid-cols-3 gap-4">
-            <div className={`p-4 rounded-xl ${isDark ? 'bg-slate-700/50' : 'bg-slate-50'}`}>
-              <p className={`text-xs mb-1 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>Predicted Lifespan</p>
-              <p className="text-2xl font-black text-eco-400">{insights.predictedLifespan} yrs</p>
+            <div className={`p-4 rounded-xl ${isDark ? 'bg-slate-700/50' : 'bg-slate-50 border border-slate-200'}`}>
+              <p className={`text-xs mb-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Predicted Lifespan</p>
+              <p className="text-2xl font-black text-emerald-600 dark:text-eco-400">{insights.predictedLifespan} yrs</p>
             </div>
-            <div className={`p-4 rounded-xl ${isDark ? 'bg-slate-700/50' : 'bg-slate-50'}`}>
-              <p className={`text-xs mb-1 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>Recommendation</p>
-              <p className={`text-2xl font-black ${insights.repairVsReplace?.decision === 'Repair' ? 'text-eco-400' : 'text-amber-400'}`}>
+            <div className={`p-4 rounded-xl ${isDark ? 'bg-slate-700/50' : 'bg-slate-50 border border-slate-200'}`}>
+              <p className={`text-xs mb-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Recommendation</p>
+              <p className={`text-2xl font-black ${insights.repairVsReplace?.decision === 'Repair' ? 'text-emerald-600 dark:text-eco-400' : 'text-amber-600 dark:text-amber-400'}`}>
                 {insights.repairVsReplace?.decision}
               </p>
             </div>
-            <div className={`p-4 rounded-xl ${isDark ? 'bg-slate-700/50' : 'bg-slate-50'}`}>
-              <p className={`text-xs mb-1 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>Total Ownership Cost</p>
-              <p className="text-2xl font-black text-purple-400">₹{Number(insights.ownershipCost?.total).toLocaleString('en-IN')}</p>
+            <div className={`p-4 rounded-xl ${isDark ? 'bg-slate-700/50' : 'bg-slate-50 border border-slate-200'}`}>
+              <p className={`text-xs mb-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Total Ownership Cost</p>
+              <p className="text-2xl font-black text-purple-600 dark:text-purple-400">₹{Number(insights.ownershipCost?.total).toLocaleString('en-IN')}</p>
             </div>
             <div className={`sm:col-span-3 p-4 rounded-xl ${isDark ? 'bg-purple-500/5 border border-purple-500/20' : 'bg-purple-50 border border-purple-200'}`}>
               <p className={`text-sm leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>{insights.aiSummary}</p>

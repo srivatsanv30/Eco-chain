@@ -56,13 +56,13 @@ const SettingsPage = () => {
       <div className="grid md:grid-cols-3 gap-6">
         {/* Left pane: Quick Navigation/Links */}
         <motion.div variants={itemVariants} className="space-y-2">
-          <div className={`p-4 rounded-xl border font-semibold text-xs uppercase tracking-wider ${isDark ? 'bg-slate-800/20 border-slate-800 text-slate-400' : 'bg-slate-50 border-slate-200 text-slate-550'}`}>
+          <div className={`p-4 rounded-xl border font-semibold text-xs uppercase tracking-wider ${isDark ? 'bg-slate-800/20 border-slate-800 text-slate-400' : 'bg-slate-50 border-slate-200 text-slate-600'}`}>
             Configuration Menu
           </div>
           {['Appearance', 'Notifications', 'Calculation Units', 'Security & Access'].map((menu, i) => (
             <button key={menu} onClick={() => setActiveTab(i)} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-semibold transition-all ${
               activeTab === i 
-                ? (isDark ? 'bg-eco-500/10 text-eco-400' : 'bg-eco-50 text-eco-500') 
+                ? (isDark ? 'bg-eco-500/15 text-eco-400 font-bold' : 'bg-emerald-50 text-emerald-700 font-bold border border-emerald-200') 
                 : (isDark ? 'text-slate-400 hover:bg-slate-800/40 hover:text-slate-200' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-800')
             }`}>
               {menu}
@@ -84,7 +84,7 @@ const SettingsPage = () => {
                 onClick={() => dispatch(setTheme('light'))}
                 className={`p-3 rounded-xl border flex items-center justify-center gap-2 text-xs font-bold transition-all ${
                   !isDark 
-                    ? 'border-eco-500 bg-eco-500/5 text-eco-500' 
+                    ? 'border-emerald-600 bg-emerald-50 text-emerald-700 shadow-sm' 
                     : 'border-slate-700 text-slate-400 hover:border-slate-500'
                 }`}
               >
@@ -94,8 +94,8 @@ const SettingsPage = () => {
                 onClick={() => dispatch(setTheme('dark'))}
                 className={`p-3 rounded-xl border flex items-center justify-center gap-2 text-xs font-bold transition-all ${
                   isDark 
-                    ? 'border-eco-400 bg-eco-500/10 text-eco-400' 
-                    : 'border-slate-200 text-slate-500 hover:border-slate-350'
+                    ? 'border-emerald-500 bg-emerald-500/15 text-emerald-400 shadow-sm' 
+                    : 'border-slate-200 text-slate-600 hover:border-slate-400'
                 }`}
               >
                 <Moon className="w-4 h-4" /> Dark Mode
@@ -147,7 +147,7 @@ const SettingsPage = () => {
                   <h4 className={`text-xs font-bold ${isDark ? 'text-slate-200' : 'text-slate-700'}`}>Carbon Units</h4>
                   <p className={`text-[11px] mt-0.5 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>System-wide measurement unit configuration.</p>
                 </div>
-                <div className={`flex rounded-lg border overflow-hidden p-0.5 ${isDark ? 'border-slate-750 bg-slate-900/50' : 'border-slate-200 bg-slate-50'}`}>
+                <div className={`flex rounded-lg border overflow-hidden p-0.5 ${isDark ? 'border-slate-700 bg-slate-900/50' : 'border-slate-200 bg-slate-50'}`}>
                   <button
                     onClick={() => handleSelect('ecoUnit', 'metric')}
                     className={`px-3 py-1 rounded-md text-[10px] font-bold ${

@@ -140,9 +140,9 @@ const ReportsPage = () => {
   };
 
   const getPerformance = (carbon) => {
-    if (carbon < 100) return { text: 'Excellent', color: 'text-green-500' };
-    if (carbon < 125) return { text: 'Good', color: 'text-blue-500' };
-    return { text: 'Fair', color: 'text-yellow-500' };
+    if (carbon < 100) return { text: 'Excellent', badge: 'badge-eco' };
+    if (carbon < 125) return { text: 'Good', badge: 'badge-blue' };
+    return { text: 'Fair', badge: 'badge-orange' };
   };
 
   const currentYear = new Date().getFullYear();
@@ -240,7 +240,7 @@ const ReportsPage = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className={`border-b ${isDark ? 'border-slate-800 text-slate-500' : 'border-slate-150 text-slate-400'} font-semibold uppercase`}>
+                <tr className={`border-b ${isDark ? 'border-slate-800 text-slate-400' : 'border-slate-200 text-slate-500'} font-semibold uppercase`}>
                   <th className="py-2.5">Month</th>
                   <th className="py-2.5">CO₂ Footprint</th>
                   <th className="py-2.5">Diverted Waste</th>
@@ -254,9 +254,9 @@ const ReportsPage = () => {
                     <td className="py-3 font-semibold">{row.month}</td>
                     <td className="py-3">{row.carbonFootprint} kg</td>
                     <td className="py-3">{row.wasteGeneratedKg} kg</td>
-                    <td className="py-3 text-eco-400 font-bold">₹{row.moneySaved}</td>
+                    <td className="py-3 text-emerald-600 dark:text-eco-400 font-bold">₹{row.moneySaved}</td>
                     <td className="py-3">
-                      <span className={`badge-eco ${getPerformance(row.carbonFootprint).color}`}>
+                      <span className={getPerformance(row.carbonFootprint).badge}>
                         {getPerformance(row.carbonFootprint).text}
                       </span>
                     </td>

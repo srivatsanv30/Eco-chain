@@ -86,7 +86,7 @@ const ProfilePage = () => {
                 <Wallet className="w-4 h-4" />
               </div>
               <div>
-                <p className={`text-xl font-bold ${isDark ? 'text-slate-250' : 'text-slate-850'}`}>{user?.carbonWallet?.balance || 450} pts</p>
+                <p className={`text-xl font-bold ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>{user?.carbonWallet?.balance || 450} pts</p>
                 <p className={`text-[10px] ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>Green reward points</p>
               </div>
             </div>
@@ -100,7 +100,7 @@ const ProfilePage = () => {
             
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-1.5">Full Name</label>
+                <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Full Name</label>
                 <div className="relative">
                   <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"><User className="w-4 h-4" /></span>
                   <input
@@ -109,14 +109,14 @@ const ProfilePage = () => {
                     value={formData.name}
                     onChange={handleInputChange}
                     className={`w-full pl-10 pr-4 py-2.5 rounded-xl border text-xs outline-none transition-all ${
-                      isDark ? 'bg-slate-900/40 border-slate-750 text-slate-200 focus:border-eco-500/60' : 'bg-white border-slate-300 text-slate-900 focus:border-eco-500'
+                      isDark ? 'bg-slate-900/40 border-slate-700 text-slate-200 focus:border-emerald-500/60' : 'bg-white border-slate-300 text-slate-900 focus:border-emerald-500'
                     }`}
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-1.5">Username</label>
+                <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Username</label>
                 <div className="relative">
                   <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"><User className="w-4 h-4" /></span>
                   <input
@@ -125,14 +125,14 @@ const ProfilePage = () => {
                     value={formData.username}
                     onChange={handleInputChange}
                     className={`w-full pl-10 pr-4 py-2.5 rounded-xl border text-xs outline-none transition-all ${
-                      isDark ? 'bg-slate-900/40 border-slate-750 text-slate-200 focus:border-eco-500/60' : 'bg-white border-slate-300 text-slate-900 focus:border-eco-500'
+                      isDark ? 'bg-slate-900/40 border-slate-700 text-slate-200 focus:border-emerald-500/60' : 'bg-white border-slate-300 text-slate-900 focus:border-emerald-500'
                     }`}
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-1.5">Email Address</label>
+                <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Email Address</label>
                 <div className="relative">
                   <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"><Mail className="w-4 h-4" /></span>
                   <input
@@ -141,14 +141,14 @@ const ProfilePage = () => {
                     value={formData.email}
                     onChange={handleInputChange}
                     className={`w-full pl-10 pr-4 py-2.5 rounded-xl border text-xs outline-none transition-all ${
-                      isDark ? 'bg-slate-900/40 border-slate-750 text-slate-200 focus:border-eco-500/60' : 'bg-white border-slate-300 text-slate-900 focus:border-eco-500'
+                      isDark ? 'bg-slate-900/40 border-slate-700 text-slate-200 focus:border-emerald-500/60' : 'bg-white border-slate-300 text-slate-900 focus:border-emerald-500'
                     }`}
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-1.5">Phone Number</label>
+                <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Phone Number</label>
                 <div className="relative">
                   <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"><Phone className="w-4 h-4" /></span>
                   <input
@@ -157,7 +157,7 @@ const ProfilePage = () => {
                     value={formData.phone}
                     onChange={handleInputChange}
                     className={`w-full pl-10 pr-4 py-2.5 rounded-xl border text-xs outline-none transition-all ${
-                      isDark ? 'bg-slate-900/40 border-slate-750 text-slate-200 focus:border-eco-500/60' : 'bg-white border-slate-300 text-slate-900 focus:border-eco-500'
+                      isDark ? 'bg-slate-900/40 border-slate-700 text-slate-200 focus:border-emerald-500/60' : 'bg-white border-slate-300 text-slate-900 focus:border-emerald-500'
                     }`}
                   />
                 </div>

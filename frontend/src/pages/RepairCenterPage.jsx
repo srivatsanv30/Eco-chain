@@ -20,20 +20,20 @@ const RepairCenterCard = ({ center, i, isDark }) => (
     </div>
     <div className="flex items-center gap-1 mb-3">
       {Array.from({ length: 5 }).map((_, j) => (
-        <Star key={j} className={`w-3.5 h-3.5 ${j < Math.round(center.rating) ? 'text-amber-400 fill-current' : 'text-slate-600'}`} />
+        <Star key={j} className={`w-3.5 h-3.5 ${j < Math.round(center.rating) ? 'text-amber-400 fill-current' : 'text-slate-300 dark:text-slate-600'}`} />
       ))}
-      <span className={`text-xs ml-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{center.rating}/5</span>
+      <span className={`text-xs ml-1 font-semibold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>{center.rating}/5</span>
     </div>
     <div className="flex flex-wrap gap-1.5 mb-4">
       {center.services.map(s => (
-        <span key={s} className={`text-xs px-2 py-0.5 rounded-lg ${isDark ? 'bg-slate-700/60 text-slate-300' : 'bg-slate-100 text-slate-600'}`}>{s}</span>
+        <span key={s} className={`text-xs px-2.5 py-1 rounded-lg font-medium ${isDark ? 'bg-slate-700/60 text-slate-300' : 'bg-slate-100 text-slate-700 border border-slate-200'}`}>{s}</span>
       ))}
     </div>
     <div className="flex gap-2">
-      <a href={`tel:${center.phone}`} className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-sm border transition-all ${isDark ? 'border-slate-700 text-slate-300 hover:bg-slate-700' : 'border-slate-200 text-slate-600 hover:bg-slate-50'}`}>
+      <a href={`tel:${center.phone}`} className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-sm font-semibold border transition-all ${isDark ? 'border-slate-700 text-slate-300 hover:bg-slate-700' : 'border-slate-200 text-slate-700 hover:bg-slate-50'}`}>
         <Phone className="w-3.5 h-3.5" /> Call
       </a>
-      <button className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-sm bg-eco-500 text-white hover:bg-eco-600 transition-all">
+      <button className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-sm font-semibold bg-emerald-600 text-white hover:bg-emerald-700 transition-all shadow-sm">
         <ChevronRight className="w-3.5 h-3.5" /> Book Appointment
       </button>
     </div>

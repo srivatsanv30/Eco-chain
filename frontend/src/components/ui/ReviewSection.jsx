@@ -139,11 +139,11 @@ const ReviewSection = ({ productId }) => {
 
   // Community consensus indicator
   const getConsensus = (avgRating) => {
-    if (avgRating >= 4.5) return { text: 'Highly Recommended', color: 'text-emerald-400', bg: 'bg-emerald-400/10 border-emerald-500/20' };
-    if (avgRating >= 3.5) return { text: 'Recommended', color: 'text-green-400', bg: 'bg-green-400/10 border-green-500/20' };
-    if (avgRating >= 2.5) return { text: 'Mixed Reviews', color: 'text-yellow-400', bg: 'bg-yellow-400/10 border-yellow-500/20' };
-    if (avgRating >= 1.5) return { text: 'Below Average', color: 'text-orange-400', bg: 'bg-orange-400/10 border-orange-500/20' };
-    return { text: 'Not Recommended', color: 'text-red-400', bg: 'bg-red-400/10 border-red-500/20' };
+    if (avgRating >= 4.5) return { text: 'Highly Recommended', color: 'text-emerald-700 dark:text-emerald-400', bg: 'bg-emerald-50 dark:bg-emerald-400/10 border-emerald-300 dark:border-emerald-500/20' };
+    if (avgRating >= 3.5) return { text: 'Recommended', color: 'text-green-700 dark:text-green-400', bg: 'bg-green-50 dark:bg-green-400/10 border-green-300 dark:border-green-500/20' };
+    if (avgRating >= 2.5) return { text: 'Mixed Reviews', color: 'text-amber-700 dark:text-yellow-400', bg: 'bg-amber-50 dark:bg-yellow-400/10 border-amber-300 dark:border-yellow-500/20' };
+    if (avgRating >= 1.5) return { text: 'Below Average', color: 'text-orange-700 dark:text-orange-400', bg: 'bg-orange-50 dark:bg-orange-400/10 border-orange-300 dark:border-orange-500/20' };
+    return { text: 'Not Recommended', color: 'text-red-700 dark:text-red-400', bg: 'bg-red-50 dark:bg-red-400/10 border-red-300 dark:border-red-500/20' };
   };
 
   const userHasReviewed = reviews.some(r => r.user?._id === user?._id);
@@ -153,12 +153,12 @@ const ReviewSection = ({ productId }) => {
       {/* Section Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div className="flex items-center gap-2">
-          <MessageSquare className="w-5 h-5 text-eco-400" />
+          <MessageSquare className="w-5 h-5 text-emerald-600 dark:text-eco-400" />
           <h2 className={`font-bold text-lg ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>
             Reviews & Ratings
           </h2>
           {summary && summary.totalReviews > 0 && (
-            <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${isDark ? 'bg-slate-700 text-slate-400' : 'bg-slate-100 text-slate-500'}`}>
+            <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${isDark ? 'bg-slate-700 text-slate-400' : 'bg-slate-100 text-slate-600'}`}>
               {summary.totalReviews}
             </span>
           )}
@@ -180,7 +180,7 @@ const ReviewSection = ({ productId }) => {
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`p-6 rounded-2xl border ${isDark ? 'bg-slate-800/40 border-slate-700/50' : 'bg-white border-slate-200'}`}
+          className={`p-6 rounded-2xl border ${isDark ? 'bg-slate-800/40 border-slate-700/50' : 'bg-white border-slate-200 shadow-sm'}`}
         >
           <div className="grid sm:grid-cols-3 gap-6">
             {/* Overall Rating */}
@@ -205,10 +205,10 @@ const ReviewSection = ({ productId }) => {
             </div>
 
             {/* Sustainability Score */}
-            <div className={`flex flex-col items-center justify-center p-4 rounded-xl ${isDark ? 'bg-eco-500/5 border border-eco-500/10' : 'bg-eco-50 border border-eco-200'}`}>
-              <Leaf className="w-6 h-6 text-eco-400 mb-2" />
-              <p className="text-3xl font-black text-eco-400">{summary.avgSustainability}</p>
-              <p className={`text-xs mt-1 font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Eco Rating (Avg)</p>
+            <div className={`flex flex-col items-center justify-center p-4 rounded-xl ${isDark ? 'bg-eco-500/5 border border-eco-500/10' : 'bg-emerald-50/80 border border-emerald-200'}`}>
+              <Leaf className="w-6 h-6 text-emerald-600 dark:text-eco-400 mb-2" />
+              <p className="text-3xl font-black text-emerald-600 dark:text-eco-400">{summary.avgSustainability}</p>
+              <p className={`text-xs mt-1 font-medium ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Eco Rating (Avg)</p>
               <p className={`text-xs ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>out of 5</p>
             </div>
           </div>
@@ -320,14 +320,14 @@ const ReviewSection = ({ productId }) => {
                     </div>
                   ))}
                   {formData.pros.length < 5 && (
-                    <button type="button" onClick={() => addProCon('pros')} className="text-xs text-eco-400 font-medium hover:text-eco-300">+ Add pro</button>
+                    <button type="button" onClick={() => addProCon('pros')} className="text-xs text-emerald-600 dark:text-eco-400 font-semibold hover:underline">+ Add pro</button>
                   )}
                 </div>
                 <div>
                   <label className={`text-xs font-semibold mb-1.5 block ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>Cons</label>
                   {formData.cons.map((con, i) => (
                     <div key={i} className="flex items-center gap-2 mb-2">
-                      <span className="text-red-400 text-sm font-bold">−</span>
+                      <span className="text-red-500 font-bold">−</span>
                       <input
                         type="text"
                         maxLength={100}
@@ -346,7 +346,7 @@ const ReviewSection = ({ productId }) => {
                     </div>
                   ))}
                   {formData.cons.length < 5 && (
-                    <button type="button" onClick={() => addProCon('cons')} className="text-xs text-red-400 font-medium hover:text-red-300">+ Add con</button>
+                    <button type="button" onClick={() => addProCon('cons')} className="text-xs text-red-600 dark:text-red-400 font-semibold hover:underline">+ Add con</button>
                   )}
                 </div>
               </div>

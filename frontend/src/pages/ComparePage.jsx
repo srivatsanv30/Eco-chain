@@ -18,7 +18,7 @@ const MetricRow = ({ label, values, isDark, winner }) => (
     <span className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{label}</span>
     {values.map((val, i) => (
       <div key={i} className="text-center px-2">
-        <span className={`text-xs font-semibold leading-relaxed inline-block ${i === winner ? 'text-eco-400' : isDark ? 'text-slate-200' : 'text-slate-700'}`}>
+        <span className={`text-xs font-semibold leading-relaxed inline-block ${i === winner ? 'text-emerald-600 dark:text-eco-400 font-bold' : isDark ? 'text-slate-200' : 'text-slate-700'}`}>
           {i === winner && '🏆 '}{val}
         </span>
       </div>
@@ -110,14 +110,14 @@ const ComparePage = () => {
                     <span className={`badge-eco text-xs flex items-center gap-1 px-2 py-1 rounded-full ${isDark ? 'bg-slate-800' : 'bg-white'}`}><Award className="w-3 h-3" />Best Eco</span>
                   </div>
                 )}
-                <button onClick={() => dispatch(toggleCompareProduct(p))} className="absolute top-2 right-2 p-1 rounded-lg text-slate-500 hover:text-slate-300 hover:bg-slate-700">
+                <button onClick={() => dispatch(toggleCompareProduct(p))} className="absolute top-2 right-2 p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 dark:text-slate-500 dark:hover:text-slate-300 dark:hover:bg-slate-700 transition-colors">
                   <X className="w-3.5 h-3.5" />
                 </button>
                 <p className={`text-xs mb-1 mt-3 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{p.brand}</p>
                 <ProductImage product={p} className="w-full max-w-[160px] h-32 object-contain mx-auto my-3 rounded-lg" />
                 <h3 className={`font-bold text-sm mb-2 ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>{p.productName || p.name}</h3>
                 <EcoScoreBadge score={p.ecoScore} />
-                <p className="text-lg font-black text-eco-400 mt-2">₹{Number(p.price).toLocaleString('en-IN')}</p>
+                <p className="text-lg font-black text-emerald-600 dark:text-eco-400 mt-2">₹{Number(p.price).toLocaleString('en-IN')}</p>
                 <EnergyRatingBadge rating={p.energyRating} />
               </motion.div>
             ))}
@@ -136,7 +136,7 @@ const ComparePage = () => {
             
             {/* Added specifications and details */}
             <div className={`mt-6 border-t pt-4 ${isDark ? 'border-slate-700/50' : 'border-slate-100'}`}>
-              <h4 className={`font-bold text-sm mb-3 ${isDark ? 'text-eco-400' : 'text-eco-600'}`}>Specifications & Analysis</h4>
+              <h4 className={`font-bold text-sm mb-3 text-emerald-600 dark:text-eco-400`}>Specifications & Analysis</h4>
               
               {/* Dynamic Specs */}
               {[...new Set(compareList.flatMap(p => Object.keys(p.specs || {})))].map(specKey => (
@@ -159,8 +159,8 @@ const ComparePage = () => {
       </div>
 
       {compareList.length < 4 && (
-        <div className={`p-4 rounded-2xl border border-dashed text-center ${isDark ? 'border-slate-700 text-slate-600' : 'border-slate-300 text-slate-400'}`}>
-          <Link to="/dashboard/search" className="flex items-center justify-center gap-2 text-sm hover:text-eco-400 transition-colors">
+        <div className={`p-4 rounded-2xl border border-dashed text-center ${isDark ? 'border-slate-700 text-slate-400' : 'border-slate-300 text-slate-600'}`}>
+          <Link to="/dashboard/search" className="flex items-center justify-center gap-2 text-sm font-semibold hover:text-emerald-600 dark:hover:text-eco-400 transition-colors">
             <GitCompare className="w-4 h-4" /> Add {4 - compareList.length} more product{compareList.length < 3 ? 's' : ''} to compare
           </Link>
         </div>

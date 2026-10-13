@@ -189,7 +189,7 @@ const AdminPage = () => {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-xs">
             <thead>
-              <tr className={`border-b ${isDark ? 'border-slate-800 text-slate-500' : 'border-slate-150 text-slate-400'} font-semibold uppercase`}>
+              <tr className={`border-b ${isDark ? 'border-slate-800 text-slate-400' : 'border-slate-200 text-slate-500'} font-semibold uppercase`}>
                 <th className="py-2.5">User</th>
                 <th className="py-2.5">Username</th>
                 <th className="py-2.5">Email</th>
@@ -197,9 +197,9 @@ const AdminPage = () => {
                 <th className="py-2.5 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className={`divide-y ${isDark ? 'divide-slate-800 text-slate-350' : 'divide-slate-100 text-slate-700'}`}>
+            <tbody className={`divide-y ${isDark ? 'divide-slate-800 text-slate-300' : 'divide-slate-100 text-slate-700'}`}>
               {users.map(u => (
-                <tr key={u._id} className={`hover:${isDark ? 'bg-slate-850/20' : 'bg-slate-50'}`}>
+                <tr key={u._id} className={`hover:${isDark ? 'bg-slate-800/40' : 'bg-slate-50'}`}>
                   <td className="py-3 font-semibold">{u.name}</td>
                   <td className="py-3 text-slate-500">@{u.username}</td>
                   <td className="py-3">{u.email}</td>
@@ -217,7 +217,7 @@ const AdminPage = () => {
                       className={`p-1.5 rounded-lg border transition-all ${
                         isDark 
                           ? 'border-slate-700 hover:border-slate-500 text-slate-400' 
-                          : 'border-slate-250 hover:border-slate-455 text-slate-600'
+                          : 'border-slate-200 hover:border-slate-400 text-slate-700 hover:bg-slate-50'
                       }`}
                     >
                       <UserCheck className="w-3.5 h-3.5" />
@@ -229,7 +229,7 @@ const AdminPage = () => {
                       className={`p-1.5 rounded-lg border transition-all ${
                         isDark 
                           ? 'border-slate-700 hover:bg-red-500/10 hover:border-red-500/30 text-red-400' 
-                          : 'border-slate-250 hover:bg-red-50 text-red-500'
+                          : 'border-slate-200 hover:bg-red-50 text-red-600'
                       } disabled:opacity-40 disabled:cursor-not-allowed`}
                     >
                       <Trash2 className="w-3.5 h-3.5" />
@@ -248,7 +248,7 @@ const AdminPage = () => {
           <h3 className={`font-bold ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>Products Catalog</h3>
           <button
             onClick={() => { setCurrentEditProduct(null); setIsModalOpen(true); }}
-            className="px-3 py-1.5 rounded-lg bg-eco-600 hover:bg-eco-700 text-white text-xs font-bold transition-all flex items-center gap-1.5"
+            className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all flex items-center gap-1.5"
           >
             <Plus className="w-3.5 h-3.5" /> Add Product
           </button>
@@ -256,7 +256,7 @@ const AdminPage = () => {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-xs">
             <thead>
-              <tr className={`border-b ${isDark ? 'border-slate-800 text-slate-500' : 'border-slate-150 text-slate-400'} font-semibold uppercase`}>
+              <tr className={`border-b ${isDark ? 'border-slate-800 text-slate-400' : 'border-slate-200 text-slate-500'} font-semibold uppercase`}>
                 <th className="py-2.5">Product</th>
                 <th className="py-2.5">Category</th>
                 <th className="py-2.5">Price</th>
@@ -264,9 +264,9 @@ const AdminPage = () => {
                 <th className="py-2.5 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className={`divide-y ${isDark ? 'divide-slate-800 text-slate-350' : 'divide-slate-100 text-slate-700'}`}>
+            <tbody className={`divide-y ${isDark ? 'divide-slate-800 text-slate-300' : 'divide-slate-100 text-slate-700'}`}>
               {products.map(p => (
-                <tr key={p._id} className={`hover:${isDark ? 'bg-slate-850/20' : 'bg-slate-50'}`}>
+                <tr key={p._id} className={`hover:${isDark ? 'bg-slate-800/40' : 'bg-slate-50'}`}>
                   <td className="py-3 font-semibold flex items-center gap-2">
                     <img src={p.primaryImage || p.image || 'https://via.placeholder.com/40'} alt={p.productName || p.name} className="w-8 h-8 rounded object-cover" />
                     <div>
@@ -277,7 +277,7 @@ const AdminPage = () => {
                   <td className="py-3 text-slate-500">{p.category}</td>
                   <td className="py-3">₹{Number(p.price).toLocaleString('en-IN')}</td>
                   <td className="py-3">
-                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${p.ecoScore >= 80 ? 'bg-eco-500/10 text-eco-400' : p.ecoScore >= 60 ? 'bg-amber-500/10 text-amber-400' : 'bg-red-500/10 text-red-400'}`}>
+                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${p.ecoScore >= 80 ? 'bg-emerald-500/10 text-emerald-600 dark:text-eco-400' : p.ecoScore >= 60 ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400' : 'bg-red-500/10 text-red-600 dark:text-red-400'}`}>
                       {p.ecoScore}/100
                     </span>
                   </td>
@@ -288,7 +288,7 @@ const AdminPage = () => {
                       className={`p-1.5 rounded-lg border transition-all ${
                         isDark 
                           ? 'border-slate-700 hover:border-slate-500 text-slate-400' 
-                          : 'border-slate-250 hover:border-slate-455 text-slate-600'
+                          : 'border-slate-200 hover:border-slate-400 text-slate-700 hover:bg-slate-50'
                       }`}
                     >
                       <Edit2 className="w-3.5 h-3.5" />
@@ -299,7 +299,7 @@ const AdminPage = () => {
                       className={`p-1.5 rounded-lg border transition-all ${
                         isDark 
                           ? 'border-slate-700 hover:bg-red-500/10 hover:border-red-500/30 text-red-400' 
-                          : 'border-slate-250 hover:bg-red-50 text-red-500'
+                          : 'border-slate-200 hover:bg-red-50 text-red-600'
                       }`}
                     >
                       <Trash2 className="w-3.5 h-3.5" />
