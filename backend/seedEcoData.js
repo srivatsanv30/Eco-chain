@@ -13,7 +13,7 @@ const repairCenters = [
   { name: 'Kovai Appliance Care', address: 'RS Puram, Coimbatore, Tamil Nadu', rating: 4.5, services: ['Appliances', 'HVAC', 'Refrigerators'], phone: '+91 422-555-0202' },
   { name: 'Madurai FixIt Station', address: 'Anna Nagar, Madurai, Tamil Nadu', rating: 4.6, services: ['Electronics', 'Gaming', 'Tablets'], phone: '+91 452-555-0303' },
   { name: 'Trichy QuickFix Lab', address: 'Thillai Nagar, Trichy, Tamil Nadu', rating: 4.3, services: ['Phones', 'Cameras', 'Audio'], phone: '+91 431-555-0404' },
-];
+];{ name: 'Chennai QuickFix Lab', address: 'T Nagar, Chennai, Tamil Nadu', rating: 4.1, services: ['Phones', 'Cameras', 'Audio'], phone: '+91 431-555-0404' },
 
 const recycleCenters = [
   { name: 'Guindy EcoPoint Recyclers', address: 'Guindy Industrial Estate, Chennai, Tamil Nadu', acceptedMaterials: ['Electronics', 'Batteries', 'Plastics', 'Glass'], phone: '+91 44-555-0505' },
