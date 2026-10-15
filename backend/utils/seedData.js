@@ -3,6 +3,9 @@ import dotenv from 'dotenv';
 import Product from '../models/Product.js';
 import User from '../models/User.js';
 import CarbonReport from '../models/CarbonReport.js';
+import RepairCenter from '../models/RepairCenter.js';
+import RecycleCenter from '../models/RecycleCenter.js';
+import { repairCenters, recycleCenters } from '../data/ecoCentersData.js';
 import { moreProducts } from './moreProducts.js';
 
 dotenv.config();
@@ -917,6 +920,19 @@ const seedData = async () => {
       }));
       await CarbonReport.insertMany(reports);
       console.log('✅ Demo user created: demo@ecochain.io / Demo@123 with 6 months of carbon reports');
+    }
+
+    // Seed Repair and Recycle Centers if empty
+    const repCount = await RepairCenter.countDocuments();
+    if (repCount === 0) {
+      await RepairCenter.insertMany(repairCenters);
+      console.log(`✅ ${repairCenters.length} Repair Centers seeded!`);
+    }
+
+    const recCount = await RecycleCenter.countDocuments();
+    if (recCount === 0) {
+      await RecycleCenter.insertMany(recycleCenters);
+      console.log(`✅ ${recycleCenters.length} Recycle Centers seeded!`);
     }
 
     console.log('\n🌿 EcoChain India database seeding complete!\n');

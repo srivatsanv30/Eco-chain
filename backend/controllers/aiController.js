@@ -3,6 +3,7 @@ import Product from '../models/Product.js';
 import CarbonReport from '../models/CarbonReport.js';
 import RepairCenter from '../models/RepairCenter.js';
 import RecycleCenter from '../models/RecycleCenter.js';
+import { repairCenters, recycleCenters } from '../data/ecoCentersData.js';
 import { GoogleGenAI } from '@google/genai';
 
 const ai = process.env.GEMINI_API_KEY ? new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY }) : null;
@@ -130,7 +131,10 @@ export const getCarbonWallet = async (req, res) => {
 
 export const getRepairCenters = async (req, res) => {
   try {
-    const centers = await RepairCenter.find({});
+    let centers = await RepairCenter.find({});
+    if (!centers || centers.length === 0) {
+      centers = await RepairCenter.insertMany(repairCenters);
+    }
     res.json({ success: true, data: centers });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -139,9 +143,13 @@ export const getRepairCenters = async (req, res) => {
 
 export const getRecycleCenters = async (req, res) => {
   try {
-    const centers = await RecycleCenter.find({});
+    let centers = await RecycleCenter.find({});
+    if (!centers || centers.length === 0) {
+      centers = await RecycleCenter.insertMany(recycleCenters);
+    }
     res.json({ success: true, data: centers });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+

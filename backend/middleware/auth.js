@@ -21,6 +21,20 @@ export const protect = async (req, res, next) => {
   }
 };
 
+export const optionalProtect = async (req, res, next) => {
+  let token;
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    try {
+      token = req.headers.authorization.split(' ')[1];
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'ecochain_super_secret_key_123');
+      req.user = await User.findById(decoded.id).select('-password');
+    } catch {
+      // Proceed as guest if token verification fails
+    }
+  }
+  next();
+};
+
 export const admin = (req, res, next) => {
   if (req.user && req.user.role === 'admin') {
     next();
@@ -28,3 +42,4 @@ export const admin = (req, res, next) => {
     res.status(403).json({ success: false, message: 'Not authorized as an admin' });
   }
 };
+
