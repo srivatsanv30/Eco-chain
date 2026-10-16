@@ -5,7 +5,6 @@ import User from '../models/User.js';
 import CarbonReport from '../models/CarbonReport.js';
 import RepairCenter from '../models/RepairCenter.js';
 import RecycleCenter from '../models/RecycleCenter.js';
-import { repairCenters, recycleCenters } from '../data/ecoCentersData.js';
 import { moreProducts } from './moreProducts.js';
 
 dotenv.config();
