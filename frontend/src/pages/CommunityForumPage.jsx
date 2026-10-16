@@ -1,76 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   MessageSquare, Users, TrendingUp, Search, PlusCircle, Heart, Share2, 
-  MessageCircle, X, Send, Sparkles, Filter, CheckCircle2, Tag
+  MessageCircle, X, Send, Sparkles, Filter, CheckCircle2, Tag, Loader2
 } from 'lucide-react';
 import toast from 'react-hot-toast';
-
-const INITIAL_THREADS = [
-  {
-    id: 1,
-    title: 'Best eco-friendly laundry detergents in 2026?',
-    author: 'SarahGreen',
-    avatar: 'S',
-    replies: 42,
-    likes: 128,
-    isLiked: false,
-    tags: ['Cleaning', 'Recommendations'],
-    time: '2h ago',
-    content: 'Looking for zero-waste laundry detergents that are gentle on fabrics but completely biodegradable. Has anyone tried soap nuts or dissolvable laundry sheets? Would love to hear your experiences!',
-    comments: [
-      { id: 101, author: 'DavidEco', time: '1h ago', text: 'I have been using sheet detergents for 6 months now. Zero plastic bottles and cleans great even with cold water washes!' },
-      { id: 102, author: 'PriyaNature', time: '30m ago', text: 'Soap nuts are fantastic for everyday laundry! Just pop 4-5 in a small cotton pouch.' }
-    ]
-  },
-  {
-    id: 2,
-    title: 'How to properly recycle old lithium-ion batteries',
-    author: 'EcoWarrior',
-    avatar: 'E',
-    replies: 15,
-    likes: 89,
-    isLiked: false,
-    tags: ['Recycling', 'Guide'],
-    time: '5h ago',
-    content: 'PSA: Never throw Li-ion batteries in curbside recycling bins—they are a fire hazard at processing plants! Check your city municipal e-waste centers or local Best Buy / retail drop-off points.',
-    comments: [
-      { id: 201, author: 'CircuitSaver', time: '4h ago', text: 'Important tip: tape the terminal ends with electrical tape before dropping them off!' }
-    ]
-  },
-  {
-    id: 3,
-    title: 'Solar panel installation costs & ROI experience',
-    author: 'SunPower',
-    avatar: 'S',
-    replies: 104,
-    likes: 342,
-    isLiked: true,
-    tags: ['Energy', 'Solar'],
-    time: '1d ago',
-    content: 'Just reached the 2-year mark on my 5kW rooftop solar installation. We have offset over 8,400 kg of CO2 and reduced our power bill by 78%. Happy to answer any questions regarding subsidies and inverters!',
-    comments: [
-      { id: 301, author: 'GreenHome', time: '18h ago', text: 'What brand inverter did you go with? Did you opt for battery storage as well?' },
-      { id: 302, author: 'SunPower', time: '16h ago', text: 'We went with a hybrid micro-inverter setup. Added a 5kWh battery in year two!' }
-    ]
-  },
-  {
-    id: 4,
-    title: 'Right to Repair: Smartphone battery replacements made easy',
-    author: 'FixerSam',
-    avatar: 'F',
-    replies: 28,
-    likes: 215,
-    isLiked: false,
-    tags: ['Repair', 'Smartphones'],
-    time: '2d ago',
-    content: 'Manufacturers are gradually moving back towards modular adhesive pulls and standardized screws thanks to right-to-repair laws. Swapped my phone battery in under 20 minutes without specialized heat guns.',
-    comments: [
-      { id: 401, author: 'TechieGreen', time: '1d ago', text: 'Love this trend. Repairability score on EcoChain helped me choose my current phone!' }
-    ]
-  }
-];
+import { getForumThreads, createForumThread, addForumComment, toggleForumLike } from '../services/api';
 
 const TRENDING_TOPICS = [
   '#ZeroWasteLiving', 
@@ -83,9 +19,11 @@ const TRENDING_TOPICS = [
 
 const CommunityForumPage = () => {
   const { mode } = useSelector(state => state.theme);
+  const { user } = useSelector(state => state.auth);
   const isDark = mode === 'dark';
 
-  const [threads, setThreads] = useState(INITIAL_THREADS);
+  const [threads, setThreads] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTag, setSelectedTag] = useState('');
   
@@ -104,43 +42,72 @@ const CommunityForumPage = () => {
   // Reply form
   const [replyText, setReplyText] = useState('');
 
+  const fetchThreads = async () => {
+    try {
+      const { data } = await getForumThreads();
+      if (data.data) {
+        setThreads(data.data);
+      }
+    } catch (err) {
+      console.error('Failed to load forum threads from database', err);
+      toast.error('Failed to load forum discussions from database');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchThreads();
+  }, []);
+
+  const formatTime = (dateStr) => {
+    if (!dateStr) return 'Recent';
+    const date = new Date(dateStr);
+    const diff = Math.floor((new Date() - date) / 1000);
+    if (diff < 60) return 'Just now';
+    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+    return `${Math.floor(diff / 86400)}d ago`;
+  };
+
   // Filtering
   const filteredThreads = threads.filter(thread => {
+    const q = searchQuery.toLowerCase();
     const matchesSearch = 
-      thread.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      thread.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      thread.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      thread.content.toLowerCase().includes(searchQuery.toLowerCase());
+      !q ||
+      thread.title?.toLowerCase().includes(q) ||
+      thread.author?.toLowerCase().includes(q) ||
+      thread.tags?.some(tag => tag.toLowerCase().includes(q)) ||
+      thread.content?.toLowerCase().includes(q);
     
     const matchesTag = selectedTag ? 
-      thread.tags.some(t => t.toLowerCase() === selectedTag.replace('#', '').toLowerCase()) ||
-      thread.title.toLowerCase().includes(selectedTag.replace('#', '').toLowerCase())
+      thread.tags?.some(t => t.toLowerCase() === selectedTag.replace('#', '').toLowerCase()) ||
+      thread.title?.toLowerCase().includes(selectedTag.replace('#', '').toLowerCase())
       : true;
 
     return matchesSearch && matchesTag;
   });
 
   // Toggle like
-  const handleToggleLike = (e, threadId) => {
+  const handleToggleLike = async (e, thread) => {
     e.stopPropagation();
-    setThreads(prev => prev.map(t => {
-      if (t.id === threadId) {
-        const nextLiked = !t.isLiked;
-        return {
-          ...t,
-          isLiked: nextLiked,
-          likes: nextLiked ? t.likes + 1 : t.likes - 1
-        };
-      }
-      return t;
-    }));
+    const threadId = thread._id || thread.id;
+    try {
+      const { data } = await toggleForumLike(threadId);
+      const updatedThread = data.data;
 
-    if (activeDiscussion && activeDiscussion.id === threadId) {
-      setActiveDiscussion(prev => ({
-        ...prev,
-        isLiked: !prev.isLiked,
-        likes: !prev.isLiked ? prev.likes + 1 : prev.likes - 1
-      }));
+      setThreads(prev => prev.map(t => (t._id || t.id) === threadId ? { ...t, likes: updatedThread.likes, likedBy: updatedThread.likedBy, isLiked: data.isLiked } : t));
+
+      if (activeDiscussion && (activeDiscussion._id || activeDiscussion.id) === threadId) {
+        setActiveDiscussion(prev => ({
+          ...prev,
+          likes: updatedThread.likes,
+          likedBy: updatedThread.likedBy,
+          isLiked: data.isLiked
+        }));
+      }
+    } catch {
+      toast.error('Failed to update reaction');
     }
   };
 
@@ -156,7 +123,7 @@ const CommunityForumPage = () => {
   };
 
   // Create new topic
-  const handleCreateTopic = (e) => {
+  const handleCreateTopic = async (e) => {
     e.preventDefault();
     if (!newTopic.title.trim()) {
       toast.error('Please enter a topic title');
@@ -172,48 +139,52 @@ const CommunityForumPage = () => {
       .map(t => t.trim())
       .filter(Boolean);
 
-    const createdThread = {
-      id: Date.now(),
-      title: newTopic.title.trim(),
-      author: newTopic.author.trim() || 'EcoWarrior',
-      avatar: (newTopic.author.trim() || 'E')[0].toUpperCase(),
-      replies: 0,
-      likes: 1,
-      isLiked: true,
-      tags: tagList.length > 0 ? tagList : ['Discussion'],
-      time: 'Just now',
-      content: newTopic.content.trim(),
-      comments: []
-    };
+    try {
+      const authorName = newTopic.author.trim() || user?.name || 'EcoWarrior';
+      const payload = {
+        title: newTopic.title.trim(),
+        content: newTopic.content.trim(),
+        author: authorName,
+        avatar: authorName[0]?.toUpperCase() || 'E',
+        tags: tagList.length > 0 ? tagList : ['Discussion']
+      };
 
-    setThreads([createdThread, ...threads]);
-    setIsNewTopicOpen(false);
-    setNewTopic({ title: '', author: '', tags: '', content: '' });
-    toast.success('New topic published successfully! 🌿');
+      const { data } = await createForumThread(payload);
+      if (data.data) {
+        setThreads([data.data, ...threads]);
+        setIsNewTopicOpen(false);
+        setNewTopic({ title: '', author: '', tags: '', content: '' });
+        toast.success('New topic published to database! 🌿');
+      }
+    } catch {
+      toast.error('Failed to publish discussion topic');
+    }
   };
 
   // Add comment / reply
-  const handleAddReply = (e) => {
+  const handleAddReply = async (e) => {
     e.preventDefault();
     if (!replyText.trim() || !activeDiscussion) return;
 
-    const newComment = {
-      id: Date.now(),
-      author: 'You',
-      time: 'Just now',
-      text: replyText.trim()
-    };
+    const threadId = activeDiscussion._id || activeDiscussion.id;
+    try {
+      const authorName = user?.name || 'You';
+      const payload = {
+        text: replyText.trim(),
+        author: authorName,
+        avatar: authorName[0]?.toUpperCase() || 'Y'
+      };
 
-    const updatedDiscussion = {
-      ...activeDiscussion,
-      replies: activeDiscussion.replies + 1,
-      comments: [...(activeDiscussion.comments || []), newComment]
-    };
-
-    setActiveDiscussion(updatedDiscussion);
-    setThreads(prev => prev.map(t => t.id === activeDiscussion.id ? updatedDiscussion : t));
-    setReplyText('');
-    toast.success('Reply posted!');
+      const { data } = await addForumComment(threadId, payload);
+      if (data.data) {
+        setActiveDiscussion(data.data);
+        setThreads(prev => prev.map(t => (t._id || t.id) === threadId ? data.data : t));
+        setReplyText('');
+        toast.success('Reply saved to database!');
+      }
+    } catch {
+      toast.error('Failed to post reply');
+    }
   };
 
   const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
@@ -322,188 +293,146 @@ const CommunityForumPage = () => {
           </div>
 
           {/* Thread Cards */}
-          {filteredThreads.length > 0 ? (
-            filteredThreads.map((thread) => (
-              <motion.div 
-                key={thread.id} 
-                variants={itemVariants} 
-                whileHover={{ y: -2 }} 
-                onClick={() => setActiveDiscussion(thread)}
-                className={`p-5 rounded-2xl border transition-all cursor-pointer shadow-sm hover:shadow-md ${
-                  isDark 
-                    ? 'bg-slate-800/60 backdrop-blur-xl border-slate-700/50 hover:border-emerald-500/50' 
-                    : 'bg-white border-slate-200 hover:border-emerald-400'
-                }`}
-              >
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-white font-bold shrink-0 shadow-sm">
-                    {thread.avatar}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-2 mb-1">
-                      <h3 className={`font-bold text-base md:text-lg leading-tight transition-colors ${
-                        isDark ? 'text-slate-100 hover:text-emerald-400' : 'text-slate-900 hover:text-emerald-600'
-                      }`}>
-                        {thread.title}
-                      </h3>
-                      <span className={`text-xs whitespace-nowrap ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                        {thread.time}
-                      </span>
+          {loading ? (
+            <div className="py-16 text-center text-sm text-slate-400">
+              <Loader2 className="w-6 h-6 animate-spin mx-auto mb-2 text-emerald-500" />
+              Loading discussions from database...
+            </div>
+          ) : filteredThreads.length > 0 ? (
+            filteredThreads.map((thread) => {
+              const threadId = thread._id || thread.id;
+              const replyCount = thread.comments?.length || thread.replies || 0;
+              const hasLiked = thread.likedBy?.includes(user?._id) || thread.isLiked;
+
+              return (
+                <motion.div 
+                  key={threadId} 
+                  variants={itemVariants} 
+                  whileHover={{ y: -2 }} 
+                  onClick={() => setActiveDiscussion(thread)}
+                  className={`p-5 rounded-2xl border transition-all cursor-pointer shadow-sm hover:shadow-md ${
+                    isDark 
+                      ? 'bg-slate-800/60 backdrop-blur-xl border-slate-700/50 hover:border-emerald-500/50' 
+                      : 'bg-white border-slate-200 hover:border-emerald-400'
+                  }`}
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-white font-bold shrink-0 shadow-sm">
+                      {thread.avatar || (thread.author ? thread.author[0]?.toUpperCase() : 'E')}
                     </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-2 mb-1">
+                        <h3 className={`font-bold text-base md:text-lg leading-tight transition-colors ${
+                          isDark ? 'text-slate-100 hover:text-emerald-400' : 'text-slate-900 hover:text-emerald-600'
+                        }`}>
+                          {thread.title}
+                        </h3>
+                        <span className={`text-xs whitespace-nowrap ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                          {thread.createdAt ? formatTime(thread.createdAt) : thread.time || 'Recent'}
+                        </span>
+                      </div>
 
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className={`text-xs font-semibold ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                        Posted by <span className="text-emerald-600 dark:text-emerald-400">@{thread.author}</span>
-                      </span>
-                    </div>
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className={`text-xs font-semibold ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                          Posted by <span className="text-emerald-600 dark:text-emerald-400">@{thread.author}</span>
+                        </span>
+                      </div>
 
-                    <p className={`text-sm mb-3 line-clamp-2 leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                      {thread.content}
-                    </p>
+                      <p className={`text-sm mb-3 line-clamp-2 leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                        {thread.content}
+                      </p>
 
-                    <div className="flex flex-wrap items-center gap-2 mb-4">
-                      {thread.tags.map(tag => (
-                        <span 
-                          key={tag} 
-                          onClick={(e) => { e.stopPropagation(); setSelectedTag(tag); }}
-                          className={`px-2.5 py-0.5 rounded-md text-xs font-semibold cursor-pointer transition-colors ${
-                            isDark 
-                              ? 'bg-slate-700/70 text-emerald-400 hover:bg-slate-700' 
-                              : 'bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100'
+                      <div className="flex flex-wrap items-center gap-2 mb-4">
+                        {thread.tags?.map(tag => (
+                          <span 
+                            key={tag} 
+                            onClick={(e) => { e.stopPropagation(); setSelectedTag(tag); }}
+                            className={`px-2.5 py-0.5 rounded-md text-xs font-semibold cursor-pointer transition-colors ${
+                              isDark 
+                                ? 'bg-slate-700/70 text-emerald-400 hover:bg-slate-700' 
+                                : 'bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100'
+                            }`}
+                          >
+                            #{tag}
+                          </span>
+                        ))}
+                      </div>
+
+                      <div className="flex items-center gap-4 pt-2 border-t border-dashed border-slate-200 dark:border-slate-700/50">
+                        <button 
+                          onClick={(e) => handleToggleLike(e, thread)} 
+                          className={`flex items-center gap-1.5 text-xs font-semibold transition-colors py-1 px-2.5 rounded-lg ${
+                            hasLiked
+                              ? 'bg-red-500/10 text-red-500 dark:text-red-400'
+                              : isDark ? 'text-slate-400 hover:text-red-400 hover:bg-slate-700/50' : 'text-slate-600 hover:text-red-500 hover:bg-slate-100'
                           }`}
                         >
-                          #{tag}
-                        </span>
-                      ))}
-                    </div>
+                          <Heart className="w-4 h-4" fill={hasLiked ? 'currentColor' : 'none'} />
+                          <span>{thread.likes || 0}</span>
+                        </button>
 
-                    <div className="flex items-center gap-4 pt-2 border-t border-dashed border-slate-200 dark:border-slate-700/50">
-                      <button 
-                        onClick={(e) => handleToggleLike(e, thread.id)} 
-                        className={`flex items-center gap-1.5 text-xs font-semibold transition-colors py-1 px-2.5 rounded-lg ${
-                          thread.isLiked
-                            ? 'bg-red-500/10 text-red-500 dark:text-red-400'
-                            : isDark ? 'text-slate-400 hover:text-red-400 hover:bg-slate-700/50' : 'text-slate-600 hover:text-red-500 hover:bg-slate-100'
-                        }`}
-                      >
-                        <Heart className="w-4 h-4" fill={thread.isLiked ? 'currentColor' : 'none'} />
-                        <span>{thread.likes}</span>
-                      </button>
+                        <button 
+                          onClick={() => setActiveDiscussion(thread)}
+                          className={`flex items-center gap-1.5 text-xs font-semibold transition-colors py-1 px-2.5 rounded-lg ${
+                            isDark ? 'text-slate-400 hover:text-blue-400 hover:bg-slate-700/50' : 'text-slate-600 hover:text-blue-600 hover:bg-slate-100'
+                          }`}
+                        >
+                          <MessageCircle className="w-4 h-4" /> 
+                          <span>{replyCount} Replies</span>
+                        </button>
 
-                      <button 
-                        onClick={() => setActiveDiscussion(thread)}
-                        className={`flex items-center gap-1.5 text-xs font-semibold transition-colors py-1 px-2.5 rounded-lg ${
-                          isDark ? 'text-slate-400 hover:text-blue-400 hover:bg-slate-700/50' : 'text-slate-600 hover:text-blue-600 hover:bg-slate-100'
-                        }`}
-                      >
-                        <MessageCircle className="w-4 h-4" /> 
-                        <span>{thread.replies} Replies</span>
-                      </button>
-
-                      <button 
-                        onClick={(e) => handleShare(e, thread)} 
-                        className={`flex items-center gap-1.5 text-xs font-semibold transition-colors ml-auto py-1 px-2.5 rounded-lg ${
-                          isDark ? 'text-slate-400 hover:text-slate-200 hover:bg-slate-700/50' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-                        }`}
-                      >
-                        <Share2 className="w-4 h-4" /> 
-                        <span>Share</span>
-                      </button>
+                        <button 
+                          onClick={(e) => handleShare(e, thread)}
+                          className={`flex items-center gap-1.5 text-xs font-semibold transition-colors py-1 px-2.5 rounded-lg ml-auto ${
+                            isDark ? 'text-slate-400 hover:text-slate-200 hover:bg-slate-700/50' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                          }`}
+                        >
+                          <Share2 className="w-4 h-4" /> Share
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </motion.div>
-            ))
+                </motion.div>
+              );
+            })
           ) : (
-            <div className={`text-center py-16 rounded-2xl border border-dashed ${
-              isDark ? 'border-slate-700 bg-slate-800/20' : 'border-slate-300 bg-slate-50'
-            }`}>
-              <MessageSquare className={`w-12 h-12 mx-auto mb-3 opacity-30 ${isDark ? 'text-slate-400' : 'text-slate-500'}`} />
-              <h3 className={`font-bold text-lg mb-1 ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>No discussions found</h3>
-              <p className={`text-sm mb-4 max-w-sm mx-auto ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                {searchQuery || selectedTag ? 'Try clearing your search terms or selecting another category.' : 'Be the first eco-warrior to start a conversation!'}
-              </p>
-              <button 
-                onClick={() => { setSearchQuery(''); setSelectedTag(''); }}
-                className="btn-secondary text-xs mr-2"
-              >
-                Reset Filters
-              </button>
-              <button 
-                onClick={() => setIsNewTopicOpen(true)}
-                className="btn-primary text-xs"
-              >
-                Post Topic
-              </button>
+            <div className={`text-center py-16 rounded-2xl border border-dashed ${isDark ? 'border-slate-800 bg-slate-900/40' : 'border-slate-200 bg-slate-50'}`}>
+              <MessageSquare className="w-12 h-12 text-slate-400 mx-auto mb-3 opacity-40" />
+              <p className={`font-bold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>No discussions found</p>
+              <p className={`text-xs mt-1 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>Try searching for a different keyword or start a new topic!</p>
             </div>
           )}
         </div>
 
         {/* Sidebar */}
         <div className="space-y-6">
-          {/* Stats Card */}
-          <motion.div variants={itemVariants} className={`p-6 rounded-3xl border shadow-lg ${
-            isDark ? 'bg-slate-800/40 backdrop-blur-xl border-slate-700/50' : 'bg-white border-slate-200'
-          }`}>
-            <h3 className={`font-extrabold text-lg mb-4 ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>
-              Community Stats
-            </h3>
-            <div className="space-y-4">
-              <div className="flex items-center gap-4">
-                <div className={`p-3 rounded-xl ${isDark ? 'bg-slate-700/50 text-blue-400' : 'bg-blue-50 text-blue-600'}`}>
-                  <Users className="w-5 h-5" />
-                </div>
-                <div>
-                  <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Active Members</p>
-                  <p className={`font-bold text-xl ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>12,450</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className={`p-3 rounded-xl ${isDark ? 'bg-slate-700/50 text-emerald-400' : 'bg-emerald-50 text-emerald-600'}`}>
-                  <MessageSquare className="w-5 h-5" />
-                </div>
-                <div>
-                  <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Total Posts</p>
-                  <p className={`font-bold text-xl ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>84.2k</p>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
           {/* Trending Topics */}
-          <motion.div variants={itemVariants} className={`p-6 rounded-3xl border shadow-lg ${
-            isDark ? 'bg-slate-800/40 backdrop-blur-xl border-slate-700/50' : 'bg-white border-slate-200'
-          }`}>
+          <motion.div variants={itemVariants} className={`p-6 rounded-3xl border ${isDark ? 'bg-slate-800/40 border-slate-700/60' : 'bg-white border-slate-200 shadow-sm'}`}>
             <div className="flex items-center gap-2 mb-4">
               <TrendingUp className="w-5 h-5 text-emerald-500" />
-              <h3 className={`font-extrabold text-lg ${isDark ? 'text-slate-100' : 'text-slate-800'}`}>
-                Trending Topics
-              </h3>
+              <h3 className={`font-bold text-base ${isDark ? 'text-white' : 'text-slate-900'}`}>Trending Topics</h3>
             </div>
-            <div className="space-y-2">
-              {TRENDING_TOPICS.map((topic, i) => (
-                <div 
-                  key={topic} 
+            <div className="flex flex-wrap gap-2">
+              {TRENDING_TOPICS.map(topic => (
+                <button
+                  key={topic}
                   onClick={() => setSelectedTag(topic)}
-                  className={`flex items-center justify-between p-2.5 rounded-xl cursor-pointer transition-all ${
-                    selectedTag === topic 
-                      ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-semibold' 
-                      : isDark ? 'hover:bg-slate-700/50 text-slate-300' : 'hover:bg-slate-50 text-slate-700'
+                  className={`text-xs px-3 py-1.5 rounded-xl border transition-all ${
+                    selectedTag === topic
+                      ? 'bg-emerald-600 text-white border-emerald-600'
+                      : isDark
+                        ? 'border-slate-700 text-slate-300 hover:border-emerald-500/50 hover:text-emerald-400'
+                        : 'border-slate-200 text-slate-700 hover:border-emerald-400 hover:text-emerald-700'
                   }`}
                 >
-                  <span className="text-sm font-medium">{topic}</span>
-                  <span className={`text-xs font-semibold ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
-                    {120 - i * 15} posts
-                  </span>
-                </div>
+                  {topic}
+                </button>
               ))}
             </div>
           </motion.div>
 
-          {/* Forum Guidelines */}
-          <motion.div variants={itemVariants} className={`p-6 rounded-3xl border ${
-            isDark ? 'bg-emerald-950/20 border-emerald-900/30' : 'bg-emerald-50/70 border-emerald-200'
-          }`}>
+          {/* Guidelines */}
+          <motion.div variants={itemVariants} className={`p-6 rounded-3xl border ${isDark ? 'bg-emerald-950/20 border-emerald-900/30' : 'bg-emerald-50/70 border-emerald-200'}`}>
             <div className="flex items-center gap-2 mb-3">
               <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
               <h4 className={`font-bold text-sm ${isDark ? 'text-emerald-300' : 'text-emerald-900'}`}>
@@ -579,7 +508,7 @@ const CommunityForumPage = () => {
                       type="text" 
                       value={newTopic.author}
                       onChange={(e) => setNewTopic(prev => ({ ...prev, author: e.target.value }))}
-                      placeholder="e.g. GreenLife"
+                      placeholder={user?.name || "e.g. GreenLife"}
                       className={`w-full px-4 py-2.5 rounded-xl border text-sm outline-none transition-all ${
                         isDark 
                           ? 'bg-slate-800 border-slate-700 text-slate-100 focus:border-emerald-500' 
@@ -607,14 +536,14 @@ const CommunityForumPage = () => {
 
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider mb-1 text-slate-600 dark:text-slate-400">
-                    Content / Question *
+                    Content *
                   </label>
                   <textarea 
-                    rows={4}
+                    rows="4" 
                     required
                     value={newTopic.content}
                     onChange={(e) => setNewTopic(prev => ({ ...prev, content: e.target.value }))}
-                    placeholder="Share the details, advice, or questions you have for the eco-community..."
+                    placeholder="Share your experience, tips, questions or guide with the eco-community..."
                     className={`w-full px-4 py-2.5 rounded-xl border text-sm outline-none transition-all resize-none ${
                       isDark 
                         ? 'bg-slate-800 border-slate-700 text-slate-100 focus:border-emerald-500' 
@@ -623,19 +552,19 @@ const CommunityForumPage = () => {
                   />
                 </div>
 
-                <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-200 dark:border-slate-800">
+                <div className="flex justify-end gap-3 pt-3 border-t border-slate-200 dark:border-slate-800">
                   <button 
                     type="button" 
                     onClick={() => setIsNewTopicOpen(false)}
-                    className="btn-secondary text-sm"
+                    className="btn-secondary text-xs px-4 py-2"
                   >
                     Cancel
                   </button>
                   <button 
                     type="submit" 
-                    className="btn-primary text-sm flex items-center gap-2"
+                    className="btn-primary text-xs px-6 py-2 flex items-center gap-1.5"
                   >
-                    <Send className="w-4 h-4" /> Post Topic
+                    <Send className="w-3.5 h-3.5" /> Publish Topic
                   </button>
                 </div>
               </form>
@@ -644,7 +573,7 @@ const CommunityForumPage = () => {
         )}
       </AnimatePresence>
 
-      {/* Discussion Detail & Replies Modal */}
+      {/* Discussion Detail Modal */}
       <AnimatePresence>
         {activeDiscussion && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -671,7 +600,9 @@ const CommunityForumPage = () => {
                     <span className="text-xs px-2.5 py-0.5 rounded-full font-bold bg-emerald-500/15 text-emerald-700 dark:text-emerald-400">
                       Discussion
                     </span>
-                    <span className="text-xs text-slate-400">{activeDiscussion.time}</span>
+                    <span className="text-xs text-slate-400">
+                      {activeDiscussion.createdAt ? formatTime(activeDiscussion.createdAt) : activeDiscussion.time || 'Recent'}
+                    </span>
                   </div>
                   <h2 className="text-xl font-black leading-snug">{activeDiscussion.title}</h2>
                   <p className="text-xs text-slate-500 mt-1">
@@ -691,7 +622,7 @@ const CommunityForumPage = () => {
                 <div className={`p-4 rounded-2xl ${isDark ? 'bg-slate-800/50' : 'bg-slate-50'}`}>
                   <p className="text-sm leading-relaxed whitespace-pre-line">{activeDiscussion.content}</p>
                   <div className="flex flex-wrap gap-2 mt-4">
-                    {activeDiscussion.tags.map(tag => (
+                    {activeDiscussion.tags?.map(tag => (
                       <span key={tag} className="text-xs px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-semibold">
                         #{tag}
                       </span>
@@ -702,15 +633,15 @@ const CommunityForumPage = () => {
                 {/* Likes / Meta */}
                 <div className="flex items-center gap-3">
                   <button 
-                    onClick={(e) => handleToggleLike(e, activeDiscussion.id)}
+                    onClick={(e) => handleToggleLike(e, activeDiscussion)}
                     className={`flex items-center gap-1.5 text-xs font-semibold py-1.5 px-3 rounded-xl border transition-all ${
-                      activeDiscussion.isLiked 
+                      (activeDiscussion.likedBy?.includes(user?._id) || activeDiscussion.isLiked)
                         ? 'bg-red-500/10 border-red-500/30 text-red-500' 
                         : isDark ? 'border-slate-700 text-slate-300 hover:bg-slate-800' : 'border-slate-200 text-slate-700 hover:bg-slate-50'
                     }`}
                   >
-                    <Heart className="w-4 h-4" fill={activeDiscussion.isLiked ? 'currentColor' : 'none'} />
-                    <span>{activeDiscussion.likes} Likes</span>
+                    <Heart className="w-4 h-4" fill={(activeDiscussion.likedBy?.includes(user?._id) || activeDiscussion.isLiked) ? 'currentColor' : 'none'} />
+                    <span>{activeDiscussion.likes || 0} Likes</span>
                   </button>
 
                   <button 
@@ -730,16 +661,18 @@ const CommunityForumPage = () => {
 
                   <div className="space-y-3">
                     {activeDiscussion.comments && activeDiscussion.comments.length > 0 ? (
-                      activeDiscussion.comments.map(c => (
+                      activeDiscussion.comments.map((c, i) => (
                         <div 
-                          key={c.id} 
+                          key={c._id || c.id || i} 
                           className={`p-3.5 rounded-xl border text-xs leading-relaxed ${
                             isDark ? 'bg-slate-800/40 border-slate-800' : 'bg-white border-slate-200'
                           }`}
                         >
                           <div className="flex items-center justify-between font-semibold mb-1">
                             <span className="text-emerald-600 dark:text-emerald-400">@{c.author}</span>
-                            <span className="text-[10px] text-slate-400 font-normal">{c.time}</span>
+                            <span className="text-[10px] text-slate-400 font-normal">
+                              {c.createdAt ? formatTime(c.createdAt) : c.time || 'Recent'}
+                            </span>
                           </div>
                           <p className={isDark ? 'text-slate-200' : 'text-slate-700'}>{c.text}</p>
                         </div>
