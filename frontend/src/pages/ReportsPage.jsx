@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { FileBarChart, Download, FileText, Share2, Calendar, Award, Loader2, TrendingDown, TrendingUp, DollarSign } from 'lucide-react';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
-import axios from 'axios';
+import { getCarbonWallet } from '../services/api';
 import toast from 'react-hot-toast';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -15,29 +15,18 @@ const ReportsPage = () => {
   const isDark = mode === 'dark';
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [isOffline, setIsOffline] = useState(false);
 
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const token = user?.token;
-        const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
-        const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-        const { data } = await axios.get(`${baseUrl}/api/ai/carbon-wallet`, config);
-        setReports(data.data?.reports || []);
-        setIsOffline(false);
+        const { data } = await getCarbonWallet();
+        if (data.data && data.data.reports) {
+          setReports(data.data.reports);
+        }
       } catch (error) {
-        setIsOffline(true);
-        toast.error("Failed to fetch live data. Showing offline mock data.");
-        // Fallback to mock data if API is unavailable
-        setReports([
-          { month: 'Jan', carbonFootprint: 145, wasteGeneratedKg: 15, moneySaved: 50 },
-          { month: 'Feb', carbonFootprint: 132, wasteGeneratedKg: 13, moneySaved: 65 },
-          { month: 'Mar', carbonFootprint: 118, wasteGeneratedKg: 12, moneySaved: 80 },
-          { month: 'Apr', carbonFootprint: 110, wasteGeneratedKg: 11, moneySaved: 95 },
-          { month: 'May', carbonFootprint: 108, wasteGeneratedKg: 10, moneySaved: 110 },
-          { month: 'Jun', carbonFootprint: 95, wasteGeneratedKg: 9, moneySaved: 130 },
-        ]);
+        console.error("Failed to fetch reports from database", error);
+        toast.error("Could not retrieve carbon reports from database.");
+        setReports([]);
       } finally {
         setLoading(false);
       }
