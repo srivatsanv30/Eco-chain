@@ -24,19 +24,40 @@ const CarbonWalletPage = () => {
   const { mode } = useSelector(state => state.theme);
   const isDark = mode === 'dark';
   const [walletData, setWalletData] = useState(null);
+  const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const wallet = user?.carbonWallet || { balance: 450, monthlyFootprint: 120, wasteGenerated: 12, moneySaved: 85, purchasedCount: 4, recycledCount: 1 };
+  useEffect(() => {
+    const fetchWallet = async () => {
+      try {
+        const { data } = await getCarbonWallet();
+        if (data.data) {
+          setWalletData(data.data.wallet);
+          setReports(data.data.reports || []);
+        }
+      } catch (err) {
+        console.error('Failed to fetch wallet from database', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchWallet();
+  }, [user]);
 
-  const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
-  const footprints = [145, 132, 118, 110, 108, wallet.monthlyFootprint];
-  const savings = [30, 45, 55, 65, 75, wallet.moneySaved];
+  const wallet = walletData || user?.carbonWallet || { balance: 450, monthlyFootprint: 120, wasteGenerated: 12, moneySaved: 85, purchasedCount: 4, recycledCount: 1 };
 
-  const footprintTrend = Math.round(((wallet.monthlyFootprint - 108) / 108) * 100);
-  const moneySavedTrend = Math.round(((wallet.moneySaved - 75) / 75) * 100);
+  const chartMonths = reports.length > 0 ? reports.map(r => r.month) : ['Current'];
+  const footprints = reports.length > 0 ? reports.map(r => r.carbonFootprint) : [wallet.monthlyFootprint];
+  const savings = reports.length > 0 ? reports.map(r => r.moneySaved) : [wallet.moneySaved];
+
+  const prevFootprint = reports.length > 1 ? reports[reports.length - 2].carbonFootprint : wallet.monthlyFootprint;
+  const prevSavings = reports.length > 1 ? reports[reports.length - 2].moneySaved : wallet.moneySaved;
+
+  const footprintTrend = prevFootprint ? Math.round(((wallet.monthlyFootprint - prevFootprint) / prevFootprint) * 100) : 0;
+  const moneySavedTrend = prevSavings ? Math.round(((wallet.moneySaved - prevSavings) / prevSavings) * 100) : 0;
 
   const lineData = {
-    labels: MONTHS,
+    labels: chartMonths,
     datasets: [{
       label: 'Carbon Footprint (kg CO₂)',
       data: footprints,
@@ -51,9 +72,9 @@ const CarbonWalletPage = () => {
   };
 
   const barData = {
-    labels: MONTHS,
+    labels: chartMonths,
     datasets: [{
-      label: 'Money Saved ($)',
+      label: 'Money Saved (₹)',
       data: savings,
       backgroundColor: 'rgba(168,85,247,0.7)',
       borderRadius: 8,
