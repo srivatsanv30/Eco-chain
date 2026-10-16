@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Brain, Send, Leaf, Wrench, Shield, AlertTriangle, Cpu, HelpCircle, ArrowRight } from 'lucide-react';
 import toast from 'react-hot-toast';
 
+import { analyzeProductCustom } from '../services/api';
+
 const AiInsightsPage = () => {
   const { mode } = useSelector(state => state.theme);
   const isDark = mode === 'dark';
@@ -12,7 +14,7 @@ const AiInsightsPage = () => {
   const [analyzing, setAnalyzing] = useState(false);
   const [result, setResult] = useState(null);
 
-  const handleAnalyze = (e) => {
+  const handleAnalyze = async (e) => {
     e.preventDefault();
     if (!inputProduct.trim()) {
       toast.error('Please enter a product name');
@@ -22,33 +24,18 @@ const AiInsightsPage = () => {
     setAnalyzing(true);
     setResult(null);
 
-    // Mock API delay for AI generation
-    setTimeout(() => {
+    try {
+      const { data } = await analyzeProductCustom(inputProduct.trim());
+      if (data.data) {
+        setResult(data.data);
+        toast.success('AI lifecycle analysis retrieved from database!');
+      }
+    } catch (err) {
+      console.error('Failed to analyze product', err);
+      toast.error(err.response?.data?.message || 'Failed to analyze product');
+    } finally {
       setAnalyzing(false);
-      setResult({
-        name: inputProduct,
-        ecoScore: Math.floor(Math.random() * 25) + 65, // 65 to 90
-        carbonFootprint: Math.floor(Math.random() * 150) + 20, // 20 to 170
-        repairabilityScore: (Math.random() * 4 + 5).toFixed(1), // 5.0 to 9.0
-        lifespanYears: Math.floor(Math.random() * 6) + 4, // 4 to 10
-        materialsAnalysis: [
-          { name: 'Post-Consumer Plastics', percentage: 35, impact: 'Low' },
-          { name: 'Aluminum Framework', percentage: 45, impact: 'Medium' },
-          { name: 'Copper & Rare Earths', percentage: 12, impact: 'High' },
-          { name: 'Glass & Other Resins', percentage: 8, impact: 'Low' },
-        ],
-        advices: [
-          { type: 'maintenance', text: 'Clean filters and fans bi-monthly to maintain thermal efficiency and avoid battery degradation.' },
-          { type: 'repair', text: 'Display and battery modular modules are replaceable. Self-repairs are supported with common screwdriver sets.' },
-          { type: 'recycling', text: 'Contains specialized lithium-ion cells. Take-back programs exist at electronics retailers; do not dispose in household trash.' },
-        ],
-        alternatives: [
-          { name: 'Xiaomi 14 Ultra', ecoScore: 88, price: '₹99,999' },
-          { name: 'OnePlus 12R', ecoScore: 85, price: '₹39,999' },
-        ]
-      });
-      toast.success('AI lifecycle analysis generated!');
-    }, 2000);
+    }
   };
 
   const containerVariants = {
