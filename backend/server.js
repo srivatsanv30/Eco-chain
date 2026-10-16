@@ -10,6 +10,8 @@ import aiRoutes from './routes/aiRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js';
 import reviewRoutes from './routes/reviewRoutes.js';
+import forumRoutes from './routes/forumRoutes.js';
+import notificationRoutes from './routes/notificationRoutes.js';
 import { notFound, errorHandler } from './middleware/error.js';
 import { initCronJobs } from './jobs/productFetcherJob.js';
 import path from 'path';
@@ -42,6 +44,8 @@ app.use('/api/ai', aiRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/reviews', reviewRoutes);
+app.use('/api/forum', forumRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 // Serve static files from uploads folder
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
