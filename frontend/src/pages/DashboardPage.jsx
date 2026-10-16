@@ -6,45 +6,58 @@ import { Leaf, Zap, TrendingUp, ShoppingBag, Recycle, Brain, ArrowRight, Award }
 import { Line, Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement, Filler } from 'chart.js';
 import { StatCard } from '../components/ui/Card';
-import { getProducts } from '../services/api';
+import { getProducts, getCarbonWallet } from '../services/api';
 import ProductCard from '../components/ui/ProductCard';
 import { ProductCardSkeleton } from '../components/ui/EcoComponents';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement, Filler);
-
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
 
 const DashboardPage = () => {
   const { user } = useSelector(state => state.auth);
   const { mode } = useSelector(state => state.theme);
   const isDark = mode === 'dark';
   const [products, setProducts] = useState([]);
+  const [reports, setReports] = useState([]);
+  const [walletData, setWalletData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchData = async () => {
       try {
-        const { data } = await getProducts({ limit: 4, sort: 'ecoScore' });
-        setProducts(data.data || []);
-      } catch {
-        // Silently fail — backend may not be running, UI still shows gracefully
+        const [prodRes, walletRes] = await Promise.allSettled([
+          getProducts({ limit: 4, sort: 'ecoScore' }),
+          getCarbonWallet()
+        ]);
+        if (prodRes.status === 'fulfilled' && prodRes.value.data?.data) {
+          setProducts(prodRes.value.data.data);
+        }
+        if (walletRes.status === 'fulfilled' && walletRes.value.data?.data) {
+          setWalletData(walletRes.value.data.data.wallet);
+          setReports(walletRes.value.data.data.reports || []);
+        }
+      } catch (err) {
+        console.error('Error fetching dashboard database records', err);
       } finally {
         setLoading(false);
       }
     };
-    fetchProducts();
-  }, []);
+    fetchData();
+  }, [user]);
 
-  const wallet = user?.carbonWallet || { balance: 450, monthlyFootprint: 120, wasteGenerated: 12, moneySaved: 85 };
+  const wallet = walletData || user?.carbonWallet || { balance: 450, monthlyFootprint: 120, wasteGenerated: 12, moneySaved: 85 };
 
-  const CARBON_DATA = [145, 132, 118, 110, 108, wallet.monthlyFootprint];
-  const footprintTrend = Math.round(((wallet.monthlyFootprint - 108) / 108) * 100);
-  const totalReduction = Math.round(((CARBON_DATA[0] - wallet.monthlyFootprint) / CARBON_DATA[0]) * 100);
-  const trendText = totalReduction >= 0 ? `↓ ${totalReduction}% reduction over 6 months` : `↑ ${Math.abs(totalReduction)}% increase over 6 months`;
+  const chartLabels = reports.length > 0 ? reports.map(r => r.month) : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+  const CARBON_DATA = reports.length > 0 ? reports.map(r => r.carbonFootprint) : [145, 132, 118, 110, 108, wallet.monthlyFootprint];
+
+  const prevFootprint = CARBON_DATA.length > 1 ? CARBON_DATA[CARBON_DATA.length - 2] : 108;
+  const footprintTrend = prevFootprint ? Math.round(((wallet.monthlyFootprint - prevFootprint) / prevFootprint) * 100) : 0;
+  const initialFootprint = CARBON_DATA[0] || wallet.monthlyFootprint;
+  const totalReduction = initialFootprint ? Math.round(((initialFootprint - wallet.monthlyFootprint) / initialFootprint) * 100) : 0;
+  const trendText = totalReduction >= 0 ? `↓ ${totalReduction}% reduction recorded` : `↑ ${Math.abs(totalReduction)}% increase recorded`;
   const badgeText = totalReduction >= 0 ? 'Improving ↓' : 'Worsening ↑';
 
   const lineChartData = {
-    labels: MONTHS,
+    labels: chartLabels,
     datasets: [{
       label: 'Carbon Footprint (kg CO₂)',
       data: CARBON_DATA,
