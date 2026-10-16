@@ -10,7 +10,18 @@ export const getAdminStats = async (req, res) => {
       CarbonReport.countDocuments({})
     ]);
     const recentUsers = await User.find({}).select('-password').sort({ createdAt: -1 }).limit(5);
-    res.json({ success: true, data: { totalUsers, totalProducts, totalReports, recentUsers } });
+    res.json({
+      success: true,
+      data: {
+        totalUsers,
+        totalProducts,
+        totalReports,
+        usersCount: totalUsers,
+        productsCount: totalProducts,
+        reportsCount: totalReports,
+        recentUsers
+      }
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
