@@ -39,6 +39,7 @@ export const deleteProduct = (id) => api.delete(`/products/${id}`);
 
 // AI
 export const getAIInsights = (id) => api.get(`/ai/insights/${id}`);
+export const analyzeProductCustom = (productName) => api.post('/ai/analyze', { productName });
 export const getCarbonWallet = () => api.get('/ai/carbon-wallet');
 export const getRepairCenters = () => api.get('/ai/repair-centers');
 export const getRecycleCenters = () => api.get('/ai/recycle-centers');
@@ -49,6 +50,18 @@ export const createReview = (productId, data) => api.post(`/reviews/product/${pr
 export const updateReview = (id, data) => api.put(`/reviews/${id}`, data);
 export const deleteReview = (id) => api.delete(`/reviews/${id}`);
 export const toggleHelpfulVote = (id) => api.put(`/reviews/${id}/helpful`);
+
+// Community Forum
+export const getForumThreads = (params) => api.get('/forum', { params });
+export const createForumThread = (data) => api.post('/forum', data);
+export const addForumComment = (threadId, data) => api.post(`/forum/${threadId}/comments`, data);
+export const toggleForumLike = (threadId) => api.put(`/forum/${threadId}/like`);
+
+// Notifications
+export const getNotifications = () => api.get('/notifications');
+export const markAllNotificationsRead = () => api.put('/notifications/read-all');
+export const toggleNotificationRead = (id) => api.put(`/notifications/${id}/read`);
+export const deleteNotificationApi = (id) => api.delete(`/notifications/${id}`);
 
 // Admin
 export const getAdminStats = () => api.get('/admin/stats');
