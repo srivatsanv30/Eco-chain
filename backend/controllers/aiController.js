@@ -3,31 +3,38 @@ import Product from '../models/Product.js';
 import CarbonReport from '../models/CarbonReport.js';
 import RepairCenter from '../models/RepairCenter.js';
 import RecycleCenter from '../models/RecycleCenter.js';
-import { repairCenters, recycleCenters } from '../data/ecoCentersData.js';
 import { GoogleGenAI } from '@google/genai';
 
-const ai = process.env.GEMINI_API_KEY ? new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY }) : null;
+const ai = process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY !== 'your_gemini_api_key_here'
+  ? new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY })
+  : null;
 
-// AI Engine — deterministic mock, can be swapped with real ML endpoint
+// AI Engine — deterministic lifecycle prediction
 const predictLifespan = (product) => {
-  const base = product.lifespanYears;
-  const repairBonus = product.repairabilityScore * 0.3;
-  const ecoBonus = product.ecoScore > 70 ? 0.5 : 0;
+  const base = product.lifespanYears || 4;
+  const repairBonus = (product.repairabilityScore || 5) * 0.3;
+  const ecoBonus = (product.ecoScore || 60) > 70 ? 0.5 : 0;
   return parseFloat((base + repairBonus + ecoBonus).toFixed(1));
 };
 
 const repairVsReplace = (product) => {
-  const repairCost = product.maintenanceCostYear * 0.6;
-  const replaceCost = product.price * 1.1;
-  const carbonSaved = product.carbonFootprint * 0.4;
+  const maintenance = product.maintenanceCostYear || 2500;
+  const price = product.price || 30000;
+  const footprint = product.carbonFootprint || 60;
+
+  const repairCost = maintenance * 0.6;
+  const replaceCost = price * 1.1;
+  const carbonSaved = footprint * 0.4;
   const decision = repairCost < replaceCost * 0.5 ? 'Repair' : 'Replace';
   return { repairCost: repairCost.toFixed(0), replaceCost: replaceCost.toFixed(0), carbonSaved: carbonSaved.toFixed(1), decision };
 };
 
 const predictOwnershipCost = (product) => {
   const years = predictLifespan(product);
-  const totalMaintenance = product.maintenanceCostYear * years;
-  const total = product.price + totalMaintenance;
+  const maintenance = product.maintenanceCostYear || 2500;
+  const price = product.price || 30000;
+  const totalMaintenance = maintenance * years;
+  const total = price + totalMaintenance;
   return { years, totalMaintenance: totalMaintenance.toFixed(0), total: total.toFixed(0) };
 };
 
@@ -49,7 +56,7 @@ export const getAIInsights = async (req, res) => {
 Product: ${product.name} (Brand: ${product.brand}, Category: ${product.category})
 Price: $${product.price}
 Eco Score: ${product.ecoScore}/100
-Repairability Score: ${product.repairabilityScore}/100
+Repairability Score: ${product.repairabilityScore}/10
 Carbon Footprint: ${product.carbonFootprint} kg
 Lifespan (Base): ${product.lifespanYears} years
 Maintenance Cost/Year: $${product.maintenanceCostYear}
@@ -84,11 +91,9 @@ Return exactly this JSON structure, nothing else:
         aiData = JSON.parse(response.text);
       } catch (aiError) {
         console.error('Gemini API Error:', aiError);
-        // Fallback to mock logic if AI fails
       }
     }
 
-    // Fallback logic if AI is not configured or fails
     if (!aiData) {
       const lifespan = predictLifespan(product);
       aiData = {
@@ -112,15 +117,127 @@ Return exactly this JSON structure, nothing else:
   }
 };
 
-export const getCarbonWallet = async (req, res) => {
+export const analyzeProductQuery = async (req, res) => {
   try {
-    const user = await User.findById(req.user._id);
-    const reports = await CarbonReport.find({ user: req.user._id }).sort({ year: -1, month: -1 }).limit(12);
+    const { productName } = req.body;
+    if (!productName || !productName.trim()) {
+      return res.status(400).json({ success: false, message: 'Product name is required' });
+    }
+
+    // Try finding an existing product in MongoDB
+    let product = await Product.findOne({
+      $or: [
+        { name: { $regex: productName.trim(), $options: 'i' } },
+        { productName: { $regex: productName.trim(), $options: 'i' } },
+        { brand: { $regex: productName.trim(), $options: 'i' } }
+      ]
+    });
+
+    if (!product) {
+      // Find top rated products in DB as basis and alternatives
+      const dbSample = await Product.findOne({}).sort({ ecoScore: -1 });
+      product = {
+        name: productName,
+        brand: 'Generic / Custom',
+        category: dbSample?.category || 'Electronics',
+        price: dbSample?.price || 49999,
+        ecoScore: 75,
+        carbonFootprint: 62,
+        repairabilityScore: 6.0,
+        lifespanYears: 5,
+        maintenanceCostYear: 3000,
+        materials: ['Recycled Aluminum', 'Modular PCB', 'Bioplastic Casing']
+      };
+    }
+
+    // Retrieve database green alternatives
+    const alternatives = await Product.find({
+      category: product.category,
+      ...(product._id ? { _id: { $ne: product._id } } : {})
+    }).sort({ ecoScore: -1 }).limit(3);
+
+    const lifespan = predictLifespan(product);
+    const rvReplace = repairVsReplace(product);
+    const ownCost = predictOwnershipCost(product);
+
+    const materialsAnalysis = (product.materials && product.materials.length > 0)
+      ? product.materials.map((m, idx) => ({
+          name: m,
+          percentage: idx === 0 ? 45 : Math.round(55 / (product.materials.length - 1)),
+          impact: idx === 0 ? 'Low' : 'Medium'
+        }))
+      : [
+          { name: 'Post-Consumer Recycled Plastics', percentage: 40, impact: 'Low' },
+          { name: 'Aluminum Framework', percentage: 35, impact: 'Medium' },
+          { name: 'Copper & Rare Earths', percentage: 15, impact: 'High' },
+          { name: 'Display Glass & Adhesive', percentage: 10, impact: 'Low' }
+        ];
+
+    const advices = [
+      { type: 'maintenance', text: `Maintain regular cleaning and keep operating temperatures low to extend this device's ${lifespan}-year lifespan.` },
+      { type: 'repair', text: `Repairability score is ${product.repairabilityScore}/10. Priority modular spare parts are ${product.sparePartsAvailable !== false ? 'available' : 'restricted'}.` },
+      { type: 'recycling', text: product.recyclingInstructions || 'Take-back programmes exist at certified municipal e-waste recycling centres.' }
+    ];
 
     res.json({
       success: true,
       data: {
-        wallet: user.carbonWallet,
+        name: product.productName || product.name,
+        brand: product.brand,
+        category: product.category,
+        ecoScore: product.ecoScore,
+        carbonFootprint: product.carbonFootprint,
+        repairabilityScore: product.repairabilityScore,
+        lifespanYears: lifespan,
+        materialsAnalysis,
+        advices,
+        repairVsReplace: rvReplace,
+        ownershipCost: ownCost,
+        alternatives: alternatives.map(a => ({
+          _id: a._id,
+          name: a.productName || a.name,
+          brand: a.brand,
+          ecoScore: a.ecoScore,
+          price: `₹${a.price?.toLocaleString('en-IN')}`
+        }))
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const getCarbonWallet = async (req, res) => {
+  try {
+    const userId = req.user?._id;
+    let user = userId ? await User.findById(userId) : null;
+    let reports = [];
+
+    if (user) {
+      reports = await CarbonReport.find({ user: user._id }).sort({ createdAt: 1 });
+    }
+
+    // If user has no reports yet or guest, get existing reports stored in the database
+    if (!reports || reports.length === 0) {
+      reports = await CarbonReport.find({}).sort({ createdAt: 1 }).limit(6);
+    }
+
+    const latestReport = reports[reports.length - 1];
+
+    const wallet = user?.carbonWallet || {
+      balance: 450,
+      monthlyFootprint: latestReport?.carbonFootprint || 108,
+      wasteGenerated: latestReport?.wasteGeneratedKg || 10,
+      moneySaved: latestReport?.moneySaved || 110,
+      purchasedCount: 4,
+      recycledCount: 1,
+      achievements: []
+    };
+
+    res.json({
+      success: true,
+      data: {
+        wallet,
         reports
       }
     });
@@ -131,10 +248,7 @@ export const getCarbonWallet = async (req, res) => {
 
 export const getRepairCenters = async (req, res) => {
   try {
-    let centers = await RepairCenter.find({});
-    if (!centers || centers.length === 0) {
-      centers = await RepairCenter.insertMany(repairCenters);
-    }
+    const centers = await RepairCenter.find({}).sort({ rating: -1 });
     res.json({ success: true, data: centers });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -143,13 +257,9 @@ export const getRepairCenters = async (req, res) => {
 
 export const getRecycleCenters = async (req, res) => {
   try {
-    let centers = await RecycleCenter.find({});
-    if (!centers || centers.length === 0) {
-      centers = await RecycleCenter.insertMany(recycleCenters);
-    }
+    const centers = await RecycleCenter.find({}).sort({ name: 1 });
     res.json({ success: true, data: centers });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
