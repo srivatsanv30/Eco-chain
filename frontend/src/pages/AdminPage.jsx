@@ -30,18 +30,19 @@ const AdminPage = () => {
           getAllUsers(),
           getProducts({ limit: 100 })
         ]);
-        setStats(statsRes.data.data || { usersCount: 2, productsCount: 12, reportsCount: 6 });
-        setUsers(usersRes.data.data || []);
-        setProducts(productsRes.data.data || []);
+        if (statsRes.data?.data) {
+          const d = statsRes.data.data;
+          setStats({
+            usersCount: d.usersCount ?? d.totalUsers ?? 0,
+            productsCount: d.productsCount ?? d.totalProducts ?? 0,
+            reportsCount: d.reportsCount ?? d.totalReports ?? 0
+          });
+        }
+        setUsers(usersRes.data?.data || []);
+        setProducts(productsRes.data?.data || []);
       } catch (err) {
-        // Fallback mock data
-        setStats({ usersCount: 140, productsCount: 124, reportsCount: 680 });
-        setUsers([
-          { _id: '1', name: 'Alex Johnson', email: 'demo@ecochain.io', role: 'user', username: 'alex_eco' },
-          { _id: '2', name: 'EcoChain Admin', email: 'admin@ecochain.io', role: 'admin', username: 'ecochain_admin' },
-          { _id: '3', name: 'Samantha Miller', email: 'samantha@greenlife.com', role: 'user', username: 'sam_green' },
-        ]);
-        setProducts([]);
+        console.error('Failed to load admin data from database', err);
+        toast.error('Failed to load platform data from database');
       } finally {
         setLoading(false);
       }
@@ -55,10 +56,8 @@ const AdminPage = () => {
       await updateUserRole(userId, newRole);
       setUsers(prev => prev.map(u => u._id === userId ? { ...u, role: newRole } : u));
       toast.success(`User role updated to ${newRole}`);
-    } catch {
-      // Offline fallback
-      setUsers(prev => prev.map(u => u._id === userId ? { ...u, role: newRole } : u));
-      toast.success(`[Demo] User role toggled to ${newRole}`);
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to update user role');
     }
   };
 
@@ -67,11 +66,10 @@ const AdminPage = () => {
     try {
       await deleteUser(userId);
       setUsers(prev => prev.filter(u => u._id !== userId));
+      setStats(prev => ({ ...prev, usersCount: Math.max(0, prev.usersCount - 1) }));
       toast.success('User deleted successfully');
-    } catch {
-      // Offline fallback
-      setUsers(prev => prev.filter(u => u._id !== userId));
-      toast.success('[Demo] User deleted');
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to delete user');
     }
   };
 
@@ -80,12 +78,10 @@ const AdminPage = () => {
     try {
       await deleteProductApi(productId);
       setProducts(prev => prev.filter(p => p._id !== productId));
-      setStats(prev => ({ ...prev, productsCount: prev.productsCount - 1 }));
+      setStats(prev => ({ ...prev, productsCount: Math.max(0, prev.productsCount - 1) }));
       toast.success('Product deleted successfully');
-    } catch {
-      setProducts(prev => prev.filter(p => p._id !== productId));
-      setStats(prev => ({ ...prev, productsCount: prev.productsCount - 1 }));
-      toast.success('[Demo] Product deleted');
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to delete product');
     }
   };
 
