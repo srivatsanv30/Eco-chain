@@ -18,7 +18,6 @@ import {
 } from 'lucide-react';
 import { getRecycleCenters } from '../services/api';
 import { Skeleton } from '../components/ui/EcoComponents';
-import { defaultRecycleCenters } from '../data/ecoCentersData';
 
 const MATERIAL_COLORS = {
   Electronics: 'bg-blue-500/15 text-blue-700 dark:text-blue-400 border border-blue-500/20',
@@ -161,13 +160,12 @@ const RecycleCenterPage = () => {
     const fetchCenters = async () => {
       try {
         const { data } = await getRecycleCenters();
-        if (data.data && data.data.length > 0) {
+        if (data.data) {
           setCenters(data.data);
-        } else {
-          setCenters(defaultRecycleCenters);
         }
-      } catch {
-        setCenters(defaultRecycleCenters);
+      } catch (err) {
+        console.error('Failed to load recycle centers from database', err);
+        setCenters([]);
       } finally {
         setLoading(false);
       }
