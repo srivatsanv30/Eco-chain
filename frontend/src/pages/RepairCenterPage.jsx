@@ -19,7 +19,6 @@ import {
 } from 'lucide-react';
 import { getRepairCenters } from '../services/api';
 import { Skeleton } from '../components/ui/EcoComponents';
-import { defaultRepairCenters } from '../data/ecoCentersData';
 
 const SERVICE_CATEGORIES = [
   'All',
@@ -184,13 +183,12 @@ const RepairCenterPage = () => {
     const fetchCenters = async () => {
       try {
         const { data } = await getRepairCenters();
-        if (data.data && data.data.length > 0) {
+        if (data.data) {
           setCenters(data.data);
-        } else {
-          setCenters(defaultRepairCenters);
         }
-      } catch {
-        setCenters(defaultRepairCenters);
+      } catch (err) {
+        console.error('Failed to load repair centers from database', err);
+        setCenters([]);
       } finally {
         setLoading(false);
       }
