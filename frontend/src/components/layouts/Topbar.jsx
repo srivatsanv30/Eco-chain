@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 import { Menu, Sun, Moon, Bell, Search, Leaf } from 'lucide-react';
 import { toggleTheme } from '../../redux/slices/themeSlice';
 import { useNavigate } from 'react-router-dom';
+import { getNotifications } from '../../services/api';
 
 const Topbar = ({ onMenuClick }) => {
   const dispatch = useDispatch();
@@ -11,7 +12,24 @@ const Topbar = ({ onMenuClick }) => {
   const { mode } = useSelector(state => state.theme);
   const { user } = useSelector(state => state.auth);
   const [searchQuery, setSearchQuery] = useState('');
+  const [hasUnread, setHasUnread] = useState(false);
   const isDark = mode === 'dark';
+
+  useEffect(() => {
+    let isMounted = true;
+    const checkNotifs = async () => {
+      try {
+        const { data } = await getNotifications();
+        if (isMounted && data?.data) {
+          setHasUnread(data.data.some(n => !n.read));
+        }
+      } catch {
+        // silent fallback
+      }
+    };
+    if (user) checkNotifs();
+    return () => { isMounted = false; };
+  }, [user]);
 
   const handleSearch = (e) => {
     if (e.key === 'Enter' && searchQuery.trim()) {
@@ -53,10 +71,16 @@ const Topbar = ({ onMenuClick }) => {
       <div className="ml-auto flex items-center gap-2">
         {/* Notifications */}
         <button 
-          onClick={() => navigate('/dashboard/notifications')}
+          onClick={() => {
+            navigate('/dashboard/notifications');
+            setHasUnread(false);
+          }}
+          aria-label="Notifications"
           className={`relative p-2 rounded-xl transition-colors ${isDark ? 'hover:bg-slate-800 text-slate-400' : 'hover:bg-slate-100 text-slate-600'}`}>
           <Bell className="w-5 h-5" />
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-eco-400 rounded-full" />
+          {hasUnread && (
+            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-emerald-500 rounded-full animate-pulse shadow-sm" />
+          )}
         </button>
 
         {/* Theme toggle */}
