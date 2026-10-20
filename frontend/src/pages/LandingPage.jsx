@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useSelector } from 'react-redux';
-import { Leaf, ArrowRight, Star, Zap, Shield, Globe, TrendingUp, ChevronDown, Menu, X, Sun, Moon } from 'lucide-react';
+import { Leaf, ArrowRight, Star, Zap, Shield, Globe, TrendingUp, Menu, X, Sun, Moon, Check, Sparkles, Cpu, Recycle, Heart, Search } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import { toggleTheme } from '../redux/slices/themeSlice';
 
@@ -36,6 +36,7 @@ const LandingPage = () => {
   const { mode } = useSelector(state => state.theme);
   const { user } = useSelector(state => state.auth);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [modalInfo, setModalInfo] = useState(null);
   const isDark = mode === 'dark';
 
   useEffect(() => {
@@ -177,6 +178,208 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* How it Works */}
+      <section id="how-it-works" className={`py-24 px-4 border-t ${isDark ? 'border-slate-800 bg-slate-950' : 'border-slate-200 bg-white'}`}>
+        <div className="max-w-6xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3 bg-eco-500/10 text-emerald-600 dark:text-eco-400 border border-eco-500/20">
+              <Sparkles className="w-3.5 h-3.5" /> 3-Step Circular Process
+            </div>
+            <h2 className={`text-4xl md:text-5xl font-black mb-4 ${isDark ? 'text-white' : 'text-slate-900'}`}>
+              How <span className="gradient-text">EcoChain Works</span>
+            </h2>
+            <p className={`text-lg max-w-2xl mx-auto ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+              From searching a device to end-of-life recycling, here is how our intelligence platform guides your purchase.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                step: '01',
+                icon: Search,
+                title: 'Search or Scan Any Device',
+                desc: 'Explore over 2.4 million products or scan barcodes. We instantly cross-reference materials, supply chain footprints, and energy efficiency ratings.',
+                color: 'from-emerald-500 to-teal-500',
+              },
+              {
+                step: '02',
+                icon: Cpu,
+                title: 'AI Lifecycle Diagnostics',
+                desc: 'Our machine learning models analyze component failure probabilities, expected lifespan, repair difficulty, and total long-term cost of ownership.',
+                color: 'from-teal-500 to-blue-500',
+              },
+              {
+                step: '03',
+                icon: Recycle,
+                title: 'Repair, Recycle & Earn',
+                desc: 'Locate certified nearby repair and e-waste recycling centres. Log your sustainable actions into your Carbon Wallet and unlock green credits.',
+                color: 'from-blue-500 to-purple-500',
+              },
+            ].map((s, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.12 }}
+                whileHover={{ y: -6 }}
+                className={`p-8 rounded-3xl border relative overflow-hidden transition-all duration-300 ${
+                  isDark ? 'bg-slate-900/60 border-slate-800 hover:border-eco-500/40' : 'bg-white border-slate-200 hover:border-emerald-400 shadow-md'
+                }`}
+              >
+                <div className="flex items-center justify-between mb-6">
+                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${s.color} flex items-center justify-center text-white shadow-lg`}>
+                    <s.icon className="w-7 h-7" />
+                  </div>
+                  <span className={`text-3xl font-black opacity-20 ${isDark ? 'text-white' : 'text-slate-900'}`}>{s.step}</span>
+                </div>
+                <h3 className={`text-xl font-bold mb-3 ${isDark ? 'text-white' : 'text-slate-900'}`}>{s.title}</h3>
+                <p className={`text-sm leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>{s.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing */}
+      <section id="pricing" className={`py-24 px-4 border-t ${isDark ? 'border-slate-800 bg-slate-900' : 'border-slate-200 bg-slate-50'}`}>
+        <div className="max-w-6xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3 bg-emerald-500/10 text-emerald-600 dark:text-eco-400 border border-emerald-500/20">
+              <Shield className="w-3.5 h-3.5" /> Transparent Pricing
+            </div>
+            <h2 className={`text-4xl md:text-5xl font-black mb-4 ${isDark ? 'text-white' : 'text-slate-900'}`}>
+              Plans for <span className="gradient-text">every conscious user</span>
+            </h2>
+            <p className={`text-lg max-w-2xl mx-auto ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+              Start free today and upgrade as your household or organization scales its sustainability goals.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8 items-stretch">
+            {/* Free */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className={`p-8 rounded-3xl border flex flex-col justify-between transition-all ${
+                isDark ? 'bg-slate-800/40 border-slate-700/60' : 'bg-white border-slate-200 shadow-sm'
+              }`}
+            >
+              <div>
+                <span className={`text-xs font-bold uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Starter</span>
+                <h3 className={`text-2xl font-black mt-1 mb-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>Eco Explorer</h3>
+                <div className="flex items-baseline gap-1 my-4">
+                  <span className={`text-4xl font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>₹0</span>
+                  <span className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>/ forever</span>
+                </div>
+                <p className={`text-xs leading-relaxed mb-6 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                  Essential sustainability analytics for mindful individual consumers.
+                </p>
+                <div className="space-y-3 mb-8">
+                  {['Access to 2.4M+ Eco Scores', 'Compare up to 4 products side-by-side', 'Certified Repair & Recycle Hub locator', 'Community forum discussions'].map((feat, i) => (
+                    <div key={i} className="flex items-center gap-2.5 text-xs">
+                      <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+                      <span className={isDark ? 'text-slate-300' : 'text-slate-700'}>{feat}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <Link to="/auth?mode=signup" className="btn-secondary w-full text-center py-3 text-sm font-bold">
+                Get Started Free
+              </Link>
+            </motion.div>
+
+            {/* Pro */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className={`p-8 rounded-3xl border-2 border-emerald-500 relative flex flex-col justify-between shadow-2xl ${
+                isDark ? 'bg-gradient-to-b from-slate-800 via-slate-800/90 to-slate-900' : 'bg-white'
+              }`}
+            >
+              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-xs font-black px-4 py-1 rounded-full uppercase tracking-wider shadow-md">
+                Most Popular
+              </div>
+              <div>
+                <span className="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-eco-400">Pro Plan</span>
+                <h3 className={`text-2xl font-black mt-1 mb-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>Conscious Pro</h3>
+                <div className="flex items-baseline gap-1 my-4">
+                  <span className={`text-4xl font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>₹299</span>
+                  <span className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>/ month</span>
+                </div>
+                <p className={`text-xs leading-relaxed mb-6 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                  Deep AI predictions, financial repair savings calculators, and exportable reports.
+                </p>
+                <div className="space-y-3 mb-8">
+                  {[
+                    'Everything in Eco Explorer',
+                    'Custom AI Product Longevity Analyses',
+                    'Repair vs Replace Financial Calculator',
+                    'Automated PDF & CSV Carbon Audit Reports',
+                    'Priority booking & partner discounts at repair centers',
+                    'Unlimited product comparisons'
+                  ].map((feat, i) => (
+                    <div key={i} className="flex items-center gap-2.5 text-xs">
+                      <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+                      <span className={`font-medium ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>{feat}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <Link to="/auth?mode=signup" className="btn-primary w-full text-center py-3 text-sm font-bold shadow-lg shadow-emerald-500/20">
+                Start 14-Day Free Trial
+              </Link>
+            </motion.div>
+
+            {/* Enterprise */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className={`p-8 rounded-3xl border flex flex-col justify-between transition-all ${
+                isDark ? 'bg-slate-800/40 border-slate-700/60' : 'bg-white border-slate-200 shadow-sm'
+              }`}
+            >
+              <div>
+                <span className={`text-xs font-bold uppercase tracking-wider ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Organizations</span>
+                <h3 className={`text-2xl font-black mt-1 mb-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>Enterprise</h3>
+                <div className="flex items-baseline gap-1 my-4">
+                  <span className={`text-4xl font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>Custom</span>
+                </div>
+                <p className={`text-xs leading-relaxed mb-6 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                  Fleet-wide IT hardware lifecycle auditing and corporate ESG compliance reporting.
+                </p>
+                <div className="space-y-3 mb-8">
+                  {[
+                    'Fleet hardware inventory carbon auditing',
+                    'Scope 3 GHG emissions compliance data',
+                    'Bulk certified recycling pickup logistics',
+                    'REST API & Webhooks integration',
+                    'Dedicated sustainability account manager'
+                  ].map((feat, i) => (
+                    <div key={i} className="flex items-center gap-2.5 text-xs">
+                      <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+                      <span className={isDark ? 'text-slate-300' : 'text-slate-700'}>{feat}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <button
+                onClick={() => setModalInfo({ title: 'Contact Enterprise Sales', text: 'Reach out to enterprise@ecochain.io or call +91 (800) 420-ECO to configure customized corporate hardware ESG auditing and automated Scope 3 lifecycle tracking.' })}
+                className="btn-secondary w-full text-center py-3 text-sm font-bold"
+              >
+                Contact Enterprise
+              </button>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* Testimonials */}
       <section className={`py-24 px-4 ${isDark ? 'bg-slate-950' : 'bg-white'}`}>
         <div className="max-w-6xl mx-auto">
@@ -197,6 +400,70 @@ const LandingPage = () => {
                 </div>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* About */}
+      <section id="about" className={`py-24 px-4 border-t ${isDark ? 'border-slate-800 bg-slate-900/60' : 'border-slate-200 bg-slate-50'}`}>
+        <div className="max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3 bg-eco-500/10 text-emerald-600 dark:text-eco-400 border border-eco-500/20">
+                <Heart className="w-3.5 h-3.5 text-rose-500" /> Our Purpose
+              </div>
+              <h2 className={`text-3xl md:text-4xl font-black mb-4 ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                Ending the Electronic Waste Crisis with <span className="gradient-text">Radical Transparency</span>
+              </h2>
+              <p className={`text-sm leading-relaxed mb-4 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                Electronic waste is the world's fastest-growing domestic waste stream, with over 62 million metric tonnes generated annually. In India alone, millions of devices are discarded prematurely because users lack accurate repair information and true lifespan visibility.
+              </p>
+              <p className={`text-sm leading-relaxed mb-6 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                EcoChain bridges this gap by combining machine learning, comprehensive manufacturer disassembly benchmarks, and an active national directory of certified repair and recycling partners.
+              </p>
+              <div className="grid grid-cols-3 gap-4 border-t pt-6 dark:border-slate-800 border-slate-200">
+                <div>
+                  <p className="text-2xl font-black gradient-text">100%</p>
+                  <p className={`text-xs mt-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Zero Greenwashing</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-black gradient-text">2.4M+</p>
+                  <p className={`text-xs mt-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Products Analyzed</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-black gradient-text">50K+</p>
+                  <p className={`text-xs mt-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Active Recyclers</p>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="relative">
+              <div className={`p-8 rounded-3xl border shadow-xl relative overflow-hidden ${isDark ? 'bg-slate-800/60 border-slate-700/60' : 'bg-white border-slate-200'}`}>
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-white shadow-md">
+                    <Leaf className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className={`font-bold text-base ${isDark ? 'text-white' : 'text-slate-900'}`}>EcoChain Circular Pledge</h3>
+                    <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Built for sustainable living</p>
+                  </div>
+                </div>
+                <div className="space-y-4 text-xs leading-relaxed">
+                  <div className="flex gap-3">
+                    <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center shrink-0 mt-0.5">✓</div>
+                    <p className={isDark ? 'text-slate-300' : 'text-slate-700'}><b>Independent Scoring:</b> We never accept manufacturer sponsorships to artificially inflate Eco Scores.</p>
+                  </div>
+                  <div className="flex gap-3">
+                    <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center shrink-0 mt-0.5">✓</div>
+                    <p className={isDark ? 'text-slate-300' : 'text-slate-700'}><b>Right to Repair:</b> We actively promote local, independent repair professionals across every city in India.</p>
+                  </div>
+                  <div className="flex gap-3">
+                    <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center shrink-0 mt-0.5">✓</div>
+                    <p className={isDark ? 'text-slate-300' : 'text-slate-700'}><b>Certified Recycling:</b> Every recycle centre listed on our network adheres to zero-landfill e-waste processing.</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -224,14 +491,58 @@ const LandingPage = () => {
             </div>
             <span className="font-bold gradient-text">EcoChain</span>
           </div>
-          <p className={`text-sm ${isDark ? 'text-slate-600' : 'text-slate-400'}`}>© 2024 EcoChain. AI-Powered Product Lifecycle Intelligence.</p>
+          <p className={`text-sm ${isDark ? 'text-slate-600' : 'text-slate-400'}`}>© 2025 EcoChain. AI-Powered Product Lifecycle Intelligence.</p>
           <div className="flex gap-4 text-sm">
-            {['Privacy', 'Terms', 'Contact'].map(item => (
-              <a key={item} href="#" className={`${isDark ? 'text-slate-500 hover:text-slate-300' : 'text-slate-400 hover:text-slate-600'} transition-colors`}>{item}</a>
-            ))}
+            <button
+              onClick={() => setModalInfo({
+                title: 'Privacy Policy',
+                text: 'EcoChain values your data privacy. We collect minimal telemetry required to compute your carbon savings and personalize eco-recommendations. Your personal contact details and individual browsing footprint are never sold, traded, or shared with third-party advertisers.'
+              })}
+              className={`${isDark ? 'text-slate-400 hover:text-slate-200' : 'text-slate-500 hover:text-slate-800'} transition-colors font-medium`}
+            >
+              Privacy
+            </button>
+            <button
+              onClick={() => setModalInfo({
+                title: 'Terms of Service',
+                text: 'By using EcoChain, you agree to access sustainability ratings, repair information, and community discussions responsibly. Eco scores and lifespan predictions are machine learning estimations meant for advisory purposes and may vary by individual maintenance patterns.'
+              })}
+              className={`${isDark ? 'text-slate-400 hover:text-slate-200' : 'text-slate-500 hover:text-slate-800'} transition-colors font-medium`}
+            >
+              Terms
+            </button>
+            <button
+              onClick={() => setModalInfo({
+                title: 'Contact Support',
+                text: 'Have questions, partner inquiries, or need assistance? Reach out to support@ecochain.io or call our eco-concierge line at +91 98765 00001 (Mon-Fri 9AM-6PM IST). We respond within 24 hours.'
+              })}
+              className={`${isDark ? 'text-slate-400 hover:text-slate-200' : 'text-slate-500 hover:text-slate-800'} transition-colors font-medium`}
+            >
+              Contact
+            </button>
           </div>
         </div>
       </footer>
+
+      {/* Info Modal */}
+      {modalInfo && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
+          <div className={`w-full max-w-md p-6 rounded-3xl border shadow-2xl ${isDark ? 'bg-slate-900 border-slate-700 text-white' : 'bg-white border-slate-200 text-slate-900'}`}>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-bold text-lg">{modalInfo.title}</h3>
+              <button onClick={() => setModalInfo(null)} className="p-1 rounded-lg text-slate-400 hover:text-slate-200">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <p className={`text-sm leading-relaxed mb-6 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>{modalInfo.text}</p>
+            <div className="flex justify-end">
+              <button onClick={() => setModalInfo(null)} className="btn-primary py-2 px-5 text-xs font-bold">
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
