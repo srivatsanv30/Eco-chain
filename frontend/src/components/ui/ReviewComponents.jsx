@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Star, ThumbsUp, Leaf, ChevronDown, Trash2, Edit3, CheckCircle } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Star, ThumbsUp, Leaf, Trash2, Edit3, CheckCircle } from 'lucide-react';
 import { toggleHelpfulVote, deleteReview as deleteReviewApi } from '../../services/api';
 import toast from 'react-hot-toast';
 
