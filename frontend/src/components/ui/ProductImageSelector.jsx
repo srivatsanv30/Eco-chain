@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import ProductImage from './ProductImage';
 
 // Mock external image search API for demonstration
 const mockSearchImages = async (brand, modelNumber) => {
