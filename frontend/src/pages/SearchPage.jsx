@@ -67,7 +67,9 @@ const SearchPage = () => {
     }
   }, [searchFilters, localSearch]);
 
-  useEffect(() => { fetchProducts(1); }, [searchFilters]);
+  useEffect(() => {
+    fetchProducts(1);
+  }, [fetchProducts]);
 
   const handleSearch = (e) => {
     if (e.key === 'Enter') fetchProducts(1);
