@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Brain, Send, Leaf, Wrench, Shield, AlertTriangle, Cpu, HelpCircle, ArrowRight } from 'lucide-react';
+import { Brain, Send, Leaf, Wrench, AlertTriangle, Cpu } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 import { analyzeProductCustom } from '../services/api';
@@ -52,6 +52,9 @@ const AiInsightsPage = () => {
       {/* Header */}
       <motion.div variants={itemVariants}>
         <h1 className={`text-2xl md:text-3xl font-black ${isDark ? 'text-white' : 'text-slate-900'} flex items-center gap-2.5`}>
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center text-white shadow-eco">
+            <Brain className="w-5 h-5" />
+          </div>
           AI Insights & Analytics
         </h1>
         <p className={`mt-2 text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
