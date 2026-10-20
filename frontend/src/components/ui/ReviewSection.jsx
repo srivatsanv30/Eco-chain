@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageSquare, Star, Leaf, Plus, X, ChevronDown, Loader2, Send, Sparkles } from 'lucide-react';
+import { MessageSquare, Leaf, Plus, X, ChevronDown, Loader2, Send, Sparkles } from 'lucide-react';
 import { getProductReviews, createReview, updateReview } from '../../services/api';
 import { StarDisplay, RatingDistribution, ReviewCard } from './ReviewComponents';
 import toast from 'react-hot-toast';
