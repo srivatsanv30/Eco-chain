@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
-import { Shield, Users, ShoppingBag, FileBarChart, Trash2, Award, UserCheck, Package, Edit2, Plus } from 'lucide-react';
-import { getAdminStats, getAllUsers, deleteUser, updateUserRole, getProducts, deleteProduct as deleteProductApi, createProduct, updateProduct } from '../services/api';
+import { Shield, Users, ShoppingBag, FileBarChart, Trash2, UserCheck, Edit2, Plus, RefreshCw } from 'lucide-react';
+import { getAdminStats, getAllUsers, deleteUser, updateUserRole, getProducts, deleteProduct as deleteProductApi, createProduct, updateProduct, syncExternalCatalog } from '../services/api';
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip as ChartTooltip, Legend } from 'chart.js';
 import toast from 'react-hot-toast';
 import ProductModal from '../components/ui/ProductModal';
+import ProductImage from '../components/ui/ProductImage';
 
 ChartJS.register(ArcElement, ChartTooltip, Legend);
 
@@ -21,6 +22,30 @@ const AdminPage = () => {
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentEditProduct, setCurrentEditProduct] = useState(null);
+  const [syncing, setSyncing] = useState(false);
+
+  const handleSyncCatalog = async () => {
+    setSyncing(true);
+    try {
+      const { data } = await syncExternalCatalog();
+      toast.success(data.message || 'External catalog synced successfully!');
+      // Refresh stats & products
+      const [statsRes, productsRes] = await Promise.all([getAdminStats(), getProducts({ limit: 100 })]);
+      if (statsRes.data?.data) {
+        const d = statsRes.data.data;
+        setStats({
+          usersCount: d.usersCount ?? d.totalUsers ?? 0,
+          productsCount: d.productsCount ?? d.totalProducts ?? 0,
+          reportsCount: d.reportsCount ?? d.totalReports ?? 0
+        });
+      }
+      setProducts(productsRes.data?.data || []);
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to sync external catalog');
+    } finally {
+      setSyncing(false);
+    }
+  };
 
   useEffect(() => {
     const fetchAdminData = async () => {
@@ -137,19 +162,41 @@ const AdminPage = () => {
     visible: { opacity: 1, y: 0, transition: { duration: 0.3 } }
   };
 
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <div className="h-12 w-64 bg-slate-200 dark:bg-slate-800/60 rounded-2xl animate-pulse" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {Array(3).fill(0).map((_, i) => <div key={i} className="h-28 bg-slate-200 dark:bg-slate-800/60 rounded-2xl animate-pulse" />)}
+        </div>
+        <div className="h-64 bg-slate-200 dark:bg-slate-800/60 rounded-2xl animate-pulse" />
+      </div>
+    );
+  }
+
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-6">
       {/* Header */}
-      <motion.div variants={itemVariants}>
-        <h1 className={`text-2xl md:text-3xl font-black ${isDark ? 'text-white' : 'text-slate-900'} flex items-center gap-2.5`}>
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-500 to-amber-500 flex items-center justify-center text-white shadow-eco">
-            <Shield className="w-5 h-5" />
-          </div>
-          Admin Dashboard
-        </h1>
-        <p className={`mt-2 text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-          Manage platform parameters, oversee user directories, and audit activity statistics.
-        </p>
+      <motion.div variants={itemVariants} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className={`text-2xl md:text-3xl font-black ${isDark ? 'text-white' : 'text-slate-900'} flex items-center gap-2.5`}>
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-500 to-amber-500 flex items-center justify-center text-white shadow-eco">
+              <Shield className="w-5 h-5" />
+            </div>
+            Admin Dashboard
+          </h1>
+          <p className={`mt-2 text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+            Manage platform parameters, oversee user directories, and audit activity statistics.
+          </p>
+        </div>
+        <button
+          onClick={handleSyncCatalog}
+          disabled={syncing}
+          className="btn-secondary flex items-center gap-2 text-xs py-2.5 px-4 rounded-xl font-semibold self-start sm:self-auto disabled:opacity-50"
+        >
+          <RefreshCw className={`w-3.5 h-3.5 ${syncing ? 'animate-spin text-emerald-500' : ''}`} />
+          {syncing ? 'Syncing Catalog...' : 'Sync Catalog'}
+        </button>
       </motion.div>
 
       {/* Stats Cards */}
@@ -195,7 +242,7 @@ const AdminPage = () => {
             </thead>
             <tbody className={`divide-y ${isDark ? 'divide-slate-800 text-slate-300' : 'divide-slate-100 text-slate-700'}`}>
               {users.map(u => (
-                <tr key={u._id} className={`hover:${isDark ? 'bg-slate-800/40' : 'bg-slate-50'}`}>
+                <tr key={u._id} className={`${isDark ? 'hover:bg-slate-800/40' : 'hover:bg-slate-50'} transition-colors`}>
                   <td className="py-3 font-semibold">{u.name}</td>
                   <td className="py-3 text-slate-500">@{u.username}</td>
                   <td className="py-3">{u.email}</td>
@@ -262,9 +309,9 @@ const AdminPage = () => {
             </thead>
             <tbody className={`divide-y ${isDark ? 'divide-slate-800 text-slate-300' : 'divide-slate-100 text-slate-700'}`}>
               {products.map(p => (
-                <tr key={p._id} className={`hover:${isDark ? 'bg-slate-800/40' : 'bg-slate-50'}`}>
-                  <td className="py-3 font-semibold flex items-center gap-2">
-                    <img src={p.primaryImage || p.image || 'https://via.placeholder.com/40'} alt={p.productName || p.name} className="w-8 h-8 rounded object-cover" />
+                <tr key={p._id} className={`${isDark ? 'hover:bg-slate-800/40' : 'hover:bg-slate-50'} transition-colors`}>
+                  <td className="py-3 font-semibold flex items-center gap-2.5">
+                    <ProductImage product={p} className="w-9 h-9 rounded-lg object-cover flex-shrink-0" />
                     <div>
                       <p className="line-clamp-1">{p.productName || p.name}</p>
                       <p className={`text-[10px] ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{p.brand}</p>
