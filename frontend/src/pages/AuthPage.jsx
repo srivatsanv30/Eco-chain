@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
-import { Eye, EyeOff, Leaf, Mail, Lock, User, Phone, AtSign, ArrowRight, Check, Shield, Recycle, TreePine } from 'lucide-react';
+import { Eye, EyeOff, Leaf, Mail, Lock, User, Phone, AtSign, ArrowRight, Shield, Recycle, TreePine } from 'lucide-react';
 import { setCredentials } from '../redux/slices/authSlice';
 import { loginUser, registerUser } from '../services/api';
 import toast from 'react-hot-toast';
