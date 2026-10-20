@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard, Search, GitCompare, Heart, Wallet, Wrench, Recycle,
-  Brain, FileBarChart, Settings, Bell, User, LogOut, Leaf, X, ChevronRight, Shield, MessageSquare
+  Brain, FileBarChart, Settings, Bell, User, LogOut, Leaf, X, Shield, MessageSquare
 } from 'lucide-react';
 import { logout } from '../../redux/slices/authSlice';
 import toast from 'react-hot-toast';
