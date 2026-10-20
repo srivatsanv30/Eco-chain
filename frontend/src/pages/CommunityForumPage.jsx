@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  MessageSquare, Users, TrendingUp, Search, PlusCircle, Heart, Share2, 
-  MessageCircle, X, Send, Sparkles, Filter, CheckCircle2, Tag, Loader2
+  MessageSquare, TrendingUp, Search, PlusCircle, Heart, Share2, 
+  MessageCircle, X, Send, Sparkles, CheckCircle2, Loader2
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { getForumThreads, createForumThread, addForumComment, toggleForumLike } from '../services/api';
