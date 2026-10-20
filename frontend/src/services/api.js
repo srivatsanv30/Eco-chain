@@ -68,5 +68,7 @@ export const getAdminStats = () => api.get('/admin/stats');
 export const getAllUsers = () => api.get('/admin/users');
 export const deleteUser = (id) => api.delete(`/admin/users/${id}`);
 export const updateUserRole = (id, role) => api.put(`/admin/users/${id}/role`, { role });
+export const syncExternalCatalog = () => api.post('/admin/sync-amazon');
 
 export default api;
+
