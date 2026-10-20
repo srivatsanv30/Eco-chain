@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
-import { Heart, GitCompare, Share2, ArrowLeft, Leaf, Clock, Zap, IndianRupee, Shield, Wrench, Recycle, Brain, Star, Info, ChevronDown, ChevronUp } from 'lucide-react';
+import { Heart, GitCompare, Share2, ArrowLeft, Leaf, Clock, IndianRupee, Shield, Wrench, Recycle, Brain, Info } from 'lucide-react';
 import { getProductById, getAIInsights } from '../services/api';
 import { toggleSaveProduct, toggleCompareProduct } from '../redux/slices/productSlice';
 import { EcoScoreBadge, RepairabilityBar, EnergyRatingBadge, Skeleton } from '../components/ui/EcoComponents';
@@ -50,7 +50,7 @@ const ProductPage = () => {
       }
     };
     fetchProduct();
-  }, [id]);
+  }, [id, navigate]);
 
   const fetchAIInsights = async () => {
     setAiLoading(true);
@@ -119,7 +119,17 @@ const ProductPage = () => {
               <GitCompare className="w-4 h-4" />
               {isInCompare ? 'In Compare' : 'Compare'}
             </motion.button>
-            <button className={`p-3 rounded-xl border ${isDark ? 'bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-200' : 'bg-slate-50 border-slate-200 text-slate-500 hover:text-slate-700'}`}>
+            <button
+              onClick={() => {
+                if (navigator.clipboard) {
+                  navigator.clipboard.writeText(window.location.href);
+                  toast.success('Product link copied to clipboard! 📋');
+                } else {
+                  toast.success('Link ready to share!');
+                }
+              }}
+              title="Share Product"
+              className={`p-3 rounded-xl border transition-all ${isDark ? 'bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-200 hover:border-slate-500' : 'bg-slate-50 border-slate-200 text-slate-500 hover:text-slate-700 hover:border-slate-400'}`}>
               <Share2 className="w-4 h-4" />
             </button>
           </div>
