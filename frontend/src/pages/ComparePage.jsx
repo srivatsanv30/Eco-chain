@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { GitCompare, X, Trash2, Award, Leaf, Clock, DollarSign, Zap, Shield } from 'lucide-react';
+import { GitCompare, X, Trash2, Award } from 'lucide-react';
 import { toggleCompareProduct, clearCompare } from '../redux/slices/productSlice';
 import { EcoScoreBadge, EnergyRatingBadge, EmptyState } from '../components/ui/EcoComponents';
 import ProductImage from '../components/ui/ProductImage';
