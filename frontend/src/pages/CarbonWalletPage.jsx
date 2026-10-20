@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
-import { Wallet, Leaf, TrendingDown, IndianRupee, Recycle, ShoppingBag, Award, ArrowRight } from 'lucide-react';
+import { Leaf, TrendingDown, IndianRupee, Recycle, Award } from 'lucide-react';
 import { Line, Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
 import { getCarbonWallet } from '../services/api';
@@ -91,6 +91,24 @@ const CarbonWalletPage = () => {
       y: { grid: { color: isDark ? 'rgba(51,65,85,0.5)' : 'rgba(226,232,240,0.8)' }, ticks: { color: isDark ? '#64748b' : '#94a3b8', font: { size: 11 } } },
     },
   };
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <Skeleton className="h-10 w-48" />
+          <Skeleton className="h-10 w-28" />
+        </div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          {Array(4).fill(0).map((_, i) => <Skeleton key={i} className="h-28 rounded-2xl" />)}
+        </div>
+        <div className="grid lg:grid-cols-2 gap-4">
+          <Skeleton className="h-64 rounded-2xl" />
+          <Skeleton className="h-64 rounded-2xl" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
