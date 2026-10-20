@@ -6,14 +6,12 @@ import {
   Star,
   Phone,
   MapPin,
-  Clock,
   ChevronRight,
   IndianRupee,
   Search,
   Navigation,
   ShieldCheck,
   CheckCircle2,
-  Calendar,
   X,
   Filter
 } from 'lucide-react';
