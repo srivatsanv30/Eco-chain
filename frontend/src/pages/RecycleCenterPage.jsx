@@ -9,8 +9,6 @@ import {
   Search,
   Navigation,
   ShieldCheck,
-  CheckCircle2,
-  Calendar,
   X,
   Filter,
   PackageCheck,
