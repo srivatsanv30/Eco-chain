@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { motion } from 'framer-motion';
-import { Settings, Sun, Moon, Bell, Shield, Globe, Save } from 'lucide-react';
-import { toggleTheme, setTheme } from '../redux/slices/themeSlice';
+import { Sun, Moon, Bell, Shield, Globe, Save } from 'lucide-react';
+import { setTheme } from '../redux/slices/themeSlice';
 import toast from 'react-hot-toast';
 
 const SettingsPage = () => {
