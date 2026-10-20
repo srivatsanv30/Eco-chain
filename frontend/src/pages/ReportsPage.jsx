@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
-import { FileBarChart, Download, FileText, Share2, Calendar, Award, Loader2, TrendingDown, TrendingUp, DollarSign } from 'lucide-react';
+import { Download, FileText, Share2, Calendar, Award, Loader2, TrendingDown, TrendingUp, DollarSign } from 'lucide-react';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { getCarbonWallet } from '../services/api';
@@ -169,7 +169,6 @@ const ReportsPage = () => {
           </h1>
           <p className={`mt-2 text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
             Track, export, and share detailed environmental footprint histories and audit reports.
-            {isOffline && <span className="ml-2 text-red-500 font-semibold">(Offline Mode)</span>}
           </p>
         </div>
         <div className="flex gap-2">
@@ -239,7 +238,7 @@ const ReportsPage = () => {
               </thead>
               <tbody className={`divide-y ${isDark ? 'divide-slate-800 text-slate-300' : 'divide-slate-100 text-slate-700'}`}>
                 {reports.map((row, i) => (
-                  <tr key={i} className={`hover:${isDark ? 'bg-slate-800/20' : 'bg-slate-50'}`}>
+                  <tr key={i} className={`${isDark ? 'hover:bg-slate-800/40' : 'hover:bg-slate-50'} transition-colors`}>
                     <td className="py-3 font-semibold">{row.month}</td>
                     <td className="py-3">{row.carbonFootprint} kg</td>
                     <td className="py-3">{row.wasteGeneratedKg} kg</td>
