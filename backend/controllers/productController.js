@@ -9,7 +9,13 @@ export const getProducts = async (req, res) => {
     if (minPrice || maxPrice) query.price = { ...(minPrice && { $gte: Number(minPrice) }), ...(maxPrice && { $lte: Number(maxPrice) }) };
     if (ecoScore) query.ecoScore = { $gte: Number(ecoScore) };
     if (energyRating) query.energyRating = energyRating;
-    if (search) query.$or = [{ name: { $regex: search, $options: 'i' } }, { brand: { $regex: search, $options: 'i' } }, { description: { $regex: search, $options: 'i' } }];
+    if (search) query.$or = [
+      { name: { $regex: search, $options: 'i' } },
+      { productName: { $regex: search, $options: 'i' } },
+      { brand: { $regex: search, $options: 'i' } },
+      { category: { $regex: search, $options: 'i' } },
+      { description: { $regex: search, $options: 'i' } }
+    ];
     
     // Handle dynamic spec filtering (e.g. ?RAM=8GB)
     Object.keys(otherQueries).forEach(key => {
