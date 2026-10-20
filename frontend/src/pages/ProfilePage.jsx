@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { motion } from 'framer-motion';
-import { User, Mail, Phone, Lock, Save, Award, Wallet, Calendar } from 'lucide-react';
+import { User, Mail, Phone, Save, Wallet } from 'lucide-react';
 import { setCredentials } from '../redux/slices/authSlice';
 import { updateProfile } from '../services/api';
 import toast from 'react-hot-toast';
