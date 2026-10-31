@@ -83,12 +83,12 @@ const ProductPage = () => {
       </button>
 
       {/* Product Hero */}
-      <div className="grid lg:grid-cols-2 gap-6">
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className={`rounded-2xl overflow-hidden border ${isDark ? 'border-slate-700/50' : 'border-slate-200'}`}>
+      <div className="grid lg:grid-cols-12 gap-8 items-start">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="lg:col-span-5 max-w-sm w-full mx-auto lg:mx-0">
           <ProductGallery product={product} />
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="space-y-4">
+        <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="lg:col-span-7 space-y-4">
           <div>
             <span className={`text-xs font-semibold uppercase tracking-wider ${isDark ? 'text-eco-400' : 'text-eco-600'}`}>{product.brand} · {product.category}</span>
             <h1 className={`text-2xl md:text-3xl font-black mt-1 ${isDark ? 'text-white' : 'text-slate-900'}`}>{product.productName || product.name}</h1>
