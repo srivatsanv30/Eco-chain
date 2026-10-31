@@ -25,7 +25,11 @@ const ProductGallery = ({ product }) => {
   }
 
   if (allImages.length === 0) {
-    return <ProductImage product={product} className="w-full h-full object-cover" />;
+    return (
+      <div className="w-full aspect-square rounded-2xl overflow-hidden bg-white dark:bg-gray-800 border border-gray-200 dark:border-slate-700/50 shadow-sm">
+        <ProductImage product={product} className="w-full h-full object-cover" />
+      </div>
+    );
   }
 
   const activeImage = allImages[activeIndex] || allImages[0];
@@ -33,7 +37,7 @@ const ProductGallery = ({ product }) => {
   return (
     <div className="flex flex-col gap-4">
       {/* Main Image */}
-      <div className="w-full aspect-square rounded-xl overflow-hidden bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+      <div className="w-full aspect-square rounded-2xl overflow-hidden bg-white dark:bg-gray-800 border border-gray-200 dark:border-slate-700/50 shadow-sm">
         <ProductImage 
           product={{ ...product, primaryImage: activeImage.url }} 
           className="w-full h-full object-contain p-4" 
