@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
-import { Menu, Sun, Moon, Bell, Search, Leaf } from 'lucide-react';
+import { Menu, Sun, Moon, Bell, Search } from 'lucide-react';
 import { toggleTheme } from '../../redux/slices/themeSlice';
 import { useNavigate } from 'react-router-dom';
 import { getNotifications } from '../../services/api';
@@ -47,10 +47,7 @@ const Topbar = ({ onMenuClick }) => {
       </button>
 
       {/* Logo (mobile) */}
-      <div className="flex items-center gap-1.5 lg:hidden">
-        <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-eco-400 to-teal-500 flex items-center justify-center">
-          <Leaf className="w-3 h-3 text-white" />
-        </div>
+      <div className="flex items-center lg:hidden">
         <span className="font-bold gradient-text">EcoChain</span>
       </div>
 
