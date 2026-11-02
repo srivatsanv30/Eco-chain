@@ -1,35 +1,29 @@
 import { useState } from 'react';
 import ProductImage from './ProductImage';
+import { resolveProductImageUrl } from '../../utils/imageUtils';
 
 const ProductGallery = ({ product }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   // Compile list of all available images
   const allImages = [];
-  if (product?.primaryImage) {
-    allImages.push({ url: product.primaryImage, type: 'Primary' });
+  const primary = product?.primaryImage || product?.image;
+  if (primary && typeof primary === 'string' && primary.trim()) {
+    allImages.push({ url: primary.trim(), type: 'Primary' });
   }
   
   if (product?.images && product.images.length > 0) {
     product.images.forEach(img => {
-      // Avoid duplicate of primary image
-      if (img.url !== product.primaryImage) {
+      if (img?.url && img.url !== primary) {
         allImages.push(img);
       }
     });
   }
 
-  // Fallback to legacy image field if no modern fields exist
-  if (allImages.length === 0 && product?.image) {
-    allImages.push({ url: product.image, type: 'Legacy' });
-  }
-
+  // Ensure there is always a valid primary image resolved
   if (allImages.length === 0) {
-    return (
-      <div className="w-full aspect-square rounded-2xl overflow-hidden bg-white dark:bg-gray-800 border border-gray-200 dark:border-slate-700/50 shadow-sm">
-        <ProductImage product={product} className="w-full h-full object-cover" />
-      </div>
-    );
+    const defaultUrl = resolveProductImageUrl(product);
+    allImages.push({ url: defaultUrl, type: 'Primary' });
   }
 
   const activeImage = allImages[activeIndex] || allImages[0];
@@ -37,7 +31,7 @@ const ProductGallery = ({ product }) => {
   return (
     <div className="flex flex-col gap-4">
       {/* Main Image */}
-      <div className="w-full aspect-square rounded-2xl overflow-hidden bg-white dark:bg-gray-800 border border-gray-200 dark:border-slate-700/50 shadow-sm">
+      <div className="w-full aspect-square rounded-2xl overflow-hidden bg-white dark:bg-gray-800 border border-gray-200 dark:border-slate-700/50 shadow-sm flex items-center justify-center">
         <ProductImage 
           product={{ ...product, primaryImage: activeImage.url }} 
           className="w-full h-full object-contain p-4" 
@@ -51,7 +45,7 @@ const ProductGallery = ({ product }) => {
             <button
               key={index}
               onClick={() => setActiveIndex(index)}
-              className={`relative flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${
+              className={`relative flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all ${
                 activeIndex === index 
                   ? 'border-emerald-500 shadow-md' 
                   : 'border-transparent hover:border-gray-300 dark:hover:border-gray-600'
