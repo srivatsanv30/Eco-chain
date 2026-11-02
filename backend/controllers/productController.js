@@ -1,5 +1,17 @@
 import Product from '../models/Product.js';
 
+const normalizeProduct = (p) => {
+  if (!p) return p;
+  const obj = p.toObject ? p.toObject() : { ...p };
+  const img = obj.primaryImage || obj.image || (obj.images && obj.images.length > 0 ? obj.images[0].url : '') || '';
+  if (!obj.primaryImage && img) obj.primaryImage = img;
+  if (!obj.image && img) obj.image = img;
+  if ((!obj.images || obj.images.length === 0) && img) {
+    obj.images = [{ url: img, type: 'Primary' }];
+  }
+  return obj;
+};
+
 export const getProducts = async (req, res) => {
   try {
     const { brand, category, minPrice, maxPrice, ecoScore, energyRating, sort, search, page = 1, limit = 12, ...otherQueries } = req.query;
@@ -30,7 +42,7 @@ export const getProducts = async (req, res) => {
     const total = await Product.countDocuments(query);
     const products = await Product.find(query).sort(sortBy).limit(Number(limit)).skip((Number(page) - 1) * Number(limit));
 
-    res.json({ success: true, data: products, totalPages: Math.ceil(total / Number(limit)), currentPage: Number(page), total });
+    res.json({ success: true, data: products.map(normalizeProduct), totalPages: Math.ceil(total / Number(limit)), currentPage: Number(page), total });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -40,7 +52,7 @@ export const getProductById = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
     if (!product) return res.status(404).json({ success: false, message: 'Product not found' });
-    res.json({ success: true, data: product });
+    res.json({ success: true, data: normalizeProduct(product) });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -81,7 +93,7 @@ export const compareProducts = async (req, res) => {
     if (!ids) return res.status(400).json({ success: false, message: 'Product IDs required' });
     const idArray = ids.split(',');
     const products = await Product.find({ _id: { $in: idArray } });
-    res.json({ success: true, data: products });
+    res.json({ success: true, data: products.map(normalizeProduct) });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
