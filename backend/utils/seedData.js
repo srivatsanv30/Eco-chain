@@ -869,13 +869,19 @@ const seedData = async () => {
 
     const allProducts = [...products, ...moreProducts];
 
-    const productsWithLinks = allProducts.map(p => ({
-      ...p,
-      affiliateLinks: [
-        { store: 'Amazon', url: `https://amazon.in/s?k=${encodeURIComponent(p.name)}`, price: p.price },
-        { store: 'Flipkart', url: `https://flipkart.com/search?q=${encodeURIComponent(p.name)}`, price: Math.round(p.price * 0.98) }
-      ]
-    }));
+    const productsWithLinks = allProducts.map(p => {
+      const imgUrl = p.primaryImage || p.image || '';
+      return {
+        ...p,
+        image: imgUrl,
+        primaryImage: imgUrl,
+        images: (p.images && p.images.length > 0) ? p.images : (imgUrl ? [{ url: imgUrl, type: 'Primary' }] : []),
+        affiliateLinks: [
+          { store: 'Amazon', url: `https://amazon.in/s?k=${encodeURIComponent(p.name)}`, price: p.price },
+          { store: 'Flipkart', url: `https://flipkart.com/search?q=${encodeURIComponent(p.name)}`, price: Math.round(p.price * 0.98) }
+        ]
+      };
+    });
     await Product.insertMany(productsWithLinks);
     console.log(`✅ ${allProducts.length} Indian products seeded successfully!`);
 
