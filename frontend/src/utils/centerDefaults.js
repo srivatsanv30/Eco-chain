@@ -18,3 +18,4 @@ export const DEFAULT_RECYCLE_CENTERS = [
   { _id: 'rec6', name: 'Whitefield Clean Earth E-Waste Drop-off', address: 'EPIP Zone, Whitefield, Bengaluru, Karnataka', acceptedMaterials: ['Electronics', 'Batteries', 'Plastics', 'Cardboard'], phone: '+91 80-4112-9900', latitude: 12.9698, longitude: 77.7499 },
   { _id: 'rec7', name: 'Hyderabad Gachibowli Green Recyclers', address: 'Financial District, Gachibowli, Hyderabad, Telangana', acceptedMaterials: ['E-Waste', 'Electronics', 'Batteries', 'Glass'], phone: '+91 40-4567-8900', latitude: 17.4401, longitude: 78.3489 }
 ];
+
