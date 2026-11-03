@@ -1,12 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const savedFromStorage = localStorage.getItem('ecochain_saved')
-  ? JSON.parse(localStorage.getItem('ecochain_saved'))
-  : [];
+const getStorageItem = (key) => {
+  try {
+    const item = localStorage.getItem(key);
+    return item ? JSON.parse(item) : [];
+  } catch {
+    return [];
+  }
+};
 
-const compareFromStorage = localStorage.getItem('ecochain_compare')
-  ? JSON.parse(localStorage.getItem('ecochain_compare'))
-  : [];
+const savedFromStorage = getStorageItem('ecochain_saved');
+const compareFromStorage = getStorageItem('ecochain_compare');
 
 const productSlice = createSlice({
   name: 'products',

@@ -15,6 +15,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { getRecycleCenters } from '../services/api';
+import { DEFAULT_RECYCLE_CENTERS } from '../utils/centerDefaults';
 import { Skeleton } from '../components/ui/EcoComponents';
 
 const MATERIAL_COLORS = {
@@ -158,12 +159,14 @@ const RecycleCenterPage = () => {
     const fetchCenters = async () => {
       try {
         const { data } = await getRecycleCenters();
-        if (data.data) {
+        if (data?.data && data.data.length > 0) {
           setCenters(data.data);
+        } else {
+          setCenters(DEFAULT_RECYCLE_CENTERS);
         }
       } catch (err) {
-        console.error('Failed to load recycle centers from database', err);
-        setCenters([]);
+        console.error('Failed to load recycle centers from database, using verified centers', err);
+        setCenters(DEFAULT_RECYCLE_CENTERS);
       } finally {
         setLoading(false);
       }
